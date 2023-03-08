@@ -1,0 +1,25 @@
+.map-container {
+    position: absolute;
+    top: 0;
+}
+.world-map {
+    /*margin-left: -10px;*/
+}
+.country-label{
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #111111;
+    transform: translate(-50%, -50%);
+}
+
+.graticule {
+    stroke-width: 0.5px;
+    stroke: #dbdbdb;
+}
+
+.country-path {
+    stroke-width: 1px;
+    stroke: #dbdbdb;
+    fill: #f4f4f4;
+}
