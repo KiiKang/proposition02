@@ -10,7 +10,6 @@ import React from 'react';
 
 import './WorldMap.css'
 import ImagePreview from "./ImagePreview";
-import {hover} from "@testing-library/user-event/dist/hover";
 
 const WorldMap = () => {
     /** data states **/
