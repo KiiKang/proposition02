@@ -227,7 +227,7 @@ const WorldMap = () => {
                         )
                     ) : null
                 }
-                <div className='filters'>
+                <div className='filters' id='filters-country'>
                     {
                         countries.map(d =>(
                                 <div className='filter-country'
@@ -235,9 +235,12 @@ const WorldMap = () => {
                                      id={'filter-country-' + d}
                                      onMouseOver={toggleSelectedCountry}
                                      onMouseLeave={toggleSelectedCountry}
-                                     style={{opacity: hoveredCountry == null ? 1: hoveredCountry === d ? 1: 0.2}}
+                                     style={{
+                                         opacity: hoveredCountry == null ? 1: hoveredCountry === d ? 1: 0.2,
+                                         // height: (width - 150)/countries.length - 15
+                                }}
                                 >
-                                    {d}
+                                    {d === "United States of America" ? "United States": d }
                                 </div>
                         ))
                     }

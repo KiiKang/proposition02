@@ -1,6 +1,8 @@
 .image-card {
     z-index: 999;
-    width: 600px;
+    width: 25%;
+    height: 75%;
+    overflow-y: scroll;
     border: #9a9a9a solid 1px;
     background: white;
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.07),
