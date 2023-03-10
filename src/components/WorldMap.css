@@ -1,25 +1,72 @@
-.map-container {
+
+#world-map {
     position: absolute;
     top: 0;
-}
-.world-map {
+    background: #f6f3f1;
     /*margin-left: -10px;*/
 }
-.country-label{
-    position: absolute;
-    top: 0;
-    left: 0;
-    background: #111111;
-    transform: translate(-50%, -50%);
+#country-labels > rect{
+    fill: #ffffff;
+    stroke: #9b9690;
+    stroke-width: 0.5px;
+    rx: 50%;
+    cursor: pointer;
 }
 
 .graticule {
-    stroke-width: 0.5px;
+    /*stroke-width: 0.5px;*/
     stroke: #dbdbdb;
 }
 
 .country-path {
-    stroke-width: 1px;
-    stroke: #dbdbdb;
-    fill: #f4f4f4;
+    /*stroke-width: 0.5px;*/
+    stroke: #ccc6c6;
+    fill: #eeebe8;
 }
+.filters {
+    top: 10rem;
+    text-shadow:
+            -2px -2px 0 white,
+            0   -2px 0 white,
+            2px -2px 0 white,
+            2px  0   0 white,
+            2px  2px 0 white,
+            0    2px 0 white,
+            -2px  2px 0 white,
+            -2px  0   0 white;
+    position: absolute;
+}
+
+.filter-country {
+    font-size: 1.2rem;
+    margin: 1.8rem;
+    padding: 0.8rem;
+    border: #111111 0.5px solid;
+    background: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+
+svg {
+    cursor: url('https://www.google.com/intl/en_ALL/mapfiles/openhand.cur'), all-scroll;
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+    cursor: -o-grab;
+    cursor: -ms-grab;
+    cursor: grab;
+}
+
+/*@media (prefers-color-scheme: dark) {*/
+/*    .graticule {*/
+/*        !*stroke-width: 0.5px;*!*/
+/*        stroke: #626262;*/
+/*    }*/
+/*    .country-path {*/
+/*        !*stroke-width: 0.5px;*!*/
+/*        stroke: #484848;*/
+/*        fill: #363636;*/
+/*    }*/
+
+/*}*/

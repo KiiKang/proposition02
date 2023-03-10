@@ -2,34 +2,46 @@
 // https://geojson-maps.ash.ms/
 // https://observablehq.com/@d3/world-map
 // https://www.canva.com/colors/color-wheel/
-import { geoPath, geoMercator, geoGraticule10 } from 'd3';
+import * as d3 from "d3";
 import { useWindowSize } from 'codefee-kit';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from "axios";
+import React from 'react';
 
 import './WorldMap.css'
+import ImagePreview from "./ImagePreview";
+import {hover} from "@testing-library/user-event/dist/hover";
 
 const WorldMap = () => {
-
+    /** data states **/
     const [mapData, setMapData] = useState(null);
+    const [countryData, setCountryData] = useState(null);
     const [imageData, setImageData] = useState(null);
+    const [hoveredCountry, setHoveredCountry] = useState(null);
+    const [selectedRegion, setSelectedRegion] = useState(null);
+    const [selectedImagePoints, setSelectedImagePoints] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    /** zoom states **/
+    const [zoomParams, setZoomParams] = useState({"k": 1, "x": 0, "y": 0})
+    const svgRef = useRef(null);
+    const labelActiveRef = useRef([]);
+    const labelNonActiveRef = useRef([]);
 
     const { width, height } = useWindowSize();
-    const projection = geoMercator()
-        .precision(100);
-    const path = geoPath().projection(projection)
+    const projection = d3.geoMercator()
+        .precision(0.1)
+        .rotate([10,0]);
+    const path = d3.geoPath().projection(projection)
         .pointRadius(5);
-
-    const graticule = geoGraticule10();
+    const graticule = d3.geoGraticule10();
 
     const csvToArray = string => {
-        const csvHeader = string.slice(0, string.indexOf("\n")).split(",");
+        const csvHeader = string.slice(0, string.indexOf("\n")).split("\t");
         const csvRows = string.slice(string.indexOf("\n") + 1).split("\n");
 
         const array = csvRows.map(i => {
-            const values = i.split(",");
+            const values = i.split("\t");
             return csvHeader.reduce((object, header, index) => {
                 object[header] = values[index];
                 return object;
@@ -42,91 +54,193 @@ const WorldMap = () => {
         const getData = async () => {
             try {
                 let response
-                response = await axios.get('./geo50.json');
+                response = await axios.get('./geo110.json');
                 setMapData(response.data);
-                response = await axios.get('./images.csv');
+                response = await axios.get('./countries.geojson');
+                setCountryData(response.data);
+                response = await axios.get('./images.tsv');
                 csvToArray(response.data)
                 setError(null);
             } catch (err) {
                 setError(err.message);
                 setMapData(null);
+                setCountryData(null);
                 setImageData(null);
             } finally {
                 setLoading(false);
             }
         };
         getData();
+
     }, []);
 
-    let countries = []
-    const pointSize = 6
+    useEffect(() => {
+        const zoom = d3.zoom()
+            .scaleExtent([1, 10])
+        zoom
+            .on("zoom", (event) => {
+                const {x, y, k} = event.transform;
+                setZoomParams({"k": k, "x": x, "y": y})
+            });
+        // d3.select(svgRef.current).call(zoom);
+    }, [loading]);
 
+    useEffect(() => {
+        if (!loading) {
+            if (hoveredCountry) {
+                labelActiveRef.current.forEach(d =>
+                    d3.select(d)
+                        .style('fill', '#4b4a49')
+                        .style('stroke', '#ffffff')
+                )
+            }
+            labelNonActiveRef.current.forEach(d =>
+                d3.select(d)
+                    .style('fill', '#ffffff')
+                    .style('stroke', '#9b9690')
+            )
+            window.addEventListener("keydown", resetSelectedCountry)
+        }
+    }, [loading, labelActiveRef, labelNonActiveRef, hoveredCountry]);
+
+    let countries = [];
+    let imagePoints = [];
+    const pointSize = 18;
+
+    const onLabelClicked = (e) => {
+        e.stopPropagation();
+        setHoveredCountry(e.target.id.split("-")[0]);
+        setSelectedRegion(e.target.id.split("-")[1]);
+        setSelectedImagePoints(imagePoints.filter(d => d.region === e.target.id.split("-")[1])[0]);
+    }
+
+    const toggleSelectedCountry = (e) => {
+        if (hoveredCountry) setHoveredCountry(null)
+        else setHoveredCountry(e.target.id.split("-")[2]);
+    }
+
+    const resetSelectedCountry = (e) => {
+        if (e.key){
+            if (e.key !== 'Escape') return
+        }
+        setHoveredCountry(null);
+        setSelectedImagePoints(null);
+    }
 
     if(!loading) {
-        projection.fitWidth(width, mapData)
-            .translate([width*0.5, height *0.65])
-        // projection.fitExtent([[0,0], [width, height]], data.features);
+        if (width < height * 1.5) projection.fitHeight(height, mapData)
+        else projection.fitWidth(width, mapData)
+        projection.translate([width*0.5, height *0.65])
 
-        mapData.features.forEach(d => {
-            countries.push({
-                "country": d.properties.admin,
-                "coor": [d.properties.label_x, d.properties.label_y],
-                "images": []
-            })
-        })
-        countries.forEach(d => {
-            imageData.forEach(i => {
-                if (i.country_db === d.country) {
-                    d.images.push({
-                        "file_name": i.file_name,
-                        "year": d.year,
-                        "caption": d.caption,
-                        "footnote": d.footnote
-                    })
+        imageData.forEach(i => {
+            const countryMatched = countryData.features.filter(d => d.properties.COUNTRY === i.country_db );
+            if (i.file_name != false && countryMatched != false) {
+                let imagePoint = imagePoints.filter(d => d.region === i.region);
+                if (!countries.includes(countryMatched[0].properties.COUNTRY)){
+                    countries.push(countryMatched[0].properties.COUNTRY);
                 }
-            })
+                if (imagePoint.length === 0) {
+                    const coor = (i.longitude && i.latitude) ?
+                        [parseFloat(i.longitude), parseFloat(i.latitude)] :
+                        [countryMatched[0].geometry.coordinates[0], countryMatched[0].geometry.coordinates[1]]
+                    imagePoints.push({
+                        "coor": coor,
+                        "region": i.region ? i.region : i.country_db,
+                        "country": i.country_db,
+                        "country_custom": i.country,
+                        "images": [{
+                            "file_name": i.file_name,
+                            "year": i.year,
+                            "caption": i.caption,
+                            "footnote": i.footnote
+                        }],
+                    })
+                } else {
+                    let images = imagePoint[0].images;
+                    images.push({
+                        "file_name": i.file_name,
+                        "year": i.year,
+                        "caption": i.caption,
+                        "footnote": i.footnote
+                    });
+                    imagePoint.images = images;
+                }
+            }
         })
-        countries = countries.filter(d => d.images != false)
-
-        console.log(countries)
         return (
             <div className='map-container'>
-                <svg className='world-map'
-                width={ width } height={ height }>
-                    <g className='graticules'>
+                <svg id='world-map' ref={ svgRef }
+                     width={ width } height={ height }
+                     onClick={resetSelectedCountry}>
+                    <g className='map-component' id='graticules'
+                       transform={'translate(' + zoomParams.x + ' ' + zoomParams.y + ') scale(' + zoomParams.k + ')'}>
                         {
                             <path className='graticule'
                                 d={path(graticule)}
+                                strokeWidth={0.2/zoomParams.k + 'px'}
                             />
                         }
                     </g>
-                    <g className='country-paths'>
+                    <g className='map-component' id='country-paths'
+                       transform={'translate(' + zoomParams.x + ' ' + zoomParams.y + ') scale(' + zoomParams.k + ')'}>
+                    >
                         {
                             mapData.features.map(d => (
                                 <path className='country-path'
-                                    key={d.properties.admin}
-                                    id={d.properties.admin}
-                                    d={path(d.geometry)}
+                                      key={d.properties.admin}
+                                      id={d.properties.admin}
+                                      d={path(d.geometry)}
+                                      strokeWidth={0.3/zoomParams.k + 'px'}
+                                />
+                            ))
+                        }
+                    </g>
+                    <g className='map-component' id='country-labels'
+                       transform={'translate(' + zoomParams.x + ' ' + zoomParams.y + ') scale(' + zoomParams.k + ')'}>
+                        {
+                            imagePoints.map((d, i) => (
+                                <rect ref={ label => d.country === hoveredCountry?
+                                    labelActiveRef.current[i] = label : labelNonActiveRef.current[i] = label }
+                                      className={d.country + '-label'}
+                                      key={d.country + '-' + d.region + '-label' + i}
+                                      id={d.country + '-' + d.region + '-label' + i}
+                                      width={ pointSize/zoomParams.k + 'px'}
+                                      height={ pointSize/zoomParams.k + 'px'}
+                                      x={projection(d.coor)[0] -pointSize/zoomParams.k/2+ 'px'}
+                                      y={projection(d.coor)[1] -pointSize/zoomParams.k/2+ 'px'}
+                                      onClick={onLabelClicked}
                                 />
                             ))
                         }
                     </g>
                 </svg>
-                <div className='country-labels'>
-                    {
-                        countries.map(d => (
-                            <div className='country-label'
-                                 key={d.country + '-label'}
-                                 id={d.country + '-label'}
-                                 style={{
-                                     width: pointSize + 'px',
-                                     height: pointSize + 'px',
-                                     left: projection(d.coor)[0] + 'px',
-                                     top: projection(d.coor)[1] + 'px',
-                                 }}
+                {
+                    selectedImagePoints ?
+                        selectedImagePoints.images.map( (image, i) => (
+                            <ImagePreview key={'image-card-'+ selectedImagePoints.country + '-' +i}
+                                          image={image}
+                                          index={i}
+                                          imageCount={selectedImagePoints.images.length}
+                                          country={selectedImagePoints.country}
+                                          anchorPt={projection(selectedImagePoints.coor)}
+                                          zoomParams={zoomParams}
                             />
+                        )
+                    ) : null
+                }
+                <div className='filters'>
+                    {
+                        countries.map(d =>(
+                                <div className='filter-country'
+                                     key={'filter-country-' + d}
+                                     id={'filter-country-' + d}
+                                     onMouseOver={toggleSelectedCountry}
+                                     onMouseLeave={toggleSelectedCountry}
+                                     style={{opacity: hoveredCountry == null ? 1: hoveredCountry === d ? 1: 0.2}}
+                                >
+                                    {d}
+                                </div>
                         ))
-
                     }
                 </div>
             </div>

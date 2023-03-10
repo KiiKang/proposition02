@@ -1,0 +1,16 @@
+.image-card {
+    z-index: 999;
+    width: 600px;
+    border: #9a9a9a solid 1px;
+    background: white;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.07),
+    2px 2px 20px rgba(0, 0, 0, 0.10),
+    4px 4px 27px rgba(0, 0, 0, 0.12),
+    8px 8px 38px rgba(0, 0, 0, 0.15),
+    21px 21px 75px rgba(0, 0, 0, 0.22);
+    padding: 50px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}

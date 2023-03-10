@@ -5,9 +5,11 @@ function App() {
   return (
       <div>
           <WorldMap/>
+          <div className={"title"}>
           <h2>
               Proposition02:
           </h2>
+          </div>
       </div>
   );
 }
