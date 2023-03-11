@@ -113,9 +113,8 @@ const WorldMap = () => {
         setSelectedImagePoints(imagePoints.filter(d => d.region === e.target.id.split("-")[1])[0]);
     }
 
-    const toggleSelectedCountry = (e) => {
-        if (hoveredCountry) setHoveredCountry(null)
-        else setHoveredCountry(e.target.id.split("-")[2]);
+    const setSelectedCountry = (e) => {
+        setHoveredCountry(e.target.id.split("-")[2]);
     }
 
     const resetSelectedCountry = (e) => {
@@ -233,8 +232,8 @@ const WorldMap = () => {
                                 <div className='filter-country'
                                      key={'filter-country-' + d}
                                      id={'filter-country-' + d}
-                                     onMouseOver={toggleSelectedCountry}
-                                     onMouseLeave={toggleSelectedCountry}
+                                     onMouseOver={setSelectedCountry}
+                                     onMouseLeave={resetSelectedCountry}
                                      style={{
                                          opacity: hoveredCountry == null ? 1: hoveredCountry === d ? 1: 0.2,
                                          // height: (width - 150)/countries.length - 15
