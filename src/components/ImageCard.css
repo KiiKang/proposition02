@@ -1,7 +1,8 @@
 .image-card {
     z-index: 999;
     width: 25%;
-    height: 75%;
+    min-width: 400px;
+    max-height: 75%;
     overflow-y: scroll;
     border: #9a9a9a solid 1px;
     background: white;
@@ -15,4 +16,13 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+}
+
+.image-card::-webkit-scrollbar {
+    display: block;
+    width: 5px;
+}
+
+.image-card::-webkit-scrollbar-thumb {
+    background: #414141;
 }

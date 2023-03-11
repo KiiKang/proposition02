@@ -30,7 +30,7 @@ const WorldMap = () => {
     const { width, height } = useWindowSize();
     const projection = d3.geoMercator()
         .precision(0.1)
-        .rotate([10,0]);
+        // .rotate([10,0]);
     const path = d3.geoPath().projection(projection)
         .pointRadius(5);
     const graticule = d3.geoGraticule10();
