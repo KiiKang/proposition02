@@ -1,9 +1,17 @@
 .image-preview {
     position: absolute;
-    width: 240px;
-    border: #9a9a9a solid 0.5px;
-    background: white;
-    padding: 8px;
+    width: 200px;
+    /*border: #9a9a9a solid 0.5px;*/
+    /*background: white;*/
     transform: translate(-50%, -50%);
     cursor: pointer;
+    overflow: hidden;
+    opacity: 0.8;
+}
+.image-preview > img {
+    transform: scale(105%);
+    filter: grayscale(100%);
+}
+.image-preview:hover > img {
+    filter: grayscale(0%);
 }

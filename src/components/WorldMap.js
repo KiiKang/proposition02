@@ -10,6 +10,7 @@ import React from 'react';
 
 import './WorldMap.css'
 import ImagePreview from "./ImagePreview";
+const clone = require('rfdc')()
 
 const WorldMap = () => {
     /** data states **/
@@ -21,18 +22,23 @@ const WorldMap = () => {
     const [selectedImagePoints, setSelectedImagePoints] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    /** zoom states **/
     const [zoomParams, setZoomParams] = useState({"k": 1, "x": 0, "y": 0})
+    const [patternSvg, setPatternSvg] = useState(null);
+    /** refs **/
     const svgRef = useRef(null);
-    const labelActiveRef = useRef([]);
-    const labelNonActiveRef = useRef([]);
+    const labelsRef = useRef([]);
+    const filtersRef = useRef([]);
+    const connections = useRef(null);
 
     const { width, height } = useWindowSize();
     const projection = d3.geoMercator()
-        .precision(0.1)
-        // .rotate([10,0]);
+        .precision(1)
+        .rotate([10, 0])
+        .translate([-512,-52]);
+
     const path = d3.geoPath().projection(projection)
-        .pointRadius(5);
+        .pointRadius(5)
+
     const graticule = d3.geoGraticule10();
 
     const csvToArray = string => {
@@ -59,6 +65,8 @@ const WorldMap = () => {
                 setCountryData(response.data);
                 response = await axios.get('./images.tsv');
                 csvToArray(response.data)
+                response = await axios.get('./pattern/diagonal-stripe-1.svg')
+                setPatternSvg(response.data)
                 setError(null);
             } catch (err) {
                 setError(err.message);
@@ -86,25 +94,43 @@ const WorldMap = () => {
 
     useEffect(() => {
         if (!loading) {
-            if (hoveredCountry) {
-                labelActiveRef.current.forEach(d =>
-                    d3.select(d)
-                        .style('fill', '#4b4a49')
-                        .style('stroke', '#ffffff')
-                )
-            }
-            labelNonActiveRef.current.forEach(d =>
-                d3.select(d)
-                    .style('fill', '#ffffff')
-                    .style('stroke', '#9b9690')
-            )
             window.addEventListener("keydown", resetSelectedCountry)
+            console.log(patternSvg);
+            // d3.select(connections.current)
+            //     .remove()
+            // labelsRef.current.forEach(l => {
+            //     filtersRef.current.forEach(f => {
+            //         if (l.country === f.country) {
+            //             let rectStart = f.getBoundingClientRect()
+            //             let rectEnd = l.getBoundingClientRect()
+            //             let path = d3.path()
+            //             let [x0, y0, x1, y1] = [
+            //                 (rectStart.left + rectStart.right)/2, rectStart.bottom,
+            //                 (rectEnd.left + rectEnd.right)/2, rectEnd.top
+            //             ]
+            //             let [cx0, cy0] = [x0, y1-100]
+            //             let [cx1, cy1] = [x1, y0+100]
+            //             path.moveTo(x0, y0)
+            //             path.bezierCurveTo(cx0, cy0, cx1, cy1, x1, y1)
+            //             path.lineTo(x1, y1)
+            //             d3.select(connections.current)
+            //                 .append("path")
+            //                 .attr("d", path)
+            //                 .attr("class", "connections")
+            //                 .attr("fill", "none")
+            //                 .attr("stroke", "black")
+            //                 .attr("opacity", 0.2)
+            //                 .attr("stroke-width", '0.5px')
+            //                 .attr("transform", 'translate(' + zoomParams.x + ' ' + zoomParams.y + ') scale(' + zoomParams.k + ')')
+            //         }
+            //     })
+            // })
         }
-    }, [loading, labelActiveRef, labelNonActiveRef, hoveredCountry]);
+    }, [loading, labelsRef, filtersRef, zoomParams, width, height]);
 
     let countries = [];
     let imagePoints = [];
-    const pointSize = 18;
+    const pointSize = 15;
 
     const onLabelClicked = (e) => {
         e.stopPropagation();
@@ -129,15 +155,24 @@ const WorldMap = () => {
         if (width < height * 1.5) projection.fitHeight(height, mapData)
         else projection.fitWidth(width, mapData)
         projection.translate([width*0.5, height *0.65])
-
         imageData.forEach(i => {
             const countryMatched = countryData.features.filter(d => d.properties.COUNTRY === i.country_db );
             if (i.file_name != false && countryMatched != false) {
-                let imagePoint = imagePoints.filter(d => d.region === i.region);
+                let regions = [...imagePoints].map(p => (p.region));
                 if (!countries.includes(countryMatched[0].properties.COUNTRY)){
                     countries.push(countryMatched[0].properties.COUNTRY);
                 }
-                if (imagePoint.length === 0) {
+                if (regions.includes(i.region)) {
+                    let idx = imagePoints.findIndex(d => d.region === i.region)
+                    let imagePoint = clone(imagePoints[idx])
+                    imagePoint.images.push({
+                            "file_name": i.file_name,
+                            "year": i.year,
+                            "caption": i.caption,
+                            "footnote": i.footnote
+                        });
+                    imagePoints[idx] = imagePoint
+                } else {
                     const coor = (i.longitude && i.latitude) ?
                         [parseFloat(i.longitude), parseFloat(i.latitude)] :
                         [countryMatched[0].geometry.coordinates[0], countryMatched[0].geometry.coordinates[1]]
@@ -153,20 +188,22 @@ const WorldMap = () => {
                             "footnote": i.footnote
                         }],
                     })
-                } else {
-                    let images = imagePoint[0].images;
-                    images.push({
-                        "file_name": i.file_name,
-                        "year": i.year,
-                        "caption": i.caption,
-                        "footnote": i.footnote
-                    });
-                    imagePoint.images = images;
+
                 }
             }
         })
+        console.log(imagePoints)
         return (
             <div className='map-container'>
+                <svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1">
+                    <defs>
+                        <pattern id="diagonal-stripe-1" patternUnits="userSpaceOnUse" width="10" height="10" patternTransform='scale(0.5)'>
+                            <image xlinkHref="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgICAgICAgICAgTTAsMTAgbDEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJyBzdHJva2Utd2lkdGg9JzEnLz4KPC9zdmc+Cg==" x="0" y="0" width="10" height="10">
+                            </image>
+                        </pattern>
+                    </defs>
+                </svg>
+
                 <svg id='world-map' ref={ svgRef }
                      width={ width } height={ height }
                      onClick={resetSelectedCountry}>
@@ -176,6 +213,7 @@ const WorldMap = () => {
                             <path className='graticule'
                                 d={path(graticule)}
                                 strokeWidth={0.2/zoomParams.k + 'px'}
+                                  fill={'none'}
                             />
                         }
                     </g>
@@ -188,7 +226,9 @@ const WorldMap = () => {
                                       key={d.properties.admin}
                                       id={d.properties.admin}
                                       d={path(d.geometry)}
-                                      strokeWidth={0.3/zoomParams.k + 'px'}
+                                      stroke={hoveredCountry === d.properties.admin ? 'black' : '#ccc6c6'}
+                                      strokeWidth={hoveredCountry === d.properties.admin ? 1/zoomParams.k + 'px': .3/zoomParams.k + 'px'}
+                                      style={{fill: hoveredCountry === d.properties.admin ? "url(#diagonal-stripe-1)": '#ffffff'}}
                                 />
                             ))
                         }
@@ -197,8 +237,7 @@ const WorldMap = () => {
                        transform={'translate(' + zoomParams.x + ' ' + zoomParams.y + ') scale(' + zoomParams.k + ')'}>
                         {
                             imagePoints.map((d, i) => (
-                                <rect ref={ label => d.country === hoveredCountry?
-                                    labelActiveRef.current[i] = label : labelNonActiveRef.current[i] = label }
+                                <rect ref={ label => labelsRef.current[i] = label }
                                       className={d.country + '-label'}
                                       key={d.country + '-' + d.region + '-label' + i}
                                       id={d.country + '-' + d.region + '-label' + i}
@@ -207,6 +246,10 @@ const WorldMap = () => {
                                       x={projection(d.coor)[0] -pointSize/zoomParams.k/2+ 'px'}
                                       y={projection(d.coor)[1] -pointSize/zoomParams.k/2+ 'px'}
                                       onClick={onLabelClicked}
+                                      style = {{
+                                          fill: d.country === hoveredCountry? '#4b4a49': '#ffffff',
+                                          stroke:  d.country === hoveredCountry? '#ffffff' :'#9b9690'
+                                      }}
                                 />
                             ))
                         }
@@ -228,22 +271,25 @@ const WorldMap = () => {
                 }
                 <div className='filters' id='filters-country'>
                     {
-                        countries.map(d =>(
-                                <div className='filter-country'
+                        countries.map((d, i) => {
+                            return (
+                                <div
+                                    ref={ f => filtersRef.current[i] = f }
+                                     className='filter-country'
                                      key={'filter-country-' + d}
                                      id={'filter-country-' + d}
                                      onMouseOver={setSelectedCountry}
                                      onMouseLeave={resetSelectedCountry}
                                      style={{
                                          opacity: hoveredCountry == null ? 1: hoveredCountry === d ? 1: 0.2,
-                                         // height: (width - 150)/countries.length - 15
                                 }}
                                 >
                                     {d === "United States of America" ? "United States": d }
                                 </div>
-                        ))
+                        )})
                     }
                 </div>
+                <svg ref={connections} className='connections-svg'/>
             </div>
         )
     }

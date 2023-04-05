@@ -26,14 +26,23 @@ const ImageCard = (props) => {
     console.log(props.data.footnote)
     if (!loading) {
         return (
-            <div className='image-card'>
-                {
-                    <img src={'./images/' + props.data.file_name }
-                         key={props.data.file_name} alt=''/>
-                }
-                <h4>Year: {props.data.year}</h4>
-                <p className='subtitle'>{props.data.caption}</p>
-                <p className='blockquote'>{props.data.footnote}</p>
+            <div className='image-card-container'>
+                <div className='overlay'>
+                <div className='image-card'>
+                    <div className='image-container'>
+                        {
+                        <img src={'./images/' + props.data.file_name }
+                             key={props.data.file_name} alt=''/>
+                        }
+                    </div>
+                    <div className='image-description'>
+                        {/*<h4>Year: {props.data.year}</h4>*/}
+                        <p className='subtitle'>{props.data.caption}</p>
+                        <p className='subtitle'>{props.data.footnote}</p>
+                    </div>
+
+                </div>
+                </div>
             </div>
         )
     }

@@ -34,7 +34,7 @@ const ImagePreview = (props) => {
 
     if (!loading) {
         return (
-            <div className='image-container'>
+            <div className='image-preview-container'>
                 <div className='image-preview' onClick={showImageCard}
                 style={{
                          left: props.anchorPt[0]
