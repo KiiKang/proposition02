@@ -1,5 +1,5 @@
 .image-preview {
-    position: absolute;
+    position: relative;
     width: 200px;
     /*border: #9a9a9a solid 0.5px;*/
     /*background: white;*/

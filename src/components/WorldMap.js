@@ -33,7 +33,7 @@ const WorldMap = () => {
     const { width, height } = useWindowSize();
     const projection = d3.geoMercator()
         .precision(1)
-        .rotate([10, 0])
+        .rotate([-150, 0])
         .translate([-512,-52]);
 
     const path = d3.geoPath().projection(projection)
@@ -52,7 +52,7 @@ const WorldMap = () => {
                 return object;
             }, {});
         });
-        setImageData(array);
+        return array;
     };
 
     useEffect(() => {
@@ -64,7 +64,7 @@ const WorldMap = () => {
                 response = await axios.get('./countries.geojson');
                 setCountryData(response.data);
                 response = await axios.get('./images.tsv');
-                csvToArray(response.data)
+                setImageData(csvToArray(response.data));
                 response = await axios.get('./pattern/diagonal-stripe-1.svg')
                 setPatternSvg(response.data)
                 setError(null);
@@ -130,7 +130,7 @@ const WorldMap = () => {
 
     let countries = [];
     let imagePoints = [];
-    const pointSize = 15;
+    const pointSize = 14;
 
     const onLabelClicked = (e) => {
         e.stopPropagation();
@@ -155,13 +155,20 @@ const WorldMap = () => {
         if (width < height * 1.5) projection.fitHeight(height, mapData)
         else projection.fitWidth(width, mapData)
         projection.translate([width*0.5, height *0.65])
+
+        imageData.forEach(i => {
+            if (i.country_db) countries.push(i.country_db)
+        })
+        countries = [...new Set(countries)]
+        console.log(countries)
+
         imageData.forEach(i => {
             const countryMatched = countryData.features.filter(d => d.properties.COUNTRY === i.country_db );
             if (i.file_name != false && countryMatched != false) {
                 let regions = [...imagePoints].map(p => (p.region));
-                if (!countries.includes(countryMatched[0].properties.COUNTRY)){
-                    countries.push(countryMatched[0].properties.COUNTRY);
-                }
+                // if (!countries.includes(countryMatched[0].properties.COUNTRY)){
+                //     countries.push(countryMatched[0].properties.COUNTRY);
+                // }
                 if (regions.includes(i.region)) {
                     let idx = imagePoints.findIndex(d => d.region === i.region)
                     let imagePoint = clone(imagePoints[idx])
@@ -192,12 +199,11 @@ const WorldMap = () => {
                 }
             }
         })
-        console.log(imagePoints)
         return (
             <div className='map-container'>
                 <svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1">
                     <defs>
-                        <pattern id="diagonal-stripe-1" patternUnits="userSpaceOnUse" width="10" height="10" patternTransform='scale(0.5)'>
+                        <pattern id="diagonal-stripe-1" patternUnits="userSpaceOnUse" width="10" height="10" patternTransform='scale(0.8)'>
                             <image xlinkHref="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgICAgICAgICAgTTAsMTAgbDEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJyBzdHJva2Utd2lkdGg9JzEnLz4KPC9zdmc+Cg==" x="0" y="0" width="10" height="10">
                             </image>
                         </pattern>
@@ -226,7 +232,6 @@ const WorldMap = () => {
                                       key={d.properties.admin}
                                       id={d.properties.admin}
                                       d={path(d.geometry)}
-                                      stroke={hoveredCountry === d.properties.admin ? 'black' : '#ccc6c6'}
                                       strokeWidth={hoveredCountry === d.properties.admin ? 1/zoomParams.k + 'px': .3/zoomParams.k + 'px'}
                                       style={{fill: hoveredCountry === d.properties.admin ? "url(#diagonal-stripe-1)": '#ffffff'}}
                                 />
@@ -247,8 +252,8 @@ const WorldMap = () => {
                                       y={projection(d.coor)[1] -pointSize/zoomParams.k/2+ 'px'}
                                       onClick={onLabelClicked}
                                       style = {{
-                                          fill: d.country === hoveredCountry? '#4b4a49': '#ffffff',
-                                          stroke:  d.country === hoveredCountry? '#ffffff' :'#9b9690'
+                                          fill: d.country === hoveredCountry? '#252323': '#8c8484',
+                                          filter: d.country === hoveredCountry? 'blur(1px)': 'blur(5px)'
                                       }}
                                 />
                             ))
@@ -269,13 +274,13 @@ const WorldMap = () => {
                         )
                     ) : null
                 }
-                <div className='filters' id='filters-country'>
+                <div className='WorldMap-Filters' id='Filters-Country'>
                     {
                         countries.map((d, i) => {
                             return (
                                 <div
                                     ref={ f => filtersRef.current[i] = f }
-                                     className='filter-country'
+                                     className='WorldMap-Filter-Country button-round-S'
                                      key={'filter-country-' + d}
                                      id={'filter-country-' + d}
                                      onMouseOver={setSelectedCountry}

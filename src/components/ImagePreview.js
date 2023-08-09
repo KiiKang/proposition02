@@ -4,18 +4,18 @@ import axios from "axios";
 import React from 'react';
 
 import './ImagePreview.css'
-import imageCard from "./ImageCard";
-import ImageCard from "./ImageCard";
+import {useNavigate} from "react-router-dom";
 
 const ImagePreview = (props) => {
     const [loading, setLoading] = useState(true);
     const [isShowCard, setIsShowCard] = useState(false);
     const [error, setError] = useState(null);
+    let navigate = useNavigate();
 
     useEffect(() => {
         const getImage = async () => {
             try {
-                await axios.get('./images/' + props.image.file_name);
+                await axios.get('./images/gl/' + props.image.file_name);
                 setError(null);
                 setTimeout(200);
             } catch (err) {
@@ -32,17 +32,22 @@ const ImagePreview = (props) => {
         setIsShowCard(true);
     }
 
+    function removeExtension(filename) {
+        return filename.substring(0, filename.lastIndexOf('.')) || filename;
+    }
+
+    const goToImageCard = (e) => {
+        e.preventDefault();
+        navigate("/image/" + removeExtension(props.image.file_name))
+    }
+
     if (!loading) {
         return (
             <div className='image-preview-container'>
-                <div className='image-preview' onClick={showImageCard}
+                <div className='image-preview' onClick={goToImageCard}
                 style={{
-                         left: props.anchorPt[0]
-                             // - (props.zoomParams.x - props.anchorPt[0]) * props.zoomParams.k
-                             + 200*props.zoomParams.k * Math.cos(props.index * 2*Math.PI/props.imageCount),
-                         top: props.anchorPt[1]
-                             // - (props.zoomParams.y - props.anchorPt[1]) * props.zoomParams.k
-                             + 200*props.zoomParams.k * Math.sin(props.index * 2*Math.PI/props.imageCount)
+                         left: Math.cos(props.index * 2*Math.PI/props.imageCount),
+                         top: Math.sin(props.index * 2*Math.PI/props.imageCount)
                 }}>
                     {
                         <img src={'./images/' + props.image.file_name }
@@ -51,16 +56,6 @@ const ImagePreview = (props) => {
                     {/*<h4>{props.image.year}</h4>*/}
                     {/*<p>{props.image.caption}</p>*/}
                 </div>
-                {isShowCard ?
-                    <ImageCard data={{
-                        "file_name": props.image.file_name,
-                        "year": props.image.year,
-                        "caption": props.image.caption,
-                        "footnote": props.image.footnote,
-                    }}
-                    /> : null
-                }
-
             </div>
         )
     }

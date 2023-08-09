@@ -1,64 +1,60 @@
-.overlay {
-    width: 100vw;
-    height: 100vh;
-    backdrop-filter: blur(8px);
-    position: relative;
-    top: 0;
-    margin: 0;
-    z-index: 50;
-    pointer-events: none;
-}
-
-.image-card-container {
-    padding: 0;
-    position: fixed;
-    top: 0;
-    margin: 0;
-    z-index: 99;
-}
-
 .image-card {
     position: absolute;
-    left: 50%;
+    /*left: 50%;*/
     top: 50%;
     display: inline-flex;
     /*border: #9a9a9a solid 1px;*/
-    transform: translate(calc(-50% + 75px), -50%);
-    /*width: 25%;*/
-    /*width: 600px;*/
-    /*border-radius: 10px;*/
-    z-index: 99;
+    /*transform: translate(calc(-50% + 75px), -50%);*/
+    /*margin-right: -150px;*/
+    transform: translate(-50%, -50%);
+    z-index: 999;
+    transition: 300ms ease-in-out;
+    pointer-events: none;
 }
+
 .image-container {
-    /*background: rgba(255, 255, 255, 0.49);*/
+    position: relative;
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.07),
-    2px 2px 20px rgba(0, 0, 0, 0.10),
-    4px 4px 27px rgba(0, 0, 0, 0.12),
-    8px 8px 38px rgba(0, 0, 0, 0.15),
-    21px 21px 75px rgba(0, 0, 0, 0.22);
-
+    box-shadow: var(--shadow);
+    pointer-events: auto;
+    /*object-fit: cover;*/
+    /*max-height: 800px;*/
 }
-.image-description {
-    width: 150px;
+
+.image-card-description {
+    width: 100px;
     padding: 10px;
     margin-left: 10px;
-    /*min-width: 400px;*/
-    /*background: rgba(255, 255, 255, 0.49);*/
-    /*border-radius: 10px;*/
     max-height: 100%;
-    /*overflow-y: scroll;*/
+    text-shadow: var(--text-outline-S);
+    pointer-events: none;
 }
 
-/*.image-card::-webkit-scrollbar {*/
-/*    display: block;*/
-/*    width: 5px;*/
-/*}*/
-
 .image-container > img {
-    transform: scale(105%)
+    transform: scale(105%);
+    box-shadow: var(--shadow);
+    /*min-width: 100%;*/
+    /*min-height: 100%;*/
 }
 .image-card-container::-webkit-scrollbar-thumb {
     background: #414141;
+}
+
+.image-anno {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    /*background: rgba(57, 109, 255, 0.3);*/
+}
+
+.image-anno-content {
+    position: fixed;
+    width: 80px;
+    background: rgba(255, 255, 255, 0.56);
+    border-radius: 5px;
+    pointer-events: auto;
+    transform: translate(-50%, -50%);
 }

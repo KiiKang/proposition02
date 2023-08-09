@@ -4,17 +4,34 @@
     top: 0;
     background: linear-gradient(rgba(248, 246, 245, 0.66), #cecac7, #f8f6f5);
     /*background: linear-gradient(#6e6d6c, #363432, #6e6d6c);*/
-
     margin-left: -10px;
 }
 
-#country-labels > rect{
-    fill: #ffffff;
-    stroke: #9b9690;
-    stroke-width: 0.5px;
-    rx: 50%;
-    cursor: pointer;
+.map-container{
+    width: 100vw;
+    height: 100vh;
+    position: relative;
 }
+
+.map-container > *{
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+}
+.mapboxgl-control-container {
+    visibility: hidden;
+}
+/*.country-markers{*/
+/*    position: absolute;*/
+/*    fill: #3d3a3a;*/
+/*    width: 100px;*/
+/*    height: 100px;*/
+/*    stroke: None;*/
+/*    transition: filter, fill 500ms;*/
+/*    rx: 50%;*/
+/*    cursor: pointer;*/
+/*    z-index:99;*/
+/*}*/
 
 .graticule {
     /*stroke-width: 0.5px;*/
@@ -22,40 +39,30 @@
 }
 
 .country-path {
+    stroke: none;
     /*stroke-width: 0.5px;*/
     /*stroke: #ccc6c6;*/
     /*fill: #eeebe8;*/
 }
-#filters-country {
-    text-shadow:
-            -2px -2px 0 white,
-            0   -2px 0 white,
-            2px -2px 0 white,
-            2px  0   0 white,
-            2px  2px 0 white,
-            0    2px 0 white,
-            -2px  2px 0 white,
-            -2px  0   0 white;
-    position: absolute;
-    width: calc(100% - 16px);
-    margin: 0 auto;
-}
+/*#filters-country {*/
+/*    position: absolute;*/
+/*    width: calc(100% - 16px);*/
+/*    margin: 0 auto;*/
+/*}*/
 
-.filters {
+.WorldMap-Filters {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100% - 16px);
     display: inline-flex;
     justify-content: space-between;
 }
 
-.filter-country {
-    height: fit-content;
-    font-size: 1.2rem;
-    padding: 8px;
-    margin: 5px;
-    border: #111111 0.5px solid;
-    background: rgb(255, 255, 255);
-    border-radius: 50%;
-    cursor: pointer;
+.WorldMap-Filter-Country {
+    text-shadow: var(--text-outline-L);
     writing-mode: vertical-lr;
+    /*font-size: var(--s);*/
 }
 
 .connections > * {
@@ -68,24 +75,86 @@
     pointer-events: none;
 }
 
-svg {
-    cursor: url('https://www.google.com/intl/en_ALL/mapfiles/openhand.cur'), all-scroll;
-    cursor: -webkit-grab;
-    cursor: -moz-grab;
-    cursor: -o-grab;
-    cursor: -ms-grab;
-    cursor: grab;
+/*svg {*/
+/*    cursor: url('https://www.google.com/intl/en_ALL/mapfiles/openhand.cur'), all-scroll;*/
+/*    cursor: -webkit-grab;*/
+/*    cursor: -moz-grab;*/
+/*    cursor: -o-grab;*/
+/*    cursor: -ms-grab;*/
+/*    cursor: grab;*/
+/*}*/
+
+.country-labels > * {
+    fill: black;
+    width: 100px;
+    height: 100px;
 }
 
-/*@media (prefers-color-scheme: dark) {*/
-/*    .graticule {*/
-/*        !*stroke-width: 0.5px;*!*/
-/*        stroke: #626262;*/
-/*    }*/
-/*    .country-path {*/
-/*        !*stroke-width: 0.5px;*!*/
-/*        stroke: #484848;*/
-/*        fill: #363636;*/
-/*    }*/
+.country-label {
+    /*fill: black;*/
+    /*width: 500px;*/
+    /*height: 500px;*/
+    /*display: inline-block;*/
+    white-space: nowrap;
+}
+.mapboxgl-marker:hover {
+    z-index: 99;
+}
+.mapboxgl-marker:hover .country-label {
+    filter: blur(0);
+    animation-name: blur-in;
+    animation-duration: 250ms;
+}
 
-/*}*/
+.mapboxgl-marker:hover img {
+    margin: 0 auto;
+    opacity: 1;
+    transition: opacity 250ms ease-in-out;
+}
+
+.mapboxgl-marker .country-label {
+    pointer-events: auto;
+    cursor: pointer;
+    filter: blur(3px);
+    font-style: italic;
+    font-family: et-book, serif;
+    font-size: 0.8rem;
+    font-weight: 400;
+    text-shadow: var(--text-outline-S);
+    animation-name: blur-out;
+    animation-duration: 250ms;
+}
+
+.mapboxgl-marker {
+    pointer-events: none;
+}
+
+.mapboxgl-marker img {
+    pointer-events: auto;
+    cursor: pointer;
+    width: auto;
+    height: auto;
+    max-width: 150px;
+    max-height: 150px;
+    opacity: 0.75;
+    border-radius: 5px;
+}
+
+@keyframes blur-out {
+    from {
+        filter: blur(0);
+    }
+    to {
+        filter: blur(3px);
+    }
+}
+
+@keyframes blur-in {
+    from {
+        filter: blur(3px);
+    }
+    to {
+        filter: blur(0);
+    }
+}
+
