@@ -19,9 +19,7 @@
         scale: 80%;
         transform-origin: left top;
     }
-
 }
-
 
 .Intro-textbox-sign {
     width: 360px;
@@ -34,23 +32,29 @@
 .Intro-textbox-sign > input {
     padding: 5px;
     width: 300px;
-    margin: 20px 0;
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.2rem;
+}
+.err {
+    font-family: 'Cormorant Garamond', serif;
+    color: brown;
+    font-weight: 600;
+    font-size: 0.9rem;
+    width: 310px;
+    height: 30px;
+    margin: 0;
+    padding: 0;
 }
 
 .Intro-textbox-menu {
     display: flex;
+    justify-content: center;
     margin: 30px;
 }
 
 .Intro-textbox-menu-button {
-    /*cursor: pointer;*/
-    /*font-size: 2rem;*/
-    /*text-shadow: var(--text-outline-S);*/
     width: 50%;
     text-align: center;
-    /*outline: var(--darkgrey) 0.5px solid;*/
 }
 
 .Intro-textbox-readmore {
@@ -76,10 +80,8 @@
 }
 
 .Intro-textbox-p {
-    /*height: calc(100% - 100px);*/
     max-height: 500px;
     color: var(--black);
-    /*text-shadow: var(--text-outline-S);*/
     overflow: scroll;
     transition: height 500ms ease-in-out;
 }
@@ -90,7 +92,7 @@
 
 .Intro-textbox-p > p > a:hover {
     font-style: italic;
-    letter-spacing: 1px;
+    letter-spacing: 0.7px;
 }
 
 .Intro-textbox-title {
@@ -102,7 +104,6 @@
     color: #211f1f;
     font-weight: 500;
     font-style: italic;
-    /*text-shadow: var(--text-outline-L);*/
 }
 
 .Intro-shader-container > iframe {
@@ -111,7 +112,6 @@
     width: 100%;
     height: 100%;
     opacity: 0.8;
-    /*max-height:420px;*/
 }
 
 .Intro-shader-container {

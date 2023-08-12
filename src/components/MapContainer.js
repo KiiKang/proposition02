@@ -14,8 +14,8 @@ mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN
 const MapContainer = () => {
     /** refs **/
     const mapRef = useRef(null);
-    // const mapContainer = useRef(null);
     const labelsRef = useRef([]);
+    const imagesRef = useRef([]);
     /** states-map **/
     let viewport_init = {
         width: "100vw",
@@ -28,9 +28,7 @@ const MapContainer = () => {
     }
     const [viewport, setViewport] = useState(viewport_init);
     const [filteredCountry, setFilteredCountry] = useState(null);
-    const [filteredRegion, setFilteredRegion] = useState(null);
-    const [filteredYear, setFilteredYear] = useState(null);
-    const [clickedImagePoint, setClickedImagePoint] = useState(null)
+    // const [filteredRegion, setFilteredRegion] = useState(null);
     /** states-data **/
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -55,84 +53,72 @@ const MapContainer = () => {
         return array;
     };
 
+    const getData = async () => {
+        try {
+            let response
+            response = await axios.get('./images.tsv');
+            setImageData(tsvToArray(response.data));
+            response = await axios.get('./country-bounding-box.json');
+            setCountryBounds(response.data);
+            response = await axios.get('./countries.geojson');
+            setCountryData(response.data);
+            setError(null);
+        } catch (err) {
+            setError(err.message);
+            setCountryData(null);
+            setCountryBounds(null);
+            setImageData(null);
+        } finally {
+            setLoading(false);
+            // if (map.current) return; // initialize map only once
+            // map.current = new mapboxgl.Map({
+            //     container: mapContainer.current,
+            //     style: 'mapbox://styles/wk1kang/cleyy88d2000001nkj1mettoe',
+            //     center: [viewport.latitude, viewport.longitude],
+            //     zoom: viewport.zoom,
+            //     maxZoom: 8
+            // });
+        }
+    }
+
+    const handleMouseOver = (i) => {
+        labelsRef.current[i].style.filter = 'blur(0)'
+    }
 
     useEffect(() => {
-        const getData = async () => {
-            try {
-                let response
-                response = await axios.get('./country-bounding-box.json');
-                setCountryBounds(response.data);
-                response = await axios.get('./countries.geojson');
-                setCountryData(response.data);
-                response = await axios.get('./images.tsv');
-                setImageData(tsvToArray(response.data));
-                setError(null);
-            } catch (err) {
-                setError(err.message);
-                setCountryData(null);
-                setCountryBounds(null);
-                setImageData(null);
-            } finally {
-                setLoading(false);
-                if (search) {
-                    let [query, value] = search.split("?")[1].split("=")
-                    if (query === 'year') setFilteredYear(value)
-                    if (query === 'region') {
-                        setFilteredRegion(value.replace('%20', ' '));
-                    }
-                    if (query === 'country') {
-                        setFilteredCountry(value.replace('%20', ' '));
-                        let bounds = Object.values(countryBounds).filter(d => d[0] === value.replace('%20', ' '))[0][1];
-                        // TODO: make exceptions for when the country not in the db is selected
-                        if (bounds) {
-                            mapRef.current.fitBounds([[bounds[0] - 6, bounds[1] - 6], [bounds[2] + 6, bounds[3] + 6]], {
-                                duration: 10000
-                            })
-                        }
-                        // TODO: highlight country boundary when selected
-                        // map.current.addLayer(
-                        //     {
-                        //         id: 'country-boundaries',
-                        //         source: {
-                        //             type: 'vector',
-                        //             url: 'mapbox://mapbox.country-boundaries-v1',
-                        //         },
-                        //         'source-layer': 'country_boundaries',
-                        //         type: 'fill',
-                        //         paint: {
-                        //             'fill-color': '#d2361e',
-                        //             'fill-opacity': 0.4,
-                        //         },
-                        //     },
-                        //     'country-highlight'
-                        // )
-                        // map.current.setFilter('country-boundaries', [
-                        //     "in",
-                        //     "iso_3166_1",
-                        //     'CN'
-                        // ])
-                    }
-                    // else {
-                    //     mapRef.current.flyTo({
-                    //         center: [viewport_init.longitude, viewport_init.latitude],
-                    //         zoom: viewport_init.zoom,
-                    //         duration: 5000
-                    //     });
-                    // }
+        getData();
+        if (search) {
+            let [query, value] = search.split("?")[1].split("=")
+            // if (query === 'region') {
+            //     setFilteredRegion(value.replace('%20', ' '));
+            // }
+            if (query === 'country') {
+                setFilteredCountry(value.replace('%20', ' '));
+                let bounds = Object.values(countryBounds).filter(d => d[0] === value.replace('%20', ' '))[0][1];
+                // TODO: make exceptions for when the country not in the db is selected
+                if (bounds) {
+                    mapRef.current.fitBounds([[bounds[0] - 6, bounds[1] - 6], [bounds[2] + 6, bounds[3] + 6]], {
+                        duration: 10000
+                    })
                 }
+            } else {
+                setFilteredCountry(null);
             }
         }
-        getData();
 
-        // if (map.current) return; // initialize map only once
-        // map.current = new mapboxgl.Map({
-        //     container: mapContainer.current,
-        //     style: 'mapbox://styles/wk1kang/cleyy88d2000001nkj1mettoe',
-        //     center: [viewport.latitude, viewport.longitude],
-        //     zoom: viewport.zoom,
-        //     maxZoom: 8
-        // });
-    }, [search, labelsRef, filteredCountry]);
+    }, [search]);
+
+    if (filteredCountry) {
+        labelsRef.current.forEach(l => {
+            if (l.id.split('-')[2] === filteredCountry) {
+                l.style.filter = 'blur(0)'
+            } else {
+                l.style.filter = 'blur(3px)'
+            }
+        })
+    }
+
+
 
     let imagePoints = []
     let regions = []
@@ -155,7 +141,6 @@ const MapContainer = () => {
                     "file_name": i.file_name,
                     "year": i.year,
                     "caption": i.caption_title,
-                    "footnote": i.caption,
                     "region": i.region ? i.region + ', ' + i.country_db: i.country_db
                 })
                 years.push(i.year)
@@ -182,20 +167,6 @@ const MapContainer = () => {
             }
         })
         // const pointSize = 20;
-        labelsRef.current.forEach( l => {
-            // l.style.filter = 'blur(3px)'
-            l.style.transition = '500ms background width height ease-in-out'
-
-            if (!l.id.split('-')[3].split('_').includes(filteredYear) && filteredYear){
-                l.style.background = 'rgba(0,0,0,0)'
-            }
-            if (l.id.split('-')[2] === filteredCountry || l.id.split('-')[3] === filteredRegion) {
-                l.style.filter = 'blur(0)'
-                // l.style.background = 'rgba(0,0,0,0.9)'
-                // l.style.width = pointSize*0.6 + 'px'
-                // l.style.height = pointSize*0.6 + 'px'
-            }
-        })
 
         // imagePoints.forEach((d, i) => {
         //     console.log(map.current)
@@ -204,10 +175,19 @@ const MapContainer = () => {
         //     if (d.coor) new mapboxgl.Marker(root).setLngLat(d.coor).addTo(map.current);
         // })
 
-        imagePoints.forEach(d => {
-                axios.get('/images/gl/' + d.image[0].file_name.trim().split('.')[0] + '-gl.jpg')
+        // imagePoints.forEach((d, i) => {
+        //         axios.get('/images/gl/' + d.image[0].file_name.trim().split('.')[0] + '-gl.jpg')
+        //             .then(imagesRef.current[i].style.visibility = "visible")
+        //
+        //     }
+        // )
+
+        imagesRef.current.forEach((d, i) => {
+                axios.get('/images/gl/' + imagePoints[i].image[0].file_name.trim().split('.')[0] + '-gl.jpg')
+                    .then(d.style.visibility = "visible")
             }
         )
+
     }
 
     return (
@@ -226,39 +206,32 @@ const MapContainer = () => {
                                 clickTolerance={10}
                                 key={'country-marker-' + d.country + i}
                                 id={'country-marker-' + d.country + i}
+                                onMouseOver={() => handleMouseOver(i)}
                                 onClick={()=> {
-                                    // navigate('/filter?region=' + d.region)
                                     navigate({
                                         pathname: '/images',
                                         search: 'region=' + d.region
                                     })
-                                    setFilteredRegion(d.region)
                                     setFilteredCountry(null);
-                                    // if (d.region === filteredRegion){
-                                    //     navigate({
-                                    //         pathname: '/images',
-                                    //         search: 'region=' + filteredRegion
-                                    //     })
-                                    // }
                                     mapRef.current.flyTo({
                                         center: d.coor,
                                         essential: true,
                                         zoom: mapRef.current.getZoom() < 5.5 ? 5.5 : mapRef.current.getZoom(),
                                         duration: 8000
                                     })
-                                    // setClickedImagePoint(d)
                                 }}
                         >
-                            <img src={'/images/gl/' + d.image[0].file_name.trim().split('.')[0] + '-gl.jpg'}
-                                 loading='lazy'
+                            <img ref={ img => imagesRef.current[i] = img }
+                                 src={'/images/gl/' + d.image[0].file_name.trim().split('.')[0] + '-gl.jpg'}
                                  title={d.image[0].region}
+                                 style={{visibility: "hidden"}}
                                  alt=''/>
                             <div ref={ label => labelsRef.current[i] = label }
                                  className='country-label'
                                  key={'country-label-' + d.country + '-' + d.region + '-' + d.years.join('_') + '-' + i}
                                  id={'country-label-' + d.country + '-' + d.region + '-' + d.years.join('_') + '-' + i}
                             >
-                                    {d.image[0].caption}
+                                    "{d.image[0].caption}"
                                 {/*{*/}
                                 {/*    d.image.map(function(img) {*/}
                                 {/*        return (*/}

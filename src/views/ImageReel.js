@@ -1,6 +1,5 @@
-import {useState, useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import axios from "axios";
-import React from 'react';
 import ImageCard from "../components/ImageCard";
 import {useLocation, useNavigate} from "react-router-dom";
 
@@ -10,73 +9,66 @@ const ImageReel = () => {
     const [error, setError] = useState(null);
 
     const [indexNow, setIndexNow] = useState(0);
-    const [filteredCountry, setFilteredCountry] = useState(null);
-    const [filteredRegion, setFilteredRegion] = useState(null);
+    // const [filteredCountry, setFilteredCountry] = useState(null);
+    const [filteredRegion, setFilteredRegion] = useState("");
+    const [filteredImageData, setFilteredImageData] = useState([]);
+
     const ref = useRef(null);
     const { search } = useLocation();
     let navigate = useNavigate();
 
     const tsvToArray = string => {
-        const csvHeader = string.slice(0, string.indexOf("\n")).split("\t");
-        const csvRows = string.slice(string.indexOf("\n") + 1).split("\n");
+        let csvHeader = string.slice(0, string.indexOf("\n")).split("\t");
+        csvHeader[csvHeader.length-1] = "caption"
+        let csvRows = string.slice(string.indexOf("\n") + 1).split("\n");
 
-        const array = csvRows.map(i => {
-            const values = i.split("\t");
+        return csvRows.map(i => {
+            let values = i.split("\t");
             return csvHeader.reduce((object, header, index) => {
                 object[header] = values[index];
                 return object;
             }, {});
         });
-        return array;
     };
 
-    const handleClick = (i) => {
-        setIndexNow(i)
+    const getData = async () => {
+        try {
+            let response
+            response = await axios.get('./images.tsv');
+            setImageData(tsvToArray(response.data));
+            setError(null);
+        } catch (err) {
+            setError(err.message);
+            setImageData(null);
+        } finally {
+            let imageData_cleaned = []
+            imageData.forEach(d => {
+                if (!d.region) d['region'] = d.country_db
+                imageData_cleaned.push(d)
+            })
+            setImageData(imageData_cleaned)
+            if (search) {
+                let [query, value] = search.split("?")[1].split("=")
+                // if (query === 'country') {
+                //     setFilteredCountry(value.replace('%20', ' '));
+                // } else
+                if (query === 'region') {
+                    setFilteredRegion(value.replace('%20', ' '));
+                    setFilteredImageData(imageData.filter(d => d.region === filteredRegion))
+                } else {
+                    setFilteredRegion(null)
+                }
+            } else {
+                setFilteredRegion(null)
+            }
+            setLoading(false);
+        }
     }
 
     useEffect(() => {
-        const getData = async () => {
-            try {
-                let response
-                response = await axios.get('./images.tsv');
-                setImageData(tsvToArray(response.data));
-                setError(null);
-            } catch (err) {
-                setError(err.message);
-                setImageData(null);
-            } finally {
-                let imageData_cleaned = []
-                imageData.forEach(d => {
-                    if (!d.region) d['region'] = d.country_db
-                    imageData_cleaned.push(d)
-                })
-                setImageData(imageData_cleaned)
-                setLoading(false);
-                if (search) {
-                    let [query, value] = search.split("?")[1].split("=")
-                    // if (query === 'year') setFilteredYear(value)
-                    if (query === 'country') {
-                        setFilteredCountry(value.replace('%20', ' '));
-                    } else if (query === 'region') {
-                        setFilteredRegion(value.replace('%20', ' '));
-                    }
-                }
-
-
-            }
-        }
         getData()
         ref.current.focus();
     }, [search, imageData])
-    let filteredImageData = [];
-
-    if (!loading) {
-        if (filteredCountry) {
-            filteredImageData = imageData.filter(d => d.country_db === filteredCountry)
-        } else if (filteredRegion) {
-            filteredImageData = imageData.filter(d => d.region === filteredRegion)
-        }
-    }
 
     const handleKeyDown = (e) => {
         if (e.key === 'ArrowLeft') {
@@ -100,8 +92,10 @@ const ImageReel = () => {
                             key={'image-card-' + d.file_name}
                             file_name={d.file_name.trim().split('.')[0] + '-gl.jpg'}
                             caption={d.caption_title}
-                            // footnote={d.caption_title} TODO: caption field converting as string? e.g. "caption "
-                            year={d.year}
+                            footnote={d.caption}
+                            country={d.country_db}
+                            region={d.region}
+                            region_local={d.region_local}
                             index={i - indexNow}
                             onSwitch={() => setIndexNow(i)}
                         />

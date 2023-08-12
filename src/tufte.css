@@ -156,11 +156,11 @@ hr {
 }
 
 p.subtitle {
-    font-style: italic;
+    /*font-style: italic;*/
     margin-top: 1rem;
     margin-bottom: 1rem;
     font-size: 0.8rem;
-    color: #c7c3bf;
+    /*color: #c7c3bf;*/
     display: block;
     line-height: 1;
 }
