@@ -1,7 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react';
 import axios from "axios";
-import ImageCard from "../components/ImageCard";
 import {useLocation, useNavigate} from "react-router-dom";
+
+const ImageCard = React.lazy(() => import("../components/ImageCard"));
+
 
 const ImageReel = () => {
     const [imageData, setImageData] = useState(null);
@@ -96,6 +98,7 @@ const ImageReel = () => {
                             country={d.country_db}
                             region={d.region}
                             region_local={d.region_local}
+                            year={d.year}
                             index={i - indexNow}
                             onSwitch={() => setIndexNow(i)}
                         />

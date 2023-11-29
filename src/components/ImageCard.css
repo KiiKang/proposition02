@@ -1,7 +1,10 @@
 .image-card {
-    position: absolute;
+    position: fixed;
     top: 50%;
-    display: inline-flex;
+    display:flex;
+    max-width: fit-content;
+    /* display: inline-flex; */
+    flex-direction: column;
     /*border: #9a9a9a solid 1px;*/
     transform: translate(-50%, -50%);
     /*transform: translate(-50%, -50%);*/
@@ -11,10 +14,9 @@
 }
 
 .image-container {
-    width: fit-content;
+    max-width: fit-content;
     height: fit-content;
-    display: flex;
-    border-radius: 20px;
+    border-radius: 10px;
     overflow: hidden;
     box-shadow: var(--shadow);
     pointer-events: auto;
@@ -22,17 +24,48 @@
     /*max-height: 800px;*/
 }
 
-.image-card-description {
-    color: var(--grey);
-    border: none;
-    position: absolute;
-    width: 150px;
+.image-card-description, .image-card-year, .image-card-caption {
+    /*color: var(--grey);*/
+    align-self: center;
+    max-width: 100%;
     padding: 10px;
-    max-height: 100%;
     /*overflow: scroll;*/
     text-shadow: var(--text-outline-S);
     pointer-events: none;
-    transform: translateX(-100%);
+    /*transform: translateX(-100%);*/
+}
+
+.image-card-description {
+    position: relative;
+    margin-left: 10px;
+}
+.image-card-year {
+    /* text-align: start; */
+    justify-content: start;
+}
+
+.image-card-caption > div {
+    margin: 0 auto;
+    text-align: center;
+    font-family: Helvetica;
+    font-size: 3.0rem;
+    line-height: 3.2rem;
+}
+
+.image-card-description > div {
+    text-align: center;
+    margin: 0 auto;
+    font-family: Helvetica;
+    font-size: 1.5rem;
+    line-height: 1.8rem;
+}
+
+
+.image-card-year > p {
+    margin: 0 auto;
+    font-family: Helvetica;
+    font-size: 3rem;
+    line-height: 2rem;
 }
 
 .image-container > img {

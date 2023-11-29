@@ -64,7 +64,7 @@ const Intro = () => {
             </p>
                 <hr/>
                 <p className='subtitle'>
-                    The project was realized thanks to the generous support from <a href='https://canadacouncil.ca/' target='_blank'>Canada Council for the Arts</a>.
+                    The project was realized thanks to the generous support from <a href='https://canadacouncil.ca/' target='_blank' rel='noreferrer'>Canada Council for the Arts</a>.
                 </p><br/>
             </div>
         </div>

@@ -4,6 +4,7 @@ import './Intro.css'
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
+
 const SignUp = () => {
     const [input, setInput] = useState({
         email: '',
@@ -19,7 +20,6 @@ const SignUp = () => {
         confirmPassword: '',
     });
 
-
     const [userData, setUserData] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -27,6 +27,7 @@ const SignUp = () => {
     let navigate = useNavigate()
 
     const validateInput = (e) => {
+        return
         onInputChange(e)
         let { name, value } = e.target;
         setInputError(prev => {
@@ -62,41 +63,53 @@ const SignUp = () => {
         }));
     }
 
-    const handleSubmit = (event) => {
-        fetchData()
-        if (!Object.values(inputError).every(d => d === '')) return
+    // const handleSubmit = (event) => {
+    //     fetchData()
+    //     if (!Object.values(inputError).every(d => d === '')) return
+    //
+    //     event.preventDefault();
+    //     const myForm = event.target;
+    //     const formData = new FormData(myForm);
+    //
+    //     // fetch("/", {
+    //     //     method: "POST",
+    //     //     // headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    //     //     body: new URLSearchParams(formData).toString(),
+    //     // })
+    //     //     .then(() => navigate("/signin"))
+    //     //     .catch((error) => alert(error));
+    // };
 
-        event.preventDefault();
+    const handleSubmit = (event) => {
         const myForm = event.target;
         const formData = new FormData(myForm);
+        console.log(formData);
+        return fetch('/.netlify/functions/create', {
+            body: JSON.stringify(formData),
+            method: 'POST'
+        }).then(response => {
+            return response.json()
+        })
+    }
 
-        // fetch("/", {
-        //     method: "POST",
-        //     // headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        //     body: new URLSearchParams(formData).toString(),
-        // })
-        //     .then(() => navigate("/signin"))
-        //     .catch((error) => alert(error));
-    };
-
-    const fetchData = useCallback(async () => {
-        try {
-            await axios.get("https://api.netlify.com/api/v1/sites/42f65c23-823d-4910-8665-7c3326279a24/submissions",
-                {
-                    headers: {
-                        Authorization: "bearer JjNhtcVqyqqcP2ll56ikXS_k5aYlw-bunHncNJRnjHc"
-                    }
-                }).then(response => {
-                setUserData(d => response.data)
-            })
-            setError(null)
-        } catch (err) {
-            setError(err.message)
-            setUserData(null);
-        } finally {
-            setLoading(false);
-        }
-    }, [])
+    // const fetchData = useCallback(async () => {
+    //     try {
+    //         await axios.get("https://api.netlify.com/api/v1/sites/42f65c23-823d-4910-8665-7c3326279a24/submissions",
+    //             {
+    //                 headers: {
+    //                     Authorization: "bearer JjNhtcVqyqqcP2ll56ikXS_k5aYlw-bunHncNJRnjHc"
+    //                 }
+    //             }).then(response => {
+    //             setUserData(d => response.data)
+    //         })
+    //         setError(null)
+    //     } catch (err) {
+    //         setError(err.message)
+    //         setUserData(null);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // }, [])
 
     // useEffect(() => {
     //
@@ -126,7 +139,7 @@ const SignUp = () => {
 
     return (
         // <form name="signup" className='Intro-textbox-sign' data-netlify="true" method="post" netlify>
-        <form name="signup" className='Intro-textbox-sign'>
+        <form name="signup" className='Intro-textbox-sign' method="post">
             <input type="hidden" name="form-name" value="signup"/>
             <h3>sign up to make annotations.</h3>
             <input type='email' name='email' autoComplete="email" placeholder='Email' onBlur={(e) => validateInput(e)} required/>
