@@ -1,11 +1,33 @@
 import React, {useState} from 'react';
+import axios from "axios";
+import { useEffect } from 'react';
 
 import './Intro.css'
 import {useNavigate} from "react-router-dom";
 import Cookies from 'js-cookie';
 
+
+const csvToArray = string => {
+    const csvHeader = string.slice(0, string.indexOf("\n")).split("\t");
+    const csvRows = string.slice(string.indexOf("\n") + 1).split("\n");
+
+    const array = csvRows.map(i => {
+        const values = i.split("\t");
+        return csvHeader.reduce((object, header, index) => {
+            object[header] = values[index];
+            return object;
+        }, {});
+    });
+    return array;
+};
+
 const Intro = () => {
     const [isReadMore, setIsReadMore] = useState(true);
+    const [imageData, setImageData] = useState([]);
+    const [imgSelected, setImgSelected] = useState(null);
+    // const [loading, setLoading] = useState(true);
+    const [imgLoading, setImgLoading] = useState(true);
+
     const toggleReadMore = () => {
         setIsReadMore(!isReadMore);
     }
@@ -16,30 +38,72 @@ const Intro = () => {
         window.location.reload();
     }
 
+    useEffect(() => {
+        const getData = async () => {
+            let response = await axios.get('./images.tsv');
+            let data = csvToArray(response.data)
+            setImageData(data);
+            console.log(data[Math.floor(Math.random() * data.length)].file_name)
+            setImgSelected(data[Math.floor(Math.random() * data.length)].file_name.trim().split('.')[0] + '-gl.jpg');
+        };    
+        const getImage = async () => {
+            try {
+                await axios.get('/images/gl/' + imgSelected );
+                setTimeout(200);
+            } catch (err) {
+                console.log(err.message);
+            } finally {
+                setImgLoading(false);
+            }
+        };    
+        getData();
+        getImage();
+    }, []);
+
+    
     return (
         <div className='Intro-textbox'>
             <div className='Intro-textbox-title'>
                 what do you see?
             </div>
-            <div className='Intro-textbox-capt'>
+
+            <div className='Intro-textbox-capt' style={{color: "gray"}}>
                 Click a photo on the map.<br/>
                 Annotate it, responding to the prompt above.<br/>
                 Sign in below to make annotations.<br/><br/>
                 The annotations will be collected as <i>re-index</i>.<br/>
             </div>
+            <div className='Intro-textbox-capt' style={{fontFamily: "Helvetica", fontSize: "0.9rem"}}>
+            THE ANNOTATION FUNCTION IS STILL IN CONSTRUCTION. PLEASE COME BACK SOON!
+            </div>
             <div className='Intro-shader-container'
+            style={{
+                minHeight: isReadMore? "40vh": 0,
+                backgroundImage: imgLoading ? null : 'url(/images/gl/' + imgSelected + ')'
+            }}>
+                {/* { !imgLoading?
+                        <img 
+                        src={'/images/gl/' + imgSelected}
+                        key={imgSelected} alt='' loading='lazy'></img>:null
+                } */}
+            </div>
+
+            {/* <div className='Intro-shader-container'
             style={{
                 height: isReadMore? "500px": 0
             }}>
                 <iframe src="https://www.shadertoy.com/embed/MlsXDr?gui=false&t=10&paused=false&muted=true"></iframe>
-            </div>
+            </div> */}
             { Cookies.get("user") ?
                 <div className='Intro-textbox-menu'>
                     <div className='Intro-textbox-menu-button button-round-L' onClick={signOut}>sign out</div>
                 </div> :
                 <div className='Intro-textbox-menu'>
-                    <div className='Intro-textbox-menu-button button-round-L' onClick={() => navigate("/signup") }>sign up</div>
-                    <div className='Intro-textbox-menu-button button-round-L' onClick={() => navigate("/login") }>sign in</div>
+                    {/* <div className='Intro-textbox-menu-button button-round-L' onClick={() => navigate("/signup") }>sign up</div> */}
+                    {/* <div className='Intro-textbox-menu-button button-round-L' onClick={() => navigate("/login") }>sign in</div> */}
+                    <div className='Intro-textbox-menu-button button-round-L' >sign up</div>
+                    <div className='Intro-textbox-menu-button button-round-L' >sign in</div>
+
                 </div>
             }
             <div className='Intro-textbox-readmore' onClick={toggleReadMore}>

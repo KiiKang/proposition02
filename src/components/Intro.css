@@ -5,7 +5,9 @@
     z-index: 999;
     position: absolute;
     width: 480px;
-    padding: 50px 30px 5px;
+    /* height: fit-content; */
+    /* max-height: 90vh; */
+    padding: 40px 30px 5px;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -80,15 +82,12 @@
 }
 
 .Intro-textbox-p {
-    max-height: 500px;
+    max-height: 400px;
     color: var(--black);
     overflow: scroll;
     transition: height 500ms ease-in-out;
 }
 
-.Intro-textbox-p > p > a {
-    /*text-shadow: var(--text-outline-S);*/
-}
 
 .Intro-textbox-p > p > a:hover {
     font-style: italic;
@@ -96,7 +95,7 @@
 }
 
 .Intro-textbox-title {
-    margin: 0 auto 30px 30px;
+    margin: 0 auto 20px 30px;
 }
 
 .Intro-textbox-title {
@@ -112,6 +111,25 @@
     width: 100%;
     height: 100%;
     opacity: 0.8;
+}
+.Intro-shader-container {
+    background-position: center center;
+    background-size: cover;
+    /* background-size: 300px; */
+
+    background-repeat: no-repeat;
+  
+}
+.Intro-shader-container > img {
+    object-fit: cover;
+    /* position: relative;
+    left: 50%;
+    top: 50%;
+    height: 100%;
+    width: auto;
+    -webkit-transform: translate(-50%,-50%);
+        -ms-transform: translate(-50%,-50%);
+            transform: translate(-50%,-50%); */
 }
 
 .Intro-shader-container {

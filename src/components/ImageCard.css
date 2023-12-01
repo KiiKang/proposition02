@@ -3,6 +3,7 @@
     top: 50%;
     display:flex;
     max-width: fit-content;
+    max-height: 98vh;
     /* display: inline-flex; */
     flex-direction: column;
     /*border: #9a9a9a solid 1px;*/
@@ -20,13 +21,14 @@
     overflow: hidden;
     box-shadow: var(--shadow);
     pointer-events: auto;
-    /*object-fit: cover;*/
+    object-fit: fill;
     /*max-height: 800px;*/
 }
 
 .image-card-description, .image-card-year, .image-card-caption {
     /*color: var(--grey);*/
     align-self: center;
+    min-width: 400px;
     max-width: 100%;
     padding: 10px;
     /*overflow: scroll;*/
@@ -71,9 +73,11 @@
 .image-container > img {
     transform: scale(105%);
     box-shadow: var(--shadow);
-    max-width: none;
-    /*min-width: 100%;*/
-    /*min-height: 100%;*/
+    /* max-width: none; */
+    /* min-width: 100%; */
+    /* min-height: 100%; */
+    /* max-width: auto; */
+    /* object-fit: contain; */
 }
 .image-card-container::-webkit-scrollbar-thumb {
     background: #414141;

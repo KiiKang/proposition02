@@ -225,7 +225,6 @@ const WorldMap = () => {
                     </g>
                     <g className='map-component' id='country-paths'
                        transform={'translate(' + zoomParams.x + ' ' + zoomParams.y + ') scale(' + zoomParams.k + ')'}>
-                    >
                         {
                             mapData.features.map(d => (
                                 <path className='country-path'
