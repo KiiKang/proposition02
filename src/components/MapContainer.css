@@ -1,0 +1,101 @@
+.map-container{
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+.map-container > * {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+}
+.mapboxgl-control-container {
+    opacity: 0.25;
+    /* visibility: hidden; */
+}
+/*.country-markers{*/
+/*    position: absolute;*/
+/*    fill: #3d3a3a;*/
+/*    width: 100px;*/
+/*    height: 100px;*/
+/*    stroke: None;*/
+/*    transition: filter, fill 500ms;*/
+/*    rx: 50%;*/
+/*    cursor: pointer;*/
+/*    z-index:99;*/
+/*}*/
+
+.graticule {
+    /*stroke-width: 0.5px;*/
+    stroke: #dbdbdb;
+}
+
+.country-path {
+    stroke: none;
+    /*stroke-width: 0.5px;*/
+    /*stroke: #ccc6c6;*/
+    /*fill: #eeebe8;*/
+}
+
+.mapboxgl-marker {
+    pointer-events: auto;
+    cursor: pointer;
+    /* filter: blur(3px); */
+    /* font-style: italic; */
+    /* font-family: et-book, serif; */
+    font-size: 1.6rem;
+    font-weight: 400;
+    opacity: 0.8;
+    text-shadow: var(--text-outline-S);
+    /* animation-name: blur-in; */
+    /* animation-duration: 250ms; */
+}
+
+.mapboxgl-marker:hover {
+    z-index: 99;
+}
+/* .mapboxgl-marker:hover .country-label {
+    filter: blur(0);
+    animation-name: blur-out;
+    animation-duration: 250ms;
+} */
+
+.mapboxgl-marker:hover img {
+    margin: 0 auto;
+    opacity: 1;
+    transition: opacity 250ms ease-in-out;
+}
+
+
+.mapboxgl-marker {
+    pointer-events: none;
+}
+
+.mapboxgl-marker img {
+    pointer-events: auto;
+    cursor: pointer;
+    width: auto;
+    height: auto;
+    max-width: 150px;
+    max-height: 150px;
+    opacity: 0.65;
+    border-radius: 5px;
+}
+
+@keyframes blur-out {
+    from {
+        filter: blur(0);
+    }
+    to {
+        filter: blur(3px);
+    }
+}
+
+@keyframes blur-in {
+    from {
+        filter: blur(3px);
+    }
+    to {
+        filter: blur(0);
+    }
+}

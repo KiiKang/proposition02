@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="1449800b-bf37-4035-bba0-61bd282dc759" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/proposition02.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/robots.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/MapContainer.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/MapContainer.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/index.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tailwind.config.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CSS File" />
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2MhyJpXLhQaY3ZZz8ShYErFHuhI" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/Users/carbonhouse_mit/Downloads/proposition02",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/scripts" />
+      <recent name="$PROJECT_DIR$/public" />
+      <recent name="$PROJECT_DIR$/src/components" />
+      <recent name="$PROJECT_DIR$/public/fonts" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/public" />
+      <recent name="$PROJECT_DIR$/public/images/gl" />
+      <recent name="$PROJECT_DIR$/src" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1449800b-bf37-4035-bba0-61bd282dc759" name="Changes" comment="" />
+      <created>1678234040202</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1678234040202</updated>
+      <workItem from="1678234041389" duration="1348000" />
+      <workItem from="1678235406039" duration="876000" />
+      <workItem from="1678236456784" duration="60387000" />
+      <workItem from="1678567219072" duration="458000" />
+      <workItem from="1678669230978" duration="25549000" />
+      <workItem from="1680386372731" duration="27940000" />
+      <workItem from="1682531246885" duration="10154000" />
+      <workItem from="1682622421336" duration="1287000" />
+      <workItem from="1684119694236" duration="2992000" />
+      <workItem from="1684452864800" duration="5512000" />
+      <workItem from="1685559953727" duration="3980000" />
+      <workItem from="1686832857216" duration="79464000" />
+      <workItem from="1687548100719" duration="52000" />
+      <workItem from="1688739056719" duration="23990000" />
+      <workItem from="1689192977285" duration="4123000" />
+      <workItem from="1689360005074" duration="2000" />
+      <workItem from="1689553107919" duration="4283000" />
+      <workItem from="1689791532227" duration="600000" />
+      <workItem from="1690400542484" duration="8633000" />
+      <workItem from="1691008336811" duration="31716000" />
+      <workItem from="1691515365268" duration="33258000" />
+      <workItem from="1691766081069" duration="29674000" />
+      <workItem from="1692014058059" duration="65000" />
+      <workItem from="1692377207617" duration="2706000" />
+      <workItem from="1695603694150" duration="6458000" />
+      <workItem from="1695698639979" duration="599000" />
+      <workItem from="1695755775709" duration="598000" />
+      <workItem from="1695917557689" duration="600000" />
+      <workItem from="1696030274423" duration="96000" />
+      <workItem from="1696036245792" duration="1225000" />
+      <workItem from="1696520400099" duration="5000" />
+      <workItem from="1696782432499" duration="663000" />
+      <workItem from="1696833529926" duration="18127000" />
+      <workItem from="1697856272516" duration="2079000" />
+      <workItem from="1698113899631" duration="7636000" />
+      <workItem from="1698270041743" duration="422000" />
+      <workItem from="1698274225770" duration="2454000" />
+      <workItem from="1698791961023" duration="4788000" />
+      <workItem from="1699575994532" duration="949000" />
+      <workItem from="1699577941624" duration="20000" />
+      <workItem from="1699578134401" duration="8000" />
+      <workItem from="1701740161780" duration="1448000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+</project>
