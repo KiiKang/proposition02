@@ -1,13 +1,23 @@
 .MenuBar-Bottom {
+    pointer-events: none;
     position: absolute;
-    bottom: 0;
+    bottom: 5px;
     width: 100%;
+}
+.MenuBar-Filter {
+    position: absolute;
+    bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    left: 200px;
+    width: calc(100% - 400px);
+    margin: auto;
 }
 
 .MenuBar-Right {
     position: absolute;
     display: flex;
-    transform: translateX(212px);
+    transform: translateX(205px);
     top: 0;
     right: 0;
 }
@@ -55,12 +65,14 @@
 }
 
 .MenuBar-Countries, .MenuBar-Regions {
+    /* z-index: 99  */
+    background-color: rgba(255, 255, 255, 0.3);
     width: fit-content;
     align-items: flex-end;
     justify-content: flex-end;
     overflow-y: scroll;
     top: 0;
-    height: calc(100vh - 50px);
+    height: 100vh;
 }
 
 .MenuBar-Regions {

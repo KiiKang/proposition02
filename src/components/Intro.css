@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap');
 
 .Intro-textbox, .Intro-textbox-sign {
-    font-family: 'Cormorant Garamond', serif;
+    /* font-family: 'Cormorant Garamond', serif; */
     z-index: 999;
     position: absolute;
     width: 480px;
@@ -12,7 +12,7 @@
     top: 50%;
     transform: translate(-50%, -50%);
     background: rgba(255, 255, 255, 0.7);
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-red);
     outline: var(--darkgrey) 1px solid;
 }
 
@@ -96,10 +96,7 @@
 
 .Intro-textbox-title {
     margin: 0 auto 20px 30px;
-}
-
-.Intro-textbox-title {
-    font-size: 4rem;
+    font-size: 3.8rem;
     color: #211f1f;
     font-weight: 500;
     font-style: italic;

@@ -70,9 +70,21 @@ const ImageCard = (props) => {
                     {/*    <i>{props.footnote && props.footnote !== "\r" ? '"' + props.footnote + '"' : null} </i></h2>*/}
                 {/* </div> */}
                 <div className='image-card-caption'>
-                    {/*<h4>{props.region_local ? props.region_local : null}<br/>{props.region === props.country ? props.country : props.region + ", " + props.country}*/}
-                    {/*</h4>*/}
-                    <div>{props.caption}</div>
+                    {/* <h4>{props.region_local ? props.region_local : null}<br/>{props.region === props.country ? props.country : props.region + ", " + props.country}
+                    </h4> */}
+                    <div class='image-card-info'>
+                        {props.year}, {props.region === props.country ? props.country : props.region + ", " + props.country} 
+                        {/* {props.region_local ? props.region_local : null} */}
+                    </div>
+
+                    <div>
+                        {props.caption.split(" ").slice(0, -2).map(s => {
+                            return s + " "                   
+                        })}
+                        {props.caption.split(" ").slice(-2).map(s => {
+                            return <span style={{whiteSpace: "nowrap"}}> {s + " "} </span>                  
+                        })}
+                    </div>
                     {/* <div>{this.imgeRef.current}</div> */}
                 </div>
 
@@ -91,7 +103,7 @@ const ImageCard = (props) => {
                     {/*<h4>{props.region_local ? props.region_local : null}<br/>{props.region === props.country ? props.country : props.region + ", " + props.country}*/}
                     {/*</h4>*/}
                     <div>
-                        {props.footnote && props.footnote !== "\r" ? '"' + props.footnote + '"' : null}</div>
+                        {props.footnote && props.footnote !== "\r" ? '"' + props.footnote.slice(0, -1) + '"' : null}</div>
                 </div>
 
             </div>

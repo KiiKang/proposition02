@@ -63,22 +63,22 @@ const Intro = () => {
     
     return (
         <div className='Intro-textbox'>
-            <div className='Intro-textbox-title'>
+            <div className='serif Intro-textbox-title '>
                 what do you see?
             </div>
 
-            <div className='Intro-textbox-capt' style={{color: "gray"}}>
+            <div className='serif Intro-textbox-capt' style={{color: "gray"}}>
                 Click a photo on the map.<br/>
                 Annotate it, responding to the prompt above.<br/>
                 Sign in below to make annotations.<br/><br/>
-                The annotations will be collected as <i>re-index</i>.<br/>
+                {/* The annotations will be collected as <i>re-index</i>.<br/> */}
             </div>
-            <div className='Intro-textbox-capt' style={{fontFamily: "Helvetica", fontSize: "0.9rem"}}>
-            THE ANNOTATION FUNCTION IS STILL IN CONSTRUCTION. PLEASE COME BACK SOON!
+            <div className='Intro-textbox-capt' style={{fontFamily: "Helvetica", fontSize: "0.8rem"}}>
+            *THE ANNOTATION AND SIGN IN IS STILL UNDER CONSTRUCTION.
             </div>
             <div className='Intro-shader-container'
             style={{
-                minHeight: isReadMore? "40vh": 0,
+                height: isReadMore? "40vh": 0,
                 backgroundImage: imgLoading ? null : 'url(/images/gl/' + imgSelected + ')'
             }}>
                 {/* { !imgLoading?
@@ -101,16 +101,16 @@ const Intro = () => {
                 <div className='Intro-textbox-menu'>
                     {/* <div className='Intro-textbox-menu-button button-round-L' onClick={() => navigate("/signup") }>sign up</div> */}
                     {/* <div className='Intro-textbox-menu-button button-round-L' onClick={() => navigate("/login") }>sign in</div> */}
-                    <div className='Intro-textbox-menu-button button-round-L' >sign up</div>
-                    <div className='Intro-textbox-menu-button button-round-L' >sign in</div>
+                    <div className='Intro-textbox-menu-button button-round-M' >sign up</div>
+                    <div className='Intro-textbox-menu-button button-round-M' >sign in</div>
 
                 </div>
             }
-            <div className='Intro-textbox-readmore' onClick={toggleReadMore}>
+            <div className='serif Intro-textbox-readmore' onClick={toggleReadMore}>
                 <center>read more<br/>
                     ⌄</center>
             </div>
-            <div className='Intro-textbox-p'
+            <div className='Intro-textbox-p serif'
                  style={{
                      // visibility: isReadMore? "hidden": "visible",
                      height: isReadMore? 0 : '500px'

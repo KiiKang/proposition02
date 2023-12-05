@@ -10,7 +10,8 @@ const Filters = () => {
     const [imageData, setImageData] = useState(null);
     const [hoveredRegion, setHoveredRegion] = useState('Seoul');
     const [filteredCountry, setFilteredCountry] = useState(null);
-    const [filteredRegion, setFilteredRegion] = useState(null);
+    const [filteredYear, setFilteredYear] = useState(null);
+    // const [filteredRegion, setFilteredRegion] = useState(null);
 
     const { search } = useLocation();
 
@@ -48,18 +49,24 @@ const Filters = () => {
                 setImageData(null);
             } finally {
                 setLoading(false);
-                if (search) {
-                    let [query, value] = search.split("?")[1].split("=")
-                    if (query === 'country') {
-                        setFilteredCountry(value.replace('%20', ' '));
-                    } else if(query === 'region'){
-                        setFilteredRegion(value.replace('%20', ' '));
-                    }
-                }
             }
         }
         getData();
-    }, [search, filteredCountry, filteredRegion])
+    }, [])
+
+    useEffect(() => {
+        if (search) {
+            let [query, value] = search.split("?")[1].split("=")
+            if (query === 'country') {
+                setFilteredCountry(value.replace('%20', ' '));
+            } else if (query === 'year'){
+                setFilteredYear(value);
+            } else {
+                setFilteredCountry(null);
+                setFilteredYear(null);
+            }
+        }
+    }, [search])
 
     let countries = [];
     // let regions = [];
@@ -81,6 +88,7 @@ const Filters = () => {
 
     let navigate = useNavigate();
 
+    console.log("filtered year: ", filteredYear);
     return (
         <div className='MenuBar'>
             {/*<div className='MenuBar-Left'>*/}
@@ -125,7 +133,7 @@ const Filters = () => {
                 </div>
                 <div className='MenuBar-Countries'>
                     {
-                        countries.map((d, i) => {
+                        countries.map((d) => {
                             return (
                                 <div
                                     className='Filter-Country button-round-S'
@@ -136,7 +144,7 @@ const Filters = () => {
                                         search: 'country=' + d
                                     })}
                                     style={{
-                                        opacity: filteredCountry == null ? 1: filteredCountry === d ? 1: hoveredRegion === d? 1: 0.2,
+                                        opacity: filteredCountry ? 1: d === filteredCountry ? 1: 0.2
                                     }}
                                 >
                                     {d === "United States of America" ? "United States": d }
@@ -144,6 +152,30 @@ const Filters = () => {
                             )})
                     }
                 </div>
+            </div>
+            <div className="MenuBar-Filter">
+                {
+                [1945, 1946, 1947, 1948, 1949].map((d) => {
+                    return <div 
+                    className="button-round-M"
+                    style={{
+                        opacity: filteredYear === null ? 1 : d == filteredYear ? 1 : 0.2 
+                    }}
+                    onClick={() => {
+                        if (d == filteredYear) {
+                            navigate('/map')
+                            setFilteredYear(null)
+                        } else {
+                            navigate({
+                                pathname: '/filter',
+                                search: 'year=' + d
+                            })
+                        }
+                    }
+                    }
+                    >{d}</div>
+                })
+            }
             </div>
         </div>
     )

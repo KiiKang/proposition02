@@ -11,19 +11,19 @@
 /*    font-display: swap;*/
 /*}*/
 
-@font-face {
+/* @font-face {
     font-family: "et-book";
     src: url("../et-book/et-book-roman-line-figures/et-book-roman-line-figures.eot");
-    /*src: url("../et-book/et-book-roman-line-figures/et-book-roman-line-figures.eot?#iefix") format("embedded-opentype"), url("../et-book/et-book-roman-line-figures/et-book-roman-line-figures.woff") format("woff"), url("../et-book/et-book-roman-line-figures/et-book-roman-line-figures.ttf") format("truetype"), url("../et-book/et-book-roman-line-figures/et-book-roman-line-figures.svg#etbookromanosf") format("svg");*/
+    src: url("../et-book/et-book-roman-line-figures/et-book-roman-line-figures.eot?#iefix") format("embedded-opentype"), url("../et-book/et-book-roman-line-figures/et-book-roman-line-figures.woff") format("woff"), url("../et-book/et-book-roman-line-figures/et-book-roman-line-figures.ttf") format("truetype"), url("../et-book/et-book-roman-line-figures/et-book-roman-line-figures.svg#etbookromanosf") format("svg");
     font-weight: normal;
     font-style: normal;
     font-display: swap;
-}
+} */
 
-@font-face {
+/* @font-face {
     font-family: "et-book";
     src: url("../et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.eot");
-    /*src: url("../et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.eot?#iefix") format("embedded-opentype"), url("../et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.woff") format("woff"), url("../et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.ttf") format("truetype"), url("../et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.svg#etbookromanosf") format("svg");*/
+    src: url("../et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.eot?#iefix") format("embedded-opentype"), url("../et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.woff") format("woff"), url("../et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.ttf") format("truetype"), url("../et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.svg#etbookromanosf") format("svg");
     font-weight: normal;
     font-style: italic;
     font-display: swap;
@@ -32,20 +32,20 @@
 @font-face {
     font-family: "et-book";
     src: url("../et-book/et-book-bold-line-figures/et-book-bold-line-figures.eot");
-    /*src: url("../et-book/et-book-bold-line-figures/et-book-bold-line-figures.eot?#iefix") format("embedded-opentype"), url("../et-book/et-book-bold-line-figures/et-book-bold-line-figures.woff") format("woff"), url("../et-book/et-book-bold-line-figures/et-book-bold-line-figures.ttf") format("truetype"), url("../et-book/et-book-bold-line-figures/et-book-bold-line-figures.svg#etbookromanosf") format("svg");*/
+    src: url("../et-book/et-book-bold-line-figures/et-book-bold-line-figures.eot?#iefix") format("embedded-opentype"), url("../et-book/et-book-bold-line-figures/et-book-bold-line-figures.woff") format("woff"), url("../et-book/et-book-bold-line-figures/et-book-bold-line-figures.ttf") format("truetype"), url("../et-book/et-book-bold-line-figures/et-book-bold-line-figures.svg#etbookromanosf") format("svg");
     font-weight: bold;
     font-style: normal;
     font-display: swap;
-}
+} */
 
-@font-face {
+/* @font-face {
     font-family: "et-book-roman-old-style";
     src: url("../et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.eot");
-    /*src: url("../et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.eot?#iefix") format("embedded-opentype"), url("../et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.woff") format("woff"), url("../et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.ttf") format("truetype"), url("../et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.svg#etbookromanosf") format("svg");*/
+    src: url("../et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.eot?#iefix") format("embedded-opentype"), url("../et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.woff") format("woff"), url("../et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.ttf") format("truetype"), url("../et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.svg#etbookromanosf") format("svg");
     font-weight: normal;
     font-style: normal;
     font-display: swap;
-}
+} */
 
 :root {
     --primary: #396dff;
@@ -58,8 +58,15 @@
     --xs: 5px;
     --s: 16px;
     --ms: 20px;
-    --m: 24px;
+    --m: 28px;
     --l: 36px;
+
+    --shadow-red:
+    1px 1px 10px rgba(100, 50, 20, 0.07),
+    2px 2px 20px rgba(100, 50, 20, 0.10),
+    4px 4px 27px rgba(100, 50, 20, 0.12),
+    8px 8px 38px rgba(100, 50, 20, 0.15),
+    21px 21px 75px rgba(0, 0, 0, 0.22);
 
     --shadow:
             1px 1px 10px rgba(0, 0, 0, 0.07),
@@ -100,7 +107,7 @@ body {
     /*margin-right: auto;*/
     /*padding-left: 12.5%;*/
     margin: 0;
-    font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+    font-family: "Helvetica", sans-serif;
     background-color: #fffff8;
     color: #111;
     /*max-width: 1400px;*/
@@ -109,6 +116,10 @@ body {
     position: fixed;
     /*-webkit-font-smoothing: antialiased;*/
     /*-moz-osx-font-smoothing: grayscale;*/
+}
+
+.serif {
+    font-family: 'Cormorant Garamond', "Book Antiqua", Georgia, serif;
 }
 
  /*Adds dark mode*/
@@ -465,18 +476,19 @@ label.margin-toggle:not(.sidenote-number) {
 .button-round-S,
 .button-round-M,
 .button-round-L{
-    font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+    pointer-events: auto;
+    font-family: Helvetica, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
     height: fit-content;
     padding: 7px;
     margin: 5px;
-    border: #111111 0.5px solid;
-    background: rgba(255, 255, 255, 0.6);
-    border-radius: 50%;
+    /* border: #111111 0.5px solid; */
+    /* background: rgba(255, 255, 255, 0.6); */
+    /* border-radius: 50%; */
     cursor: pointer;
 }
 .button-dark {
-    background: rgba(17, 17, 17, 0.6);
-    color: white;
+    /* background: rgba(17, 17, 17, 0.6); */
+    /* color: white; */
 }
 
 .button-round-S {
@@ -486,10 +498,10 @@ label.margin-toggle:not(.sidenote-number) {
 
 .button-round-M {
     text-outline: var(--text-outline-L);
-    font-size: var(--ms);
+    font-size: var(--m);
 }
 
 .button-round-L {
     text-outline: var(--text-outline-L);
-    font-size: var(--m);
+    font-size: var(--l);
 }
