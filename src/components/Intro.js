@@ -86,7 +86,10 @@ const Intro = ({bucketName, objectKey}) => {
             <div className='Intro-shader-container'
                  style={{
                      height: isReadMore ? "40vh" : 0,
-                     backgroundImage: imgLoading ? null : 'url(' + imageUrl + ')'
+                     backgroundImage: imgLoading ? null : 'url(' + imageUrl + ')',
+                     borderRadius: imgLoading ? '50%' : '0',
+                    background: imgLoading ? "black" : "none",
+                     filter: imgLoading ? "blur(50px)" : null,
                  }}>
                 {/*<img src={imageUrl} alt='' loading='lazy'/>*/}
                 {/* { !imgLoading?
