@@ -5,6 +5,7 @@ import {
   Routes,
 } from "react-router-dom";
 import MapContainer from "./components/MapContainer";
+import Intro from "./components/Intro";
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
       <Routes>
         <Route
             path="/"
-            element={<><MapContainer/></>}
+            element={<><MapContainer/><Intro/></>}
         />
       </Routes>
     </Router>

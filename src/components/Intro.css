@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap');
+
+.Intro-textbox, .Intro-textbox-sign {
+    font-family: 'Cormorant Garamond', serif;
+    z-index: 999;
+    position: absolute;
+    width: 480px;
+    padding: 50px 30px 5px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: var(--shadow);
+    outline: var(--darkgrey) 1px solid;
+}
+
+@media screen and (max-width: 480px) {
+    .Intro-textbox, .Intro-textbox-sign {
+        scale: 80%;
+        transform-origin: left top;
+    }
+}
+
+.Intro-textbox-sign {
+    width: 360px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 30px 5px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+.Intro-textbox-sign > input {
+    padding: 5px;
+    width: 300px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+}
+.err {
+    font-family: 'Cormorant Garamond', serif;
+    color: brown;
+    font-weight: 600;
+    font-size: 0.9rem;
+    width: 310px;
+    height: 30px;
+    margin: 0;
+    padding: 0;
+}
+
+.Intro-textbox-menu {
+    display: flex;
+    justify-content: center;
+    margin: 30px;
+}
+
+.Intro-textbox-menu-button {
+    width: 50%;
+    text-align: center;
+}
+
+.Intro-textbox-readmore {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.Intro-textbox-capt {
+    font-size: 1.1rem;
+    margin-left: 30px;
+    margin-right: 40px;
+    margin-bottom: 20px;
+
+}
+::-webkit-scrollbar {
+    width: 1px;
+    height: auto;
+}
+
+::-webkit-scrollbar-thumb {
+    background: black;
+}
+
+.Intro-textbox-p {
+    max-height: 500px;
+    color: var(--black);
+    overflow: scroll;
+    transition: height 500ms ease-in-out;
+}
+
+.Intro-textbox-p > p > a {
+    /*text-shadow: var(--text-outline-S);*/
+}
+
+.Intro-textbox-p > p > a:hover {
+    font-style: italic;
+    letter-spacing: 0.7px;
+}
+
+.Intro-textbox-title {
+    margin: 0 auto 30px 30px;
+}
+
+.Intro-textbox-title {
+    font-size: 4rem;
+    color: #211f1f;
+    font-weight: 500;
+    font-style: italic;
+}
+
+/*.Intro-shader-container > iframe {*/
+/*    outline: none;*/
+/*    scale: 120%;*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    opacity: 0.8;*/
+/*}*/
+
+.Intro-shader-container {
+    overflow: hidden;
+    pointer-events: none;
+    margin: 0 auto;
+    width: calc(100% - 60px);
+    max-height: 400px;
+    transition: height 500ms ease-in-out;
+}

@@ -2,6 +2,8 @@ import mapboxgl from 'mapbox-gl';
 import ReactMapGL, { Marker } from "react-map-gl";
 import React, {useEffect, useRef, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
+import axios from "axios";
+import {tsvToArray} from "../helpers";
 
 import 'mapbox-gl/dist/mapbox-gl.css'
 import './MapContainer.css'
@@ -38,33 +40,18 @@ const MapContainer = () => {
     const { search } = useLocation();
     let navigate = useNavigate();
 
-    const tsvToArray = string => {
-        const csvHeader = string.slice(0, string.indexOf("\n")).split("\t");
-        const csvRows = string.slice(string.indexOf("\n") + 1).split("\n");
-
-        const array = csvRows.map(i => {
-            const values = i.split("\t");
-            return csvHeader.reduce((object, header, index) => {
-                object[header] = values[index];
-                return object;
-            }, {});
-        });
-        return array;
-    };
-
     useEffect(() => {
         const getData = async () => {
             try {
-                let response
-                response = await fetch('./images.tsv');
-                let imageData_ = tsvToArray(response);
+                let response = await axios.get('./images.tsv');
+                let imageData_ = tsvToArray(response.data);
+                // let imageData_ = []
                 if (filteredYear !== 0) {
                     imageData_ = imageData_.filter(d => d.year === filteredYear)
                 }
                 setImageData(imageData_);
-                console.log(imageData_);
-                response = fetch('./country-bounding-box.json');
-                setCountryBounds(response);
+                response = await axios.get('./country-bounding-box.json');
+                setCountryBounds(response.data);
                 setError(null);
             } catch (err) {
                 setError(err.message);
@@ -73,7 +60,7 @@ const MapContainer = () => {
                 setLoading(false);
             }
         }
-        getData()
+        // getData()
 
     }, [filteredYear])
 
