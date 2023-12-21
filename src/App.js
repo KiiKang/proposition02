@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import MapContainer from "./components/MapContainer";
 import Intro from "./components/Intro";
+import BlurryBackdrop from "./components/BlurryBackdrop";
 
 function App() {
   return (
@@ -13,8 +14,13 @@ function App() {
       <Routes>
         <Route
             path="/"
-            element={<><MapContainer/><Intro/></>}
+            element={<><MapContainer/><BlurryBackdrop/><Intro/></>}
         />
+      <Route
+          path="/map"
+          element={<><MapContainer/></>}
+      />
+
       </Routes>
     </Router>
   );

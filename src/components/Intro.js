@@ -11,6 +11,7 @@ const Intro = ({bucketName, objectKey}) => {
     const [imageData, setImageData] = useState([]);
     const [imgSelected, setImgSelected] = useState(null);
     const [imgLoading, setImgLoading] = useState(true);
+    const [error, setError] = useState('')
     const [loading, setLoading] = useState(true);
     const [imageUrl, setImageUrl] = useState('');
 
@@ -26,7 +27,7 @@ const Intro = ({bucketName, objectKey}) => {
 
     useEffect(() => {
 
-        const getImage = async (key) => {
+        const getImage = async (imageSelected) => {
             if (loading) return
             console.log(process.env.AWS_ACCESS_KEY_ID)
             AWS.config.update({
@@ -36,23 +37,23 @@ const Intro = ({bucketName, objectKey}) => {
             });
 
             const s3 = new AWS.S3();
-            const bucketName = 'ara-images';
             try {
-                // Get a signed URL for the S3 object
                 const signedUrl = await s3.getSignedUrlPromise('getObject', {
-                    Bucket: bucketName,
-                    Key: key,
-                    Expires: 60, // URL expiration time in seconds
+                    Bucket: 'ara-images',
+                    Key: imgSelected.file_name,
+                    Expires: 60,
                 });
                 setImageUrl(signedUrl);
-            } catch (error) {
-                console.error('Error getting image:', error);
+            } catch (err) {
+                console.error('Error getting image:', err);
+                setError(err);
             } finally {
                 setImgLoading(false);
             }
         };
-        getImage('test.png');
-    }, [imageData]);
+        let imgSelected = imageData[Math.floor(Math.random() * imageData.length)];
+        getImage(imgSelected);
+    }, [imageData, error]);
 
     useEffect(() => {
         const getData = async () => {
@@ -71,24 +72,24 @@ const Intro = ({bucketName, objectKey}) => {
 
     return (
         <div className='Intro-textbox'>
-            <div className='serif Intro-textbox-title '>
+            <div className='Intro-textbox-title '>
                 what do you see?
             </div>
-            <div className='serif Intro-textbox-capt' style={{color: "gray"}}>
-                Click a photo on the map.<br/>
-                Annotate it, responding to the prompt above.<br/>
-                Sign in below to make annotations.<br/><br/>
-                {/* The annotations will be collected as <i>re-index</i>.<br/> */}
-            </div>
-            <div className='Intro-textbox-capt' style={{fontFamily: "Helvetica", fontSize: "0.8rem"}}>
-                *THE ANNOTATION AND SIGN IN IS STILL UNDER CONSTRUCTION.
-            </div>
+            {/*<div className='serif Intro-textbox-capt' style={{color: "gray"}}>*/}
+            {/*    Click a photo on the map.<br/>*/}
+            {/*    Annotate it, responding to the prompt above.<br/>*/}
+            {/*    Sign in below to make annotations.<br/><br/>*/}
+            {/*    /!* The annotations will be collected as <i>re-index</i>.<br/> *!/*/}
+            {/*</div>*/}
+            {/*<div className='Intro-textbox-capt' style={{fontFamily: "Helvetica", fontSize: "0.8rem"}}>*/}
+            {/*    *THE ANNOTATION AND SIGN IN IS STILL UNDER CONSTRUCTION.*/}
+            {/*</div>*/}
             <div className='Intro-shader-container'
                  style={{
                      height: isReadMore ? "40vh" : 0,
                      backgroundImage: imgLoading ? null : 'url(' + imageUrl + ')',
+                     backgroundColor: "black",
                      borderRadius: imgLoading ? '50%' : '0',
-                    background: imgLoading ? "black" : "none",
                      filter: imgLoading ? "blur(50px)" : null,
                  }}>
                 {/*<img src={imageUrl} alt='' loading='lazy'/>*/}
@@ -112,17 +113,16 @@ const Intro = ({bucketName, objectKey}) => {
                 <div className='Intro-textbox-menu'>
                     {/* <div className='Intro-textbox-menu-button button-round-L' onClick={() => navigate("/signup") }>sign up</div> */}
                     {/* <div className='Intro-textbox-menu-button button-round-L' onClick={() => navigate("/login") }>sign in</div> */}
-                    <div className='Intro-textbox-menu-button button-round-M'>sign up</div>
-                    <div className='Intro-textbox-menu-button button-round-M'>sign in</div>
-
+                    <div className='Intro-textbox-menu-button text-3xl'>sign up</div>
+                    <div className='Intro-textbox-menu-button text-3xl'>sign in</div>
                 </div>
             }
-            <div className='serif Intro-textbox-readmore' onClick={toggleReadMore}>
+            <div className='Intro-textbox-readmore leading-5' onClick={toggleReadMore}>
                 <center>read more<br/>
                     ⌄
                 </center>
             </div>
-            <div className='Intro-textbox-p serif'
+            <div className='Intro-textbox-p'
                  style={{
                      // visibility: isReadMore? "hidden": "visible",
                      height: isReadMore ? 0 : '500px'
@@ -163,9 +163,9 @@ const Intro = ({bucketName, objectKey}) => {
                     importance do contemporary acts of reading and interpreting hold?
                     And finally, what other knowledge is being generated by your ‘now action’ of annotating the
                     archive as a means of reindexing the already-generated knowledge?
-                </p>
+                </p><br/>
                 <hr/>
-                <p className='subtitle'>
+                <p className='mt-2 text-xs'>
                     The project was realized thanks to the generous support from <a href='https://canadacouncil.ca/'
                                                                                     target='_blank'
                                                                                     rel='noreferrer'>Canada Council

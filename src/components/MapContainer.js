@@ -1,14 +1,14 @@
 import mapboxgl from 'mapbox-gl';
 import ReactMapGL, { Marker } from "react-map-gl";
 import React, {useEffect, useRef, useState} from "react";
+import AWS from 'aws-sdk';
 import {useLocation, useNavigate} from "react-router-dom";
 import axios from "axios";
 import {tsvToArray} from "../helpers";
 
 import 'mapbox-gl/dist/mapbox-gl.css'
 import './MapContainer.css'
-const MAPBOX_ACCESS_TOKEN = 'pk.eyJ1Ijoid2sxa2FuZyIsImEiOiJjbGl4c2Q2M3IwOWU0M2RxbDBtcXptZzJqIn0.0zFVop4aJdmnT7uEsZN3YQ'
-mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN
 
 const MapContainer = () => {
     /** refs **/
@@ -36,7 +36,7 @@ const MapContainer = () => {
     const [imagePoints, setImagePoints] = useState([]);
     // const [countryData, setCountryData] = useState(null);
     const [countryBounds, setCountryBounds] = useState(null);
-
+    const [imgUrls, setImageUrls] = useState([]);
     const { search } = useLocation();
     let navigate = useNavigate();
 
@@ -61,7 +61,6 @@ const MapContainer = () => {
             }
         }
         // getData()
-
     }, [filteredYear])
 
     useEffect(() => {
@@ -106,6 +105,7 @@ const MapContainer = () => {
     useEffect(() => {
         let regions = []
         let imagePoints_ = []
+
         if (!loading) {
             imageData.forEach(d => {
                 let region = d.region ? d.region : d.country_db
@@ -147,11 +147,12 @@ const MapContainer = () => {
                         "years": years,
                         "region": r,
                         "coor": coor,
-                        "image": images,
+                        "thumbnail_url": getSignedUrl(images[0].file_name),
+                        "image": images
                     })
                 }
+                setImagePoints(imagePoints => [...imagePoints, imagePoints_]);
             })
-            setImagePoints(imagePoints_)
             // const pointSize = 20;
 
             // imagePoints.forEach((d, i) => {
@@ -185,15 +186,34 @@ const MapContainer = () => {
     //     })
     // }
 
+    const getSignedUrl = async (key) => {
+        return
+        AWS.config.update({
+            accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+            secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+            region: 'us-east-1',
+        });
+        const s3 = new AWS.S3();
+        console.log("getting signed url for ", key)
+        try {
+            return await s3.getSignedUrlPromise('getObject', {
+                Bucket: 'ara-images',
+                Key: key,
+                Expires: 60,
+            })
+        } catch(err) {
+            console.error('Error getting image:', err);
+        }
+    }
 
     return (
         <div className="map-container">
             <ReactMapGL
                 initialViewState={viewport}
-                mapStyle='mapbox://styles/wk1kang/cleyy88d2000001nkj1mettoe'
+                mapStyle={process.env.REACT_APP_MAPBOX_STYLE}
                 onViewportChange={(viewport) => setViewport(viewport)}
                 ref={mapRef}
-                mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}
+                mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
             >
                 {
                     imagePoints.map((d, i) => (
@@ -215,11 +235,11 @@ const MapContainer = () => {
                                     })
                                 }}
                         >
-                            <img ref={ img => imagesRef.current[i] = img }
-                                 src={'/images/gl/' + d.image[0].file_name.trim().split('.')[0] + '-gl.jpg'}
-                                 title={d.image[0].region}
-                                 loading="lazy"
-                                 alt=''/>
+                            {/*<img ref={ img => imagesRef.current[i] = img }*/}
+                            {/*     src={d.thumbnail_url}*/}
+                            {/*     title={d.image[0].region}*/}
+                            {/*     loading="lazy"*/}
+                            {/*     alt=''/>*/}
                             {/* <div ref={ label => labelsRef.current[i] = label }
                                  className='country-label'
                                  key={'country-label-' + d.country + '-' + d.region + '-' + d.years.join('_') + '-' + i}
