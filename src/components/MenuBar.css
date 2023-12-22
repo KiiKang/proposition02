@@ -1,0 +1,82 @@
+.MenuBar-Bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.MenuBar-Right {
+    position: absolute;
+    display: flex;
+    transform: translateX(212px);
+    top: 0;
+    right: 0;
+}
+
+.MenuBar-Left {
+    position: absolute;
+    display: flex;
+    transform: translateX(-67%);
+    top: 0;
+    left: 0;
+}
+
+.MenuBar-Left:hover {
+    transform: translateX(0%);
+    transition: transform 500ms ease-in-out;
+}
+
+.MenuBar-Right:hover {
+    transform: translateX(5%);
+    transition: transform 500ms ease-in-out;
+}
+
+.MenuBar-RightLeft{
+    width: 106px;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.MenuBar-RightLeft > div {
+    width: fit-content;
+    white-space: nowrap;
+}
+
+.Filter-Years,
+.MenuBar-Nav{
+    width: 100%;
+    display: flex;
+    margin: 0 auto;
+    justify-content: space-between;
+}
+
+.Filter-Years {
+    max-width: 1200px;
+}
+
+.MenuBar-Countries, .MenuBar-Regions {
+    width: fit-content;
+    align-items: flex-end;
+    justify-content: flex-end;
+    overflow-y: scroll;
+    top: 0;
+    height: calc(100vh - 50px);
+}
+
+.MenuBar-Regions {
+    direction: rtl;
+}
+
+.Filter-Years > a {
+    width: 6%;
+    max-width: 120px;
+    text-align: center;
+    text-shadow: var(--text-outline-L);
+}
+
+.Menubar-Countries > a {
+    text-shadow: var(--text-outline-L);
+}
+.Filter-Country {
+    width: fit-content;
+}

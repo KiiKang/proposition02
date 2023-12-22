@@ -1,7 +1,7 @@
 .map-container{
     width: 100vw;
     height: 100vh;
-    position: relative;
+    position: fixed;
 }
 
 .map-container > * {
@@ -9,6 +9,7 @@
     height: 100vh;
     position: absolute;
 }
+
 .mapboxgl-control-container {
     opacity: 0.25;
     /* visibility: hidden; */
