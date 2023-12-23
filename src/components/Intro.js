@@ -72,18 +72,9 @@ const Intro = ({bucketName, objectKey}) => {
 
     return (
         <div className='Intro-textbox'>
-            <div className='Intro-textbox-title '>
-                what do you see?
+            <div className='Intro-textbox-title text-5xl tracking-tighter text-center underline'>
+                What do you see?
             </div>
-            {/*<div className='serif Intro-textbox-capt' style={{color: "gray"}}>*/}
-            {/*    Click a photo on the map.<br/>*/}
-            {/*    Annotate it, responding to the prompt above.<br/>*/}
-            {/*    Sign in below to make annotations.<br/><br/>*/}
-            {/*    /!* The annotations will be collected as <i>re-index</i>.<br/> *!/*/}
-            {/*</div>*/}
-            {/*<div className='Intro-textbox-capt' style={{fontFamily: "Helvetica", fontSize: "0.8rem"}}>*/}
-            {/*    *THE ANNOTATION AND SIGN IN IS STILL UNDER CONSTRUCTION.*/}
-            {/*</div>*/}
             <div className='Intro-shader-container'
                  style={{
                      height: isReadMore ? "40vh" : 0,
@@ -99,6 +90,15 @@ const Intro = ({bucketName, objectKey}) => {
                         key={imgSelected} alt='' loading='lazy'></img>:null
                 } */}
             </div>
+            {/*<div className='serif Intro-textbox-capt' style={{color: "gray"}}>*/}
+            {/*    Click a photo on the map.<br/>*/}
+            {/*    Annotate it, responding to the prompt above.<br/>*/}
+            {/*    Sign in below to make annotations.<br/><br/>*/}
+            {/*    /!* The annotations will be collected as <i>re-index</i>.<br/> *!/*/}
+            {/*</div>*/}
+            {/*<div className='Intro-textbox-capt' style={{fontFamily: "Helvetica", fontSize: "0.8rem"}}>*/}
+            {/*    *THE ANNOTATION AND SIGN IN IS STILL UNDER CONSTRUCTION.*/}
+            {/*</div>*/}
 
             {/* <div className='Intro-shader-container'
             style={{
@@ -128,10 +128,10 @@ const Intro = ({bucketName, objectKey}) => {
                      height: isReadMore ? 0 : '500px'
                  }}>
                 <p>
-                    <b><i>Archive Reindex Archive</i></b> presents an archival collection of photographic images and
+                    <b>Archive Reindex Archive</b> presents an archival collection of photographic images and
                     captions from National Geographic issues from 1945 to 1959, explorable through a global map.
                     <br/><br/>
-                    <b><i>Archive Reindex Archive</i></b> was conceived by <a href='https://ivettakang.com/'
+                    <b>Archive Reindex Archive</b> was conceived by <a href='https://ivettakang.com/'
                                                                               target='_blank' rel='noreferrer'>Ivetta
                     Sunyoung Kang</a> within continuous scopes of their research-based practice, continued from
                     Kang’s project,
@@ -152,7 +152,7 @@ const Intro = ({bucketName, objectKey}) => {
                     bring different connotations with the controversial nuance of the original caption given as a
                     holistic reading of the archive.
                     <br/><br/>
-                    <b><i>Archive Reindex Archive</i></b> strives to collect contemporary annotations that sometimes
+                    <b>Archive Reindex Archive</b> strives to collect contemporary annotations that sometimes
                     correct, question, and confront certain uncomfortable gazes the magazine often advocates and
                     evokes.
                     <br/><br/>

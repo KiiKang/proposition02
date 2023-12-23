@@ -240,13 +240,13 @@ const MapContainer = () => {
                             {/*     title={d.image[0].region}*/}
                             {/*     loading="lazy"*/}
                             {/*     alt=''/>*/}
-                            {/* <div ref={ label => labelsRef.current[i] = label }
+                            <div ref={ label => labelsRef.current[i] = label }
                                  className='country-label'
                                  key={'country-label-' + d.country + '-' + d.region + '-' + d.years.join('_') + '-' + i}
                                  id={'country-label-' + d.country + '-' + d.region + '-' + d.years.join('_') + '-' + i}
-                            > */}
-                            {/* {d.image[Math.floor(Math.random(0,d.image.length))].caption.split(" ").filter(d=>d.length > 4)[0].split("—")[0].split(",")[0]} */}
-                            {/* </div> */}
+                            >
+                             {d.image[Math.floor(Math.random(0,d.image.length))].caption.split(" ").filter(d=>d.length > 4)[0].split("—")[0].split(",")[0]}
+                             </div>
                             {/*{*/}
                             {/*    selectedImagePoints[0] != false ?*/}
                             {/*        <ImagePreview key={'image-card-' + selectedImagePoints[0].country + '-' + 1}*/}
