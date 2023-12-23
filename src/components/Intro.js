@@ -29,7 +29,9 @@ const Intro = ({bucketName, objectKey}) => {
 
         const getImage = async (imageSelected) => {
             if (loading) return
-            console.log(process.env.AWS_ACCESS_KEY_ID)
+            if (process.env.REACT_APP_AWS_ACCESS_KEY_ID === undefined) return
+            if (process.env.REACT_APP_AWS_SECRET_ACCESS_KEY === undefined) return
+
             AWS.config.update({
                 accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
                 secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
