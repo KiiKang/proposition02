@@ -79,8 +79,8 @@ const Intro = ({bucketName, objectKey}) => {
 
     return (
         <div className='Intro-textbox'>
-            <div className='Intro-textbox-title text-5xl tracking-tighter text-center underline'>
-                What do you see?
+            <div className='Intro-textbox-title text-5xl tracking-tighter'>
+                <p>what do you see?</p>
             </div>
             <div className='Intro-shader-container'
                  style={{
@@ -124,10 +124,9 @@ const Intro = ({bucketName, objectKey}) => {
                     <div className='Intro-textbox-menu-button text-3xl'>sign in</div>
                 </div>
             }
-            <div className='Intro-textbox-readmore leading-5' onClick={toggleReadMore}>
-                <center>read more<br/>
+            <div className='mb-2 leading-5 text-lg text-center cursor-pointer' onClick={toggleReadMore}>
+                    read more<br/>
                     ⌄
-                </center>
             </div>
             <div className='Intro-textbox-p'
                  style={{

@@ -10,9 +10,9 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.5);
     box-shadow: var(--shadow);
-    /*outline: var(--darkgrey) 1px solid;*/
+    outline: #2a2525 4px solid;
 }
 
 @media screen and (max-width: 480px) {
@@ -59,11 +59,6 @@
     text-align: center;
 }
 
-.Intro-textbox-readmore {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-    cursor: pointer;
-}
 
 .Intro-textbox-capt {
     font-size: 1.1rem;
@@ -98,12 +93,15 @@
 }
 
 .Intro-textbox-title {
+    /*font-family: 'Cormorant Garamond', serif;*/
+    /*font-weight: 500;*/
     margin: 30px;
     padding: 0;
     /*font-size: 3.8rem;*/
     color: #211f1f;
     /*font-weight: lighter;*/
-    /*font-style: italic;*/
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
 }
 
 /*.Intro-shader-container > iframe {*/
@@ -121,4 +119,5 @@
     width: calc(100% - 60px);
     /*max-height: 400px;*/
     transition: height 500ms ease-in-out;
+    box-shadow: var(--shadow);
 }
