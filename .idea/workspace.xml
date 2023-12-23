@@ -3,11 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="1449800b-bf37-4035-bba0-61bd282dc759" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/BlurryBackdrop.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/BlurryBackdrop.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Intro.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Intro.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Intro.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Intro.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/MapContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/MapContainer.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,8 +13,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="CSS File" />
         <option value="JavaScript File" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
