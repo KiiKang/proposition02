@@ -2,19 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1449800b-bf37-4035-bba0-61bd282dc759" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/amplify/#current-cloud-backend/amplify-meta.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/amplify/#current-cloud-backend/awscloudformation/build/root-cloudformation-stack.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/amplify/#current-cloud-backend/tags.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/amplify/.config/project-config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/amplify/backend/amplify-meta.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/amplify/backend/awscloudformation/build/root-cloudformation-stack.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/amplify/backend/backend-config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/amplify/backend/tags.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/amplify/backend/types/amplify-dependent-resources-ref.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/amplify/cli.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/amplify/team-provider-info.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Intro.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Intro.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Intro.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Intro.js" afterDir="false" />
