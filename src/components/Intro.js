@@ -31,9 +31,9 @@ const Intro = ({bucketName, objectKey}) => {
         const getImage = async (imageSelected) => {
             if (loading) return
             const REACT_APP_AWS_ACCESS_KEY_ID = ssm.StringParameter.valueForStringParameter(
-                this, 'REACT_APP_AWS_ACCESS_KEY_ID');
+                this, '/amplify/d1ctorrb5zbxgm/staging/REACT_APP_AWS_ACCESS_KEY_ID');
             const REACT_APP_AWS_SECRET_ACCESS_KEY = ssm.StringParameter.valueForStringParameter(
-                this, 'REACT_APP_AWS_SECRET_ACCESS_KEY')
+                this, '/amplify/d1ctorrb5zbxgm/staging/REACT_APP_AWS_SECRET_ACCESS_KEY')
             if (REACT_APP_AWS_ACCESS_KEY_ID === undefined) {
                 console.log("WARNING: AWS_ACCESS_KEY_ID not found")
                 return
