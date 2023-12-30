@@ -26,20 +26,31 @@ const Intro = ({bucketName, objectKey}) => {
     }
 
     useEffect(() => {
+        const ssm = new AWS.SSM({
+            region: 'us-east-1'
+        });
+        ssm.getParameter({
+            Name: '/amplify/d1ctorrb5zbxgm/staging/AMPLIFY_REACT_APP_AWS_SECRET_ACCESS_KEY\n',
+            WithDecryption: true
+        }).promise()
+            .then(data => {
+                console.log(data)
+                process.env.secrets = data.Parameter.Value;
+            });
 
         const getImage = async (imageSelected) => {
             if (loading) return
-            if (process.env.secrets.REACT_APP_AWS_ACCESS_KEY_ID === undefined) {
+            if (process.env.secrets.AMPLIFY_REACT_APP_AWS_ACCESS_KEY_ID === undefined) {
                 console.log("WARNING: AWS_ACCESS_KEY_ID not found")
                 return
             }
-            if (process.env.secrets.REACT_APP_AWS_SECRET_ACCESS_KEY === undefined) {
+            if (process.env.secrets.AMPLIFY_REACT_APP_AWS_SECRET_ACCESS_KEY === undefined) {
                 console.log("WARNING: AWS_SECRET_ACCESS_KEY not found")
                 return
             }
             AWS.config.update({
-                accessKeyId: process.env.secrets.REACT_APP_AWS_ACCESS_KEY_ID,
-                secretAccessKey: process.env.secrets.REACT_APP_AWS_SECRET_ACCESS_KEY,
+                accessKeyId: process.env.secrets.AMPLIFY_REACT_APP_AWS_ACCESS_KEY_ID,
+                secretAccessKey: process.env.secrets.AMPLIFY_REACT_APP_AWS_SECRET_ACCESS_KEY,
                 region: 'us-east-1',
             });
 
