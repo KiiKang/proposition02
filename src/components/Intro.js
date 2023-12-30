@@ -43,6 +43,7 @@ const Intro = ({bucketName, objectKey}) => {
 
                 const s3 = new AWS.S3();
                 try {
+                    console.log("image selected: ", imageSelected)
                     const signedUrl = await s3.getSignedUrlPromise('getObject', {
                         Bucket: 'ara-images',
                         Key: imageSelected.file_name,
