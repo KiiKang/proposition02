@@ -9,7 +9,7 @@ import {tsvToArray} from "../helpers";
 const Intro = ({bucketName, objectKey}) => {
     const [isReadMore, setIsReadMore] = useState(true);
     const [imageData, setImageData] = useState([]);
-    const [imgSelected, setImgSelected] = useState(null);
+    // const [imgSelected, setImgSelected] = useState(null);
     const [imgLoading, setImgLoading] = useState(true);
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(true);
@@ -27,38 +27,39 @@ const Intro = ({bucketName, objectKey}) => {
 
     useEffect(() => {
         const getImage = async (imageSelected) => {
-            if (loading) return
-            // if (process.env.secrets.AMPLIFY_REACT_APP_AWS_ACCESS_KEY_ID === undefined) {
-            //     console.log("WARNING: AWS_ACCESS_KEY_ID not found")
-            //     return
-            // }
-            // if (process.env.secrets.AMPLIFY_REACT_APP_AWS_SECRET_ACCESS_KEY === undefined) {
-            //     console.log("WARNING: AWS_SECRET_ACCESS_KEY not found")
-            //     return
-            // }
-            AWS.config.update({
-                accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
-                secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
-                region: 'us-east-1',
-            });
-
-            const s3 = new AWS.S3();
-            try {
-                const signedUrl = await s3.getSignedUrlPromise('getObject', {
-                    Bucket: 'ara-images',
-                    Key: imgSelected.file_name,
-                    Expires: 60,
+                // if (process.env.secrets.AMPLIFY_REACT_APP_AWS_ACCESS_KEY_ID === undefined) {
+                //     console.log("WARNING: AWS_ACCESS_KEY_ID not found")
+                //     return
+                // }
+                // if (process.env.secrets.AMPLIFY_REACT_APP_AWS_SECRET_ACCESS_KEY === undefined) {
+                //     console.log("WARNING: AWS_SECRET_ACCESS_KEY not found")
+                //     return
+                // }
+                AWS.config.update({
+                    accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+                    secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+                    region: 'us-east-1',
                 });
-                setImageUrl(signedUrl);
-            } catch (err) {
-                console.error('Error getting image:', err);
-                setError(err);
-            } finally {
-                setImgLoading(false);
+
+                const s3 = new AWS.S3();
+                try {
+                    const signedUrl = await s3.getSignedUrlPromise('getObject', {
+                        Bucket: 'ara-images',
+                        Key: imageSelected.file_name,
+                        Expires: 60,
+                    });
+                    setImageUrl(signedUrl);
+                } catch (err) {
+                    console.error('Error getting image:', err);
+                    setError(err);
+                } finally {
+                    setImgLoading(false);
+                }
             }
-        };
-        let imgSelected = imageData[Math.floor(Math.random() * imageData.length)];
-        getImage(imgSelected);
+        if (!loading) {
+            let imgSelected = imageData[Math.floor(Math.random() * imageData.length)];
+            getImage(imgSelected);
+        }
     }, [imageData, error]);
 
     useEffect(() => {
