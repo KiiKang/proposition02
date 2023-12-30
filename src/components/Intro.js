@@ -38,8 +38,8 @@ const Intro = ({bucketName, objectKey}) => {
                 return
             }
             AWS.config.update({
-                accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
-                secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+                accessKeyId: process.env.secrets.REACT_APP_AWS_ACCESS_KEY_ID,
+                secretAccessKey: process.env.secrets.REACT_APP_AWS_SECRET_ACCESS_KEY,
                 region: 'us-east-1',
             });
 
