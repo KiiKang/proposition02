@@ -12,7 +12,7 @@ const Intro = ({bucketName, objectKey}) => {
     // const [imgSelected, setImgSelected] = useState(null);
     const [imgLoading, setImgLoading] = useState(true);
     const [error, setError] = useState('')
-    const [loading, setLoading] = useState(true);
+    // const [loading, setLoading] = useState(true);
     const [imageUrl, setImageUrl] = useState('');
 
     const toggleReadMore = () => {
@@ -56,11 +56,11 @@ const Intro = ({bucketName, objectKey}) => {
                     setImgLoading(false);
                 }
             }
-        if (imageData) {
+        if (imageData.length !== 0) {
             let imgSelected = imageData[Math.floor(Math.random() * imageData.length)];
             getImage(imgSelected);
         }
-    }, [imageData, error]);
+    }, [imageData]);
 
     useEffect(() => {
         const getData = async () => {
@@ -70,9 +70,10 @@ const Intro = ({bucketName, objectKey}) => {
             } catch (err) {
                 console.log(err.message);
                 setImageData(null);
-            } finally {
-                setLoading(false);
             }
+            // finally {
+            //     setLoading(false);
+            // }
         }
         getData()
     }, []);
