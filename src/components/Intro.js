@@ -56,7 +56,7 @@ const Intro = ({bucketName, objectKey}) => {
                     setImgLoading(false);
                 }
             }
-        if (!loading) {
+        if (imageData) {
             let imgSelected = imageData[Math.floor(Math.random() * imageData.length)];
             getImage(imgSelected);
         }
