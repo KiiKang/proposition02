@@ -106,14 +106,14 @@ const MapContainer = () => {
         let imagePoints_ = []
         if (imageData.length !== 0) {
             imageData.forEach(d => {
-                let region = d.region ? d.region : d.country_db
+                let region = d.region_en ? d.region_en : d.country_db
                 regions.push(region)
             })
             regions = [...new Set(regions)]
             for (const r of regions) {
                 let imageDatum = []
                 imageData.forEach(i => {
-                    let region = i.region ? i.region : i.country_db
+                    let region = i.region_en ? i.region_en : i.country_db
                     if (region === r) imageDatum.push(i)
                 })
                 let images = []
@@ -123,7 +123,7 @@ const MapContainer = () => {
                         "file_name": i.file_name,
                         "year": i.year,
                         "caption": i.caption_title,
-                        "region": i.region ? i.region + ', ' + i.country_db: i.country_db
+                        "region": i.region_en ? i.region_en + ', ' + i.country_db: i.country_db
                     })
                     years.push(i.year)
                 })
@@ -131,14 +131,14 @@ const MapContainer = () => {
 
                 let coor
                 let i = imageDatum[0]
-                if (i.longitude && i.latitude) {
+                if (i["longitude"] && i["latitude"]) {
                     coor = [parseFloat(i.longitude), parseFloat(i.latitude)]
                 }
                 // else {
                 //     const countryMatched = countryData.features.filter(d => d.properties.COUNTRY === i.country_db );
                 //     coor = countryMatched != false ? [countryMatched[0].geometry.coordinates[0], countryMatched[0].geometry.coordinates[1]]: null
                 // }
-                if (coor !== undefined) {
+                if (coor !== undefined && !isNaN(coor[0]) && !isNaN(coor[1])) {
                     imagePoints_.push({
                         "country_custom": i.country,
                         "country": i.country_db,
@@ -205,7 +205,7 @@ const MapContainer = () => {
                                 onClick={()=> {
                                     navigate({
                                         pathname: '/images',
-                                        search: 'region=' + d.region
+                                        search: 'region=' + d.region_en
                                     })
                                     mapRef.current.flyTo({
                                         center: d.coor,
@@ -217,13 +217,13 @@ const MapContainer = () => {
                         >
                             <img ref={ img => imagesRef.current[i] = img }
                                  key={"thumbnail-" + d.region}
-                                 title={d.region}
+                                 title={d.region === d.country ? d.country : d.region + ", " + d.country}
                                  loading="lazy"
                                  alt=''
                             />
                             {/*<div className='country-label'*/}
                             {/*     key={'country-label-' + d.country + '-' + d.region + '-' + d.years.join('_') + '-' + i}*/}
-                            {/*     id={'country-label-' + d.country + '-' + d.region + '-' + d.years.join('_') + '-' + i}*/}
+                            {/*     id={'country-label-' + d.country + '-' + d.region_en + '-' + d.years.join('_') + '-' + i}*/}
                             {/*>*/}
                             {/* {d.image[Math.floor(Math.random(0,d.image.length))].caption.split(" ").filter(d=>d.length > 4)[0].split("—")[0].split(",")[0]}*/}
                             {/* </div>*/}
