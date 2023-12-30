@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import AWS from 'aws-sdk';
-import * as ssm from 'aws-cdk-lib/aws-ssm';
 import './Intro.css'
 // import {useNavigate} from "react-router-dom";
 import Cookies from 'js-cookie';
@@ -30,21 +29,17 @@ const Intro = ({bucketName, objectKey}) => {
 
         const getImage = async (imageSelected) => {
             if (loading) return
-            const REACT_APP_AWS_ACCESS_KEY_ID = ssm.StringParameter.valueForStringParameter(
-                this, '/amplify/d1ctorrb5zbxgm/staging/REACT_APP_AWS_ACCESS_KEY_ID');
-            const REACT_APP_AWS_SECRET_ACCESS_KEY = ssm.StringParameter.valueForStringParameter(
-                this, '/amplify/d1ctorrb5zbxgm/staging/REACT_APP_AWS_SECRET_ACCESS_KEY')
-            if (REACT_APP_AWS_ACCESS_KEY_ID === undefined) {
+            if (process.env.secrets.REACT_APP_AWS_ACCESS_KEY_ID === undefined) {
                 console.log("WARNING: AWS_ACCESS_KEY_ID not found")
                 return
             }
-            if (REACT_APP_AWS_SECRET_ACCESS_KEY === undefined) {
+            if (process.env.secrets.REACT_APP_AWS_SECRET_ACCESS_KEY === undefined) {
                 console.log("WARNING: AWS_SECRET_ACCESS_KEY not found")
                 return
             }
             AWS.config.update({
-                accessKeyId: REACT_APP_AWS_ACCESS_KEY_ID,
-                secretAccessKey: REACT_APP_AWS_SECRET_ACCESS_KEY,
+                accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+                secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
                 region: 'us-east-1',
             });
 
