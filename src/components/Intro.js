@@ -26,7 +26,7 @@ const Intro = ({bucketName, objectKey}) => {
     }
 
     useEffect(() => {
-        const getImage = async (imageSelected) => {
+        const getImage = async (file_name) => {
                 // if (process.env.secrets.AMPLIFY_REACT_APP_AWS_ACCESS_KEY_ID === undefined) {
                 //     console.log("WARNING: AWS_ACCESS_KEY_ID not found")
                 //     return
@@ -43,10 +43,10 @@ const Intro = ({bucketName, objectKey}) => {
 
                 const s3 = new AWS.S3();
                 try {
-                    console.log("image selected: ", imageSelected)
+                    console.log("image selected: ", file_name)
                     const signedUrl = await s3.getSignedUrlPromise('getObject', {
                         Bucket: 'ara-images',
-                        Key: imageSelected.file_name,
+                        Key: file_name,
                         Expires: 60,
                     });
                     setImageUrl(signedUrl);
@@ -59,7 +59,7 @@ const Intro = ({bucketName, objectKey}) => {
             }
         if (imageData.length !== 0) {
             let imgSelected = imageData[Math.floor(Math.random() * imageData.length)];
-            getImage(imgSelected);
+            if (imgSelected.file_name !== undefined) getImage(imgSelected.file_name);
         }
     }, [imageData]);
 

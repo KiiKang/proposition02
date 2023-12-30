@@ -7,7 +7,7 @@
 .MenuBar-Right {
     position: absolute;
     display: flex;
-    transform: translateX(212px);
+    transform: translateX(250px);
     top: 0;
     right: 0;
 }

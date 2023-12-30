@@ -8,6 +8,7 @@ import MapContainer from "./components/MapContainer";
 import Intro from "./components/Intro";
 import BlurryBackdrop from "./components/BlurryBackdrop";
 import MenuBar from "./components/MenuBar";
+import Filters from "./components/Filters";
 
 function App() {
   return (
@@ -15,11 +16,11 @@ function App() {
       <Routes>
         <Route
             path="/"
-            element={<><MapContainer/><BlurryBackdrop/><MenuBar/><Intro/></>}
+            element={<><MapContainer/><Filters/><BlurryBackdrop/><MenuBar/><Intro/></>}
         />
       <Route
           path="/map"
-          element={<><MapContainer/><MenuBar/></>}
+          element={<><MapContainer/><Filters/><MenuBar/></>}
       />
       </Routes>
     </Router>
