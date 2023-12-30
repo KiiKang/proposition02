@@ -1,14 +1,13 @@
 import './App.css';
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-} from "react-router-dom";
-import MapContainer from "./components/MapContainer";
-import Intro from "./components/Intro";
-import BlurryBackdrop from "./components/BlurryBackdrop";
-import MenuBar from "./components/MenuBar";
-import Filters from "./components/Filters";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import React, { Suspense, lazy } from 'react';
+
+// https://legacy.reactjs.org/docs/code-splitting.html#route-based-code-splitting
+const MapContainer = lazy(() => import('./components/MapContainer'))
+const Intro = lazy(() => import('./components/Intro'))
+const BlurryBackdrop = lazy(() => import('./components/BlurryBackdrop'))
+const MenuBar = lazy(() => import('./components/MenuBar'))
+const Filters = lazy(() => import('./components/Filters'))
 
 function App() {
   return (
