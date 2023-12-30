@@ -13,7 +13,7 @@ mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN
 const MapContainer = () => {
     /** refs **/
     const mapRef = useRef(null);
-    const labelsRef = useRef([]);
+    // const labelsRef = useRef([]);
     const imagesRef = useRef([]);
     /** states-map **/
     let viewport_init = {
@@ -32,11 +32,10 @@ const MapContainer = () => {
     /** states-data **/
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [imageData, setImageData] = useState(null);
+    const [imageData, setImageData] = useState([]);
     const [imagePoints, setImagePoints] = useState([]);
     // const [countryData, setCountryData] = useState(null);
     const [countryBounds, setCountryBounds] = useState(null);
-    const [imgUrls, setImageUrls] = useState([]);
     const { search } = useLocation();
     let navigate = useNavigate();
 
@@ -54,13 +53,13 @@ const MapContainer = () => {
                 setCountryBounds(response.data);
                 setError(null);
             } catch (err) {
-                setError(err.message);
-                setImageData(null);
+                console.log(err.message);
+                // setImageData(null);
             } finally {
                 setLoading(false);
             }
         }
-        // getData()
+        getData()
     }, [filteredYear])
 
     useEffect(() => {
@@ -105,14 +104,13 @@ const MapContainer = () => {
     useEffect(() => {
         let regions = []
         let imagePoints_ = []
-
-        if (!loading) {
+        if (imageData.length !== 0) {
             imageData.forEach(d => {
                 let region = d.region ? d.region : d.country_db
                 regions.push(region)
             })
             regions = [...new Set(regions)]
-            regions.forEach(r => {
+            for (const r of regions) {
                 let imageDatum = []
                 imageData.forEach(i => {
                     let region = i.region ? i.region : i.country_db
@@ -140,71 +138,53 @@ const MapContainer = () => {
                 //     const countryMatched = countryData.features.filter(d => d.properties.COUNTRY === i.country_db );
                 //     coor = countryMatched != false ? [countryMatched[0].geometry.coordinates[0], countryMatched[0].geometry.coordinates[1]]: null
                 // }
-                if (coor) {
+                if (coor !== undefined) {
                     imagePoints_.push({
                         "country_custom": i.country,
                         "country": i.country_db,
                         "years": years,
                         "region": r,
                         "coor": coor,
-                        "thumbnail_url": getSignedUrl(images[0].file_name),
                         "image": images
                     })
                 }
-                setImagePoints(imagePoints => [...imagePoints, imagePoints_]);
-            })
-            // const pointSize = 20;
-
-            // imagePoints.forEach((d, i) => {
-            //     console.log(map.current)
-            //     const root = createRoot(map.current);
-            //     root.render(<div className='country-markers' />);
-            //     if (d.coor) new mapboxgl.Marker(root).setLngLat(d.coor).addTo(map.current);
-            // })
-
-            // imagePoints.forEach((d, i) => {
-            //         axios.get('/images/gl/' + d.image[0].file_name.trim().split('.')[0] + '-gl.jpg')
-            //             .then(imagesRef.current[i].style.visibility = "visible")
-            //
-            //     }
-            // )
-
-            // imagesRef.current.forEach((d, i) => {
-            //         axios.get('/images/gl/' + imagePoints[i].image[0].file_name.trim().split('.')[0] + '-gl.jpg')
-            //             .then(d.style.visibility = "visible")
-            //     }
-            // )
+            }
         }
-    }, [filteredYear])
-    // if (filteredCountry) {
-    //     labelsRef.current.forEach(l => {
-    //         if (l.id.split('-')[2] === filteredCountry) {
-    //             l.style.filter = 'blur(0)'
-    //         } else {
-    //             l.style.filter = 'blur(3px)'
-    //         }
-    //     })
-    // }
+        setImagePoints(imagePoints_)
+    }, [imageData, filteredYear])
 
-    const getSignedUrl = async (key) => {
-        return
-        AWS.config.update({
-            accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
-            secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
-            region: 'us-east-1',
-        });
-        const s3 = new AWS.S3();
-        console.log("getting signed url for ", key)
-        try {
-            return await s3.getSignedUrlPromise('getObject', {
-                Bucket: 'ara-images',
-                Key: key,
-                Expires: 60,
-            })
-        } catch(err) {
-            console.error('Error getting image:', err);
+    // useEffect(() => {
+    //
+    // }, [imagePoints])
+
+
+    useEffect(() => {
+        const getSignedUrl = async (file_name, i) => {
+            const s3 = new AWS.S3();
+            // console.log("getting signed url for", file_name)
+            try {
+                const signedUrl = await s3.getSignedUrlPromise('getObject', {
+                    Bucket: 'ara-images',
+                    Key: file_name,
+                    Expires: 60,
+                })
+                imagesRef.current[i].src = signedUrl
+            } catch(err) {
+                console.error('Error getting image:', err);
+            }
         }
-    }
+
+        if (imagePoints.length !== 0) {
+            AWS.config.update({
+                accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+                secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+                region: 'us-east-1',
+            });
+            imagePoints.forEach((d, i) => {
+                getSignedUrl(d.image[0].file_name, i)
+            })
+        }
+    }, [imagePoints])
 
     return (
         <div className="map-container">
@@ -235,44 +215,21 @@ const MapContainer = () => {
                                     })
                                 }}
                         >
-                            {/*<img ref={ img => imagesRef.current[i] = img }*/}
-                            {/*     src={d.thumbnail_url}*/}
-                            {/*     title={d.image[0].region}*/}
-                            {/*     loading="lazy"*/}
-                            {/*     alt=''/>*/}
-                            <div ref={ label => labelsRef.current[i] = label }
-                                 className='country-label'
-                                 key={'country-label-' + d.country + '-' + d.region + '-' + d.years.join('_') + '-' + i}
-                                 id={'country-label-' + d.country + '-' + d.region + '-' + d.years.join('_') + '-' + i}
-                            >
-                             {d.image[Math.floor(Math.random(0,d.image.length))].caption.split(" ").filter(d=>d.length > 4)[0].split("—")[0].split(",")[0]}
-                             </div>
-                            {/*{*/}
-                            {/*    selectedImagePoints[0] != false ?*/}
-                            {/*        <ImagePreview key={'image-card-' + selectedImagePoints[0].country + '-' + 1}*/}
-                            {/*                      image={selectedImagePoints[0].images[0]}*/}
-                            {/*                      index={1}*/}
-                            {/*                      imageCount={selectedImagePoints[0].images.length}*/}
-                            {/*                      country={selectedImagePoints[0].country}*/}
-                            {/*        />*/}
-                            {/*        : null*/}
-                            {/*}*/}
+                            <img ref={ img => imagesRef.current[i] = img }
+                                 key={"thumbnail-" + d.region}
+                                 title={d.region}
+                                 loading="lazy"
+                                 alt=''
+                            />
+                            {/*<div className='country-label'*/}
+                            {/*     key={'country-label-' + d.country + '-' + d.region + '-' + d.years.join('_') + '-' + i}*/}
+                            {/*     id={'country-label-' + d.country + '-' + d.region + '-' + d.years.join('_') + '-' + i}*/}
+                            {/*>*/}
+                            {/* {d.image[Math.floor(Math.random(0,d.image.length))].caption.split(" ").filter(d=>d.length > 4)[0].split("—")[0].split(",")[0]}*/}
+                            {/* </div>*/}
                         </Marker>
                     ))
                 }
-                {/*<Marker*/}
-                {/*    className='country-markers'*/}
-                {/*    latitude={37}*/}
-                {/*    longitude={126}*/}
-                {/*    onClick={() => navigate('/seoul!')}*/}
-                {/*>*/}
-                {/*    <img*/}
-                {/*        style={{ height: 50, width: 50 }}*/}
-                {/*        src="https://cdn-icons-png.flaticon.com/512/2838/2838912.png"*/}
-                {/*    />*/}
-                {/*</Marker>*/}
-
-                {/*<Marker coordinates={coordinates} className={className}>*/}
             </ReactMapGL>
         </div>
     );

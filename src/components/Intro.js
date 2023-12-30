@@ -27,20 +27,11 @@ const Intro = ({bucketName, objectKey}) => {
 
     useEffect(() => {
         const getImage = async (file_name) => {
-                // if (process.env.secrets.AMPLIFY_REACT_APP_AWS_ACCESS_KEY_ID === undefined) {
-                //     console.log("WARNING: AWS_ACCESS_KEY_ID not found")
-                //     return
-                // }
-                // if (process.env.secrets.AMPLIFY_REACT_APP_AWS_SECRET_ACCESS_KEY === undefined) {
-                //     console.log("WARNING: AWS_SECRET_ACCESS_KEY not found")
-                //     return
-                // }
                 AWS.config.update({
                     accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
                     secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
                     region: 'us-east-1',
                 });
-
                 const s3 = new AWS.S3();
                 try {
                     console.log("image selected: ", file_name)
@@ -61,7 +52,7 @@ const Intro = ({bucketName, objectKey}) => {
             let imgSelected = imageData[Math.floor(Math.random() * imageData.length)];
             if (imgSelected.file_name !== undefined) getImage(imgSelected.file_name);
         }
-    }, [imageData]);
+    }, [imageData, error]);
 
     useEffect(() => {
         const getData = async () => {
