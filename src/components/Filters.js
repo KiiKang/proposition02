@@ -44,7 +44,8 @@ const Filters = () => {
     // let regions_set = []
     if(!loading) {
         imageData.forEach(d => {
-            if (d.country_db) countries.push(d.country_db)
+            // TODO: multiple countries
+            if (d.country_db && !d.country_db.includes("&")) countries.push(d.country_db)
             // let region = d.region ? d.region : d.country_db
             // regions.push(region)
         })

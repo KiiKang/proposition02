@@ -21,6 +21,14 @@ function App() {
           path="/map"
           element={<><MapContainer/><Filters/><MenuBar/></>}
       />
+      <Route
+          path="/filter"
+          element={<><MapContainer/><Filters/><MenuBar/></>}
+      />
+      <Route
+          path="/images"
+          element={<><MapContainer/><Filters/><BlurryBackdrop/><MenuBar/></>}
+      />
       </Routes>
     </Router>
   );

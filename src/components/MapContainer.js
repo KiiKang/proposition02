@@ -1,17 +1,20 @@
 import mapboxgl from 'mapbox-gl';
-import ReactMapGL, { Marker } from "react-map-gl";
+import ReactMapGL from "react-map-gl";
 import React, {useEffect, useRef, useState} from "react";
 import AWS from 'aws-sdk';
 import {useLocation, useNavigate} from "react-router-dom";
 import axios from "axios";
 import {tsvToArray} from "../helpers";
-
+import {Marker} from "react-map-gl";
 import 'mapbox-gl/dist/mapbox-gl.css'
 import './MapContainer.css'
+
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN
 
 const MapContainer = () => {
     /** refs **/
+    const mapContainer = useRef()
+
     const mapRef = useRef(null);
     // const labelsRef = useRef([]);
     const imagesRef = useRef([]);
@@ -163,12 +166,13 @@ const MapContainer = () => {
             const s3 = new AWS.S3();
             // console.log("getting signed url for", file_name)
             try {
-                const signedUrl = await s3.getSignedUrlPromise('getObject', {
+                imagesRef.current[i].src = await s3.getSignedUrlPromise('getObject', {
                     Bucket: 'ara-images',
                     Key: file_name,
                     Expires: 60,
                 })
-                imagesRef.current[i].src = signedUrl
+                // imagesRef.current[i].url = signedUrl
+
             } catch(err) {
                 console.error('Error getting image:', err);
             }
@@ -186,15 +190,43 @@ const MapContainer = () => {
         }
     }, [imagePoints])
 
+    // const addSources = () => {
+    //     if (mapRef.current) {
+    //         mapRef.current.addSource("mapbox-dem", {
+    //             type: "raster-dem",
+    //             url: "mapbox://mapbox.mapbox-terrain-dem-v1",
+    //             tileSize: 512,
+    //             maxZoom: 16,
+    //         })
+    //     }
+    // }
+
+    // useEffect(() => {
+    //     if (mapRef.current !== undefined) {
+    //         addSources()
+    //     }
+    // }, [])
+
+    // const coorToBox = (coor, w=1, h=1) => {
+    //     return [
+    //         [coor[0] + w, coor[1] + h],
+    //         [coor[0], coor[1] + h],
+    //         [coor[0], coor[1]],
+    //         [coor[0] + w, coor[1]]
+    //     ]
+    // }
+
     return (
-        <div className="map-container">
+        <div className="map-container" ref={mapContainer}>
             <ReactMapGL
+                ref={mapRef}
                 initialViewState={viewport}
                 mapStyle={process.env.REACT_APP_MAPBOX_STYLE}
                 onViewportChange={(viewport) => setViewport(viewport)}
-                ref={mapRef}
                 mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
             >
+
+
                 {
                     imagePoints.map((d, i) => (
                         <Marker longitude={d.coor[0]} latitude={d.coor[1]}
@@ -205,7 +237,7 @@ const MapContainer = () => {
                                 onClick={()=> {
                                     navigate({
                                         pathname: '/images',
-                                        search: 'region=' + d.region_en
+                                        search: 'region=' + d.region
                                     })
                                     mapRef.current.flyTo({
                                         center: d.coor,
