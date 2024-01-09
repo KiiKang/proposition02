@@ -11,7 +11,7 @@ import './MapContainer.css'
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN
 
-const MapContainer = () => {
+const MapContainer = (props) => {
     /** refs **/
     const mapContainer = useRef()
 
@@ -74,16 +74,17 @@ const MapContainer = () => {
             if (query === 'year') {
                 setFilteredYear(parseInt(value));
             }
-                // else if (query === 'country') {
-                //     setFilteredCountry(value.replace('%20', ' '));
-                //     let bounds = Object.values(countryBounds).filter(d => d[0] === value.replace('%20', ' '))[0][1];
-                //     // TODO: make exceptions for when the country not in the db is selected
-                //     if (bounds) {
-                //         mapRef.current.fitBounds([[bounds[0], bounds[1]], [bounds[2], bounds[3]]], {
-                //             duration: 10000
-                //         })
-                //     }
-            // }
+            else if (query === 'country') {
+                setFilteredCountry(value.replace('%20', ' '));
+                let bounds = Object.values(countryBounds).filter(d => d[0] === value.replace('%20', ' '))
+                // TODO: make exceptions for when the country not in the db is selected
+                if (bounds.length !== 0) {
+                    bounds = bounds[0][1];
+                    mapRef.current.fitBounds([[bounds[0], bounds[1]], [bounds[2], bounds[3]]], {
+                        duration: 10000
+                    })
+                }
+            }
             else {
                 setFilteredCountry(null);
                 setFilteredYear(0);
@@ -178,7 +179,7 @@ const MapContainer = () => {
             }
         }
 
-        if (imagePoints.length !== 0) {
+        if (imagePoints.length !== 0 && props.displayImages === 'true') {
             AWS.config.update({
                 accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
                 secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
@@ -188,7 +189,7 @@ const MapContainer = () => {
                 getSignedUrl(d.image[0].file_name, i)
             })
         }
-    }, [imagePoints])
+    }, [imagePoints, props])
 
     // const addSources = () => {
     //     if (mapRef.current) {
@@ -226,7 +227,6 @@ const MapContainer = () => {
                 mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
             >
 
-
                 {
                     imagePoints.map((d, i) => (
                         <Marker longitude={d.coor[0]} latitude={d.coor[1]}
@@ -251,7 +251,7 @@ const MapContainer = () => {
                                  key={"thumbnail-" + d.region}
                                  title={d.region === d.country ? d.country : d.region + ", " + d.country}
                                  loading="lazy"
-                                 alt=''
+                                 alt=""
                             />
                             {/*<div className='country-label'*/}
                             {/*     key={'country-label-' + d.country + '-' + d.region + '-' + d.years.join('_') + '-' + i}*/}

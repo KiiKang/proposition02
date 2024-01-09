@@ -1,0 +1,114 @@
+.image-card {
+    position: fixed;
+    top: 50%;
+    display:flex;
+    justify-content: center;
+    max-width: fit-content;
+    max-height: 98vh;
+    /* display: inline-flex; */
+    flex-direction: column;
+    /*border: #9a9a9a solid 1px;*/
+    transform: translate(-50%, -50%);
+    /*transform: translate(-50%, -50%);*/
+    z-index: 999;
+    /*transition: 300ms ease-in-out;*/
+    pointer-events: none;
+}
+
+.image-container {
+    margin: 0 auto;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    pointer-events: auto;
+    object-fit: fill;
+    /*max-height: 800px;*/
+}
+
+.image-card-description, .image-card-year, .image-card-caption {
+    align-self: center;
+    min-width: 400px;
+    max-width: 100%;
+    padding: 10px;
+    text-shadow: var(--text-outline-S);
+    pointer-events: none;
+}
+
+.image-card-description {
+    position: relative;
+    margin-left: 10px;
+}
+.image-card-year {
+    /* text-align: start; */
+    justify-content: start;
+}
+
+.image-card-caption, .image-card-info {
+    margin: 0 auto;
+    text-align: center;
+    font-size: 2.8rem;
+    line-height: 3.0rem;
+}
+
+.image-card-info {
+    text-decoration: underline;
+    text-decoration-skip-ink: none;
+    white-space: nowrap;
+    margin-left: -100%;
+    margin-right: -100%;
+}
+
+.image-card-info:before {
+    content: "";
+    margin-left: -100%;
+}
+.image-card-info:after {
+    content: "";
+    margin-right: -100%;
+}
+
+
+.image-card-description > div {
+    text-align: center;
+    margin: 0 auto;
+    font-size: 1.5rem;
+    line-height: 1.8rem;
+}
+
+
+.image-card-year > p {
+    margin: 0 auto;
+    font-size: 3rem;
+    line-height: 2rem;
+}
+
+.image-container > img {
+    transform: scale(105%);
+    box-shadow: var(--shadow);
+    /* max-width: none; */
+    /* min-width: 100%; */
+    /* min-height: 100%; */
+    /* max-width: auto; */
+    /* object-fit: contain; */
+}
+.image-card-container::-webkit-scrollbar-thumb {
+    background: #414141;
+}
+
+.image-anno {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    /*background: rgba(57, 109, 255, 0.3);*/
+}
+
+.image-anno-content {
+    position: fixed;
+    width: 80px;
+    background: rgba(255, 255, 255, 0.56);
+    border-radius: 5px;
+    pointer-events: auto;
+    transform: translate(-50%, -50%);
+}
