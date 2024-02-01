@@ -3,16 +3,17 @@ import React, {useEffect, useState} from 'react'
 import './MenuBar.css'
 import axios from "axios";
 import {tsvToArray} from "../helpers";
+import {YearContext} from "../context";
 
-const Filters = () => {
+const Filters = (props) => {
     /** states **/
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     const [imageData, setImageData] = useState(null);
     const [hoveredRegion, setHoveredRegion] = useState('Seoul');
     const [filteredCountry, setFilteredCountry] = useState(null);
-    const [filteredRegion, setFilteredRegion] = useState(null);
-
+    // TODO: set year filter to global state
+    const [filteredYear, setFilteredYear] = useState(null);
+    // const [filteredRegion, setFilteredRegion] = useState(null);
     const { search } = useLocation();
 
     useEffect(() => {
@@ -20,9 +21,8 @@ const Filters = () => {
             try {
                 let response = await axios.get('./images.tsv');
                 setImageData(tsvToArray(response.data));
-                setError(null);
             } catch (err) {
-                setError(err.message);
+                console.error(err.message);
                 setImageData(null);
             } finally {
                 setLoading(false);
@@ -30,14 +30,12 @@ const Filters = () => {
                     let [query, value] = search.split("?")[1].split("=")
                     if (query === 'country') {
                         setFilteredCountry(value.replace('%20', ' '));
-                    } else if(query === 'region'){
-                        setFilteredRegion(value.replace('%20', ' '));
                     }
                 }
             }
         }
         getData();
-    }, [search, filteredCountry, filteredRegion])
+    }, [search, filteredCountry])
 
     let countries = [];
     // let regions = [];
@@ -64,11 +62,11 @@ const Filters = () => {
         <div className='MenuBar'>
             <div className='MenuBar-Right '>
                 <div className= 'MenuBar-RightLeft'>
-                    <div className='text-4xl mr-4 cursor-pointer'>
+                    <div className='text-4xl mr-4 cursor-pointer font-sans mt-2'>
                         countries
                     </div>
                 </div>
-                <div className='MenuBar-Countries text-2xl tracking-tighter cursor-pointer pt-1.5'>
+                <div className='MenuBar-Countries text-2xl tracking-tighter cursor-pointer pt-1.5 font-sans'>
                     {
                         countries.map((d, i) => {
                             return (
@@ -89,6 +87,29 @@ const Filters = () => {
                             )})
                     }
                 </div>
+            </div>
+            <div className="fixed bottom-12 flex justify-between left-1/2 min-w-[60%] -translate-x-1/2 justify-self-center m-auto">
+                {
+                    [1945, 1946, 1947, 1948, 1949, 1950].map((d) => {
+                        return <div
+                            className='text-3xl cursor-pointer font-sans hover:underline'
+                            style={{
+                                opacity: filteredYear === null ? 1 : d == filteredYear ? 1 : 0.2
+                            }}
+                            onClick={() => {
+                                if (d == filteredYear) {
+                                    setFilteredYear(null)
+                                    props.onYearChange(null)
+                                }
+                                else {
+                                    setFilteredYear(d)
+                                    props.onYearChange(d)
+                                }
+                            }
+                            }
+                        >{d}</div>
+                    })
+                }
             </div>
         </div>
     )

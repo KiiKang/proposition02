@@ -38,41 +38,24 @@
     position: relative;
     margin-left: 10px;
 }
-.image-card-year {
-    /* text-align: start; */
-    justify-content: start;
-}
 
 .image-card-caption, .image-card-info {
     margin: 0 auto;
     text-align: center;
-    font-size: 2.8rem;
-    line-height: 3.0rem;
 }
 
 .image-card-info {
     text-decoration: underline;
+    text-shadow: var(--text-outline-S);
     text-decoration-skip-ink: none;
     white-space: nowrap;
     margin-left: -100%;
     margin-right: -100%;
 }
 
-.image-card-info:before {
-    content: "";
-    margin-left: -100%;
-}
-.image-card-info:after {
-    content: "";
-    margin-right: -100%;
-}
-
-
 .image-card-description > div {
     text-align: center;
     margin: 0 auto;
-    font-size: 1.5rem;
-    line-height: 1.8rem;
 }
 
 
@@ -85,12 +68,8 @@
 .image-container > img {
     transform: scale(105%);
     box-shadow: var(--shadow);
-    /* max-width: none; */
-    /* min-width: 100%; */
-    /* min-height: 100%; */
-    /* max-width: auto; */
-    /* object-fit: contain; */
 }
+
 .image-card-container::-webkit-scrollbar-thumb {
     background: #414141;
 }

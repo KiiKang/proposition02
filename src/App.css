@@ -12,37 +12,36 @@
   --m: 28px;
   --l: 36px;
 
-  --shadow-red:
-          1px 1px 10px rgba(100, 50, 20, 0.07),
-          2px 2px 20px rgba(100, 50, 20, 0.10),
-          4px 4px 27px rgba(100, 50, 20, 0.12),
-          8px 8px 38px rgba(100, 50, 20, 0.15),
-          21px 21px 75px rgba(0, 0, 0, 0.22);
-
+  --shadow-light:
+            1px 1px 10px rgba(0, 0, 0, 0.07),
+            2px 2px 20px rgba(0, 0, 0, 0.10),
+            4px 4px 27px rgba(0, 0, 0, 0.12),
+            8px 8px 38px rgba(0, 0, 0, 0.15),
+            21px 21px 75px rgba(0, 0, 0, 0.22);
   --shadow:
-          1px 1px 10px rgba(0, 0, 0, 0.07),
-          2px 2px 20px rgba(0, 0, 0, 0.10),
-          4px 4px 27px rgba(0, 0, 0, 0.12),
-          8px 8px 38px rgba(0, 0, 0, 0.15),
-          21px 21px 75px rgba(0, 0, 0, 0.22);
+          1px 1px 10px rgba(0, 0, 0, 0.14),
+          2px 2px 20px rgba(0, 0, 0, 0.20),
+          4px 4px 27px rgba(0, 0, 0, 0.24),
+          8px 8px 38px rgba(0, 0, 0, 0.30),
+          21px 21px 75px rgba(0, 0, 0, 0.44);
   --text-outline-L:
-          -2px -2px 0 #ffffff,
-          0   -2px 0 #ffffff,
-          2px -2px 0 #ffffff,
-          2px  0   0 #ffffff,
-          2px  2px 0 #ffffff,
-          0    2px 0 #ffffff,
-          -2px  2px 0 #ffffff,
-          -2px  0   0 #ffffff;
+          -2px -2px 0 #D7D7D7FF,
+          0   -2px 0 #D7D7D7FF,
+          2px -2px 0 #D7D7D7FF,
+          2px  0   0 #D7D7D7FF,
+          2px  2px 0 #D7D7D7FF,
+          0    2px 0 #D7D7D7FF,
+          -2px  2px 0 #D7D7D7FF,
+          -2px  0   0 #D7D7D7FF;
   --text-outline-S:
-          -0.5px -0.5px 0 #ffffff,
-          0   -0.5px 0 #ffffff,
-          0.5px -0.5px 0 #ffffff,
-          0.5px  0   0 #ffffff,
-          0.5px  0.5px 0 #ffffff,
-          0    0.5px 0 #ffffff,
-          -0.5px  0.5px 0 #ffffff,
-          -0.5px  0   0 #ffffff;
+          -0.5px -0.5px 0 #D7D7D7FF,
+          0   -0.5px 0 #D7D7D7FF,
+          0.5px -0.5px 0 #D7D7D7FF,
+          0.5px  0   0 #D7D7D7FF,
+          0.5px  0.5px 0 #D7D7D7FF,
+          0    0.5px 0 #D7D7D7FF,
+          -0.5px  0.5px 0 #D7D7D7FF,
+          -0.5px  0   0 #D7D7D7FF;
 }
 
 body {

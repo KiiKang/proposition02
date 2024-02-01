@@ -1,14 +1,14 @@
-import React, {startTransition, useEffect, useRef, useState} from 'react';
-import axios from "axios";
+import React, {startTransition, useContext, useEffect, useRef, useState} from 'react';
 import {useLocation, useNavigate} from "react-router-dom";
-import tsvToArray from "../helpers";
+import {YearContext} from "../context";
+
+// import tsvToArray from "../helpers";
 const ImageCard = React.lazy(() => import("../components/ImageCard"));
 
-
-const ImageReel = () => {
-    const [imageData, setImageData] = useState([]);
-    const [loading, setLoading] = useState(true);
-
+const ImageReel = (props) => {
+    // const [imageData, setImageData] = useState([]);
+    // const [loading, setLoading] = useState(true);
+    const filteredYear = useContext(YearContext);
     const [indexNow, setIndexNow] = useState(0);
     // const [filteredCountry, setFilteredCountry] = useState(null);
     const [filteredRegion, setFilteredRegion] = useState("");
@@ -18,45 +18,58 @@ const ImageReel = () => {
     const { search } = useLocation();
     let navigate = useNavigate();
 
-    useEffect(() => {
-        const getData = async () => {
-            try {
-                let response = await axios.get('./images.tsv');
-                setImageData(tsvToArray(response.data));
-            } catch (err) {
-                console.log(err.message);
-                setImageData(null);
-            } finally {
-            }
-        }
-        getData()
-        // ref.current.focus();
-    }, [search])
+    // useEffect(() => {
+    //     const getData = async () => {
+    //         try {
+    //             let response = await axios.get('./images.tsv');
+    //             setImageData(tsvToArray(response.data));
+    //         } catch (err) {
+    //             console.log(err.message);
+    //             setImageData(null);
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     }
+    //     startTransition(() => {
+    //         getData();
+    //     })
+    // }, [search])
 
     useEffect(() => {
-        if (imageData.length === 0 ) return
-        let imageData_cleaned = []
-        imageData.forEach(d => {
-            if (!d.region_en) d['region_en'] = d.country_db
-            imageData_cleaned.push(d)
-        })
-        if (search) {
-            let [query, value] = search.split("?")[1].split("=")
-            // if (query === 'country') {
-            //     setFilteredCountry(value.replace('%20', ' '));
-            // } else
-            if (query === 'region') {
-                setFilteredRegion(value.replace('%20', ' '));
-                setFilteredImageData(imageData_cleaned.filter(d => d.region_en === filteredRegion))
+        if (props.data.length === 0 ) return
+        startTransition(() => {
+            let imageData_cleaned = []
+            props.data.forEach(d => {
+                if (!d.region_en) d['region_en'] = d.country_db
+                if (filteredYear) {
+                    if (filteredYear == d.year) imageData_cleaned.push(d)
+                } else {
+                    imageData_cleaned.push(d)
+                }
+            })
+            if (search) {
+                let [query, value] = search.split("?")[1].split("=")
+                // if (query === 'country') {
+                //     setFilteredCountry(value.replace('%20', ' '));
+                // } else
+                if (query === 'region') {
+                    setFilteredRegion(value.replace('%20', ' '));
+                    setFilteredImageData(imageData_cleaned.filter(d => d.region_en === filteredRegion))
+                } else {
+                    setFilteredRegion(null)
+                }
             } else {
                 setFilteredRegion(null)
             }
-        } else {
-            setFilteredRegion(null)
-        }
-        setLoading(false);
+        })
+    }, [props.data, search, filteredRegion, filteredYear])
 
-    }, [imageData, search, filteredRegion])
+    // useEffect(() => {
+    //     if (ref.current !== null) {
+    //         ref.current.tabIndex = 0;
+    //         ref.current.focus();
+    //     }
+    // }, [ref])
 
     const handleKeyDown = (e) => {
         if (e.key === 'ArrowLeft') {
@@ -70,7 +83,7 @@ const ImageReel = () => {
 
     return (
         <div className='image-reel'
-             tabIndex={-1} ref={ref}
+             tabIndex={0} ref={ref}
              onKeyDown={handleKeyDown}
         >
             {
@@ -80,12 +93,12 @@ const ImageReel = () => {
                         file_name={d.file_name}
                         caption={d.caption_title}
                         footnote={d.caption}
-                        country={d.country_db}
-                        region={d.region_en}
+                        country={d.country}
+                        region={d.region ? d.region : d.region_en}
                         region_local={d.region_local}
                         year={d.year}
                         index={i - indexNow}
-                        onSwitch={() => setIndexNow(i)}
+                        onSwitch={() => startTransition(() => setIndexNow(i))}
                     />
                 ))
             }

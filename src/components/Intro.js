@@ -6,9 +6,9 @@ import Cookies from 'js-cookie';
 import axios from "axios";
 import {tsvToArray} from "../helpers";
 
-const Intro = ({bucketName, objectKey}) => {
+const Intro = (props) => {
     const [isReadMore, setIsReadMore] = useState(true);
-    const [imageData, setImageData] = useState([]);
+    // const [imageData, setImageData] = useState([]);
     // const [imgSelected, setImgSelected] = useState(null);
     const [imgLoading, setImgLoading] = useState(true);
     const [error, setError] = useState('')
@@ -48,32 +48,16 @@ const Intro = ({bucketName, objectKey}) => {
                     setImgLoading(false);
                 }
             }
-        if (imageData.length !== 0) {
-            let imgSelected = imageData[Math.floor(Math.random() * imageData.length)];
+        if (props.data.length !== 0) {
+            let imgSelected = props.data[Math.floor(Math.random() * props.data.length)];
             if (imgSelected.file_name !== undefined) getImage(imgSelected.file_name);
         }
-    }, [imageData, error]);
-
-    useEffect(() => {
-        const getData = async () => {
-            try {
-                let response = await axios.get('./images.tsv');
-                setImageData(tsvToArray(response.data));
-            } catch (err) {
-                console.log(err.message);
-                setImageData(null);
-            }
-            // finally {
-            //     setLoading(false);
-            // }
-        }
-        getData()
-    }, []);
+    }, [props.data, error]);
 
     return (
-        <div className='Intro-textbox'>
-            <div className='Intro-textbox-title text-5xl tracking-tighter'>
-                <p>what do you see?</p>
+        <div className='Intro-textbox absolute'>
+            <div className='m-[30px] text-5xl tracking-tight underline text-neutral-800'>
+                <p>What do you see?</p>
             </div>
             <div className='Intro-shader-container'
                  style={{
@@ -90,22 +74,7 @@ const Intro = ({bucketName, objectKey}) => {
                         key={imgSelected} alt='' loading='lazy'></img>:null
                 } */}
             </div>
-            {/*<div className='serif Intro-textbox-capt' style={{color: "gray"}}>*/}
-            {/*    Click a photo on the map.<br/>*/}
-            {/*    Annotate it, responding to the prompt above.<br/>*/}
-            {/*    Sign in below to make annotations.<br/><br/>*/}
-            {/*    /!* The annotations will be collected as <i>re-index</i>.<br/> *!/*/}
-            {/*</div>*/}
-            {/*<div className='Intro-textbox-capt' style={{fontFamily: "Helvetica", fontSize: "0.8rem"}}>*/}
-            {/*    *THE ANNOTATION AND SIGN IN IS STILL UNDER CONSTRUCTION.*/}
-            {/*</div>*/}
 
-            {/* <div className='Intro-shader-container'
-            style={{
-                height: isReadMore? "500px": 0
-            }}>
-                <iframe src="https://www.shadertoy.com/embed/MlsXDr?gui=false&t=10&paused=false&muted=true"></iframe>
-            </div> */}
             {Cookies.get("user") ?
                 <div className='Intro-textbox-menu'>
                     <div className='Intro-textbox-menu-button button-round-L' onClick={signOut}>sign out</div>
@@ -113,12 +82,14 @@ const Intro = ({bucketName, objectKey}) => {
                 <div className='Intro-textbox-menu'>
                     {/* <div className='Intro-textbox-menu-button button-round-L' onClick={() => navigate("/signup") }>sign up</div> */}
                     {/* <div className='Intro-textbox-menu-button button-round-L' onClick={() => navigate("/login") }>sign in</div> */}
-                    <div className='Intro-textbox-menu-button text-3xl'>sign up</div>
-                    <div className='Intro-textbox-menu-button text-3xl'>sign in</div>
+                    <div className='Intro-textbox-menu-button text-3xl font-sans'>sign up</div>
+                    <div className='Intro-textbox-menu-button text-3xl font-sans'>sign in</div>
                 </div>
             }
-            <div className='mb-2 leading-5 text-lg text-center cursor-pointer' onClick={toggleReadMore}>
-                    read more<br/>
+
+            <div className='mb-2 leading-5 text-m text-center cursor-pointer'
+                 onClick={toggleReadMore}>
+                <u>read more</u><br/>
                     ⌄
             </div>
             <div className='Intro-textbox-p'

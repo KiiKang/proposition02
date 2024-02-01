@@ -58,8 +58,15 @@ const ImageCard = (props) => {
     // }
 
     const formatText = (text) => {
+        // const ifcUnicodeRegEx = /\\X2\\(.*?)\\X0\\/uig;
+        // let resultString = text;
+        // let match = ifcUnicodeRegEx.exec (text);
+        // while (match) {
+        //     const unicodeChar = String.fromCharCode (parseInt (match[1], 16));
+        //     resultString = resultString.replace (match[0], unicodeChar);
+        //     match = ifcUnicodeRegEx.exec (text);
+        // }
         return text.split("_").map((part, index) => {
-            // Check if the part is between underscores and apply italic styling
             return index % 2 === 1 ? <i key={index}>{part}</i> : part;
         });
     }
@@ -85,9 +92,9 @@ const ImageCard = (props) => {
                  left: 'calc(50% + ' + props.index * window.innerWidth * 0.3 + 'px)',
                  transformOrigin: 'top center',
                  scale: props.index === 0 ? '90%' : '70%',
-                 filter: props.index === 0 ? 'blur(0)' : 'blur(5px)',
+                 filter: props.index === 0 ? 'blur(0)' : 'blur(6px)',
                  zIndex: 999 - Math.abs(props.index),
-                 opacity: 1 - Math.abs(props.index) * 0.1,
+                 opacity: 1 - Math.abs(props.index) * 0.2,
                  cursor: props.index === 0 ? 'default' : props.index > 0 ? 'e-resize' : 'w-resize'
              }}>
             {/* <div className='image-card-year'> */}
@@ -97,13 +104,13 @@ const ImageCard = (props) => {
             {/*<h2>*/}
             {/*    <i>{props.footnote && props.footnote !== "\r" ? '"' + props.footnote + '"' : null} </i></h2>*/}
             {/* </div> */}
-            <div className='image-card-info tracking-tight'>
+            <div className='image-card-info text-5xl'>
                 {props.year}, {props.region === props.country ? props.country : props.region + ", " + props.country}
                 {/* {props.region_local ? props.region_local : null} */}
             </div>
 
             {props.caption !== undefined ?
-            <div className='image-card-caption tracking-tighter'>
+            <div className='image-card-caption tracking-tight text-5xl'>
                 {formatText(props.caption)}
                 {/*{props.caption.split(" ").slice(0, -2).map(s => {*/}
                 {/*    return s + " "*/}
@@ -127,8 +134,6 @@ const ImageCard = (props) => {
             {/*    { anno }*/}
             {/*</div>*/}
             <div className='image-card-description'>
-                {/*<h4>{props.region_local ? props.region_local : null}<br/>{props.region === props.country ? props.country : props.region + ", " + props.country}*/}
-                {/*</h4>*/}
                 <div>
                     {props.footnote && props.footnote !== "\r" ? '"' + props.footnote + '"' : null}</div>
             </div>

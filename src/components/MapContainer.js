@@ -2,9 +2,8 @@ import mapboxgl from 'mapbox-gl';
 import ReactMapGL from "react-map-gl";
 import React, {useEffect, useRef, useState} from "react";
 import AWS from 'aws-sdk';
+
 import {useLocation, useNavigate} from "react-router-dom";
-import axios from "axios";
-import {tsvToArray} from "../helpers";
 import {Marker} from "react-map-gl";
 import 'mapbox-gl/dist/mapbox-gl.css'
 import './MapContainer.css'
@@ -12,9 +11,9 @@ import './MapContainer.css'
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN
 
 const MapContainer = (props) => {
+
     /** refs **/
     const mapContainer = useRef()
-
     const mapRef = useRef(null);
     // const labelsRef = useRef([]);
     const imagesRef = useRef([]);
@@ -29,41 +28,40 @@ const MapContainer = (props) => {
         maxZoom: 9
     }
     const [viewport, setViewport] = useState(viewport_init);
-    const [filteredCountry, setFilteredCountry] = useState(null);
-    const [filteredYear, setFilteredYear] = useState(0);
+    // const [filteredCountry, setFilteredCountry] = useState(null);
     // const [filteredRegion, setFilteredRegion] = useState(null);
     /** states-data **/
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [imageData, setImageData] = useState([]);
+    // const [loading, setLoading] = useState(true);
+    // const [error, setError] = useState(null);
+    // const [imageData, setImageData] = useState([]);
     const [imagePoints, setImagePoints] = useState([]);
     // const [countryData, setCountryData] = useState(null);
     const [countryBounds, setCountryBounds] = useState(null);
     const { search } = useLocation();
     let navigate = useNavigate();
 
-    useEffect(() => {
-        const getData = async () => {
-            try {
-                let response = await axios.get('./images.tsv');
-                let imageData_ = tsvToArray(response.data);
-                // let imageData_ = []
-                if (filteredYear !== 0) {
-                    imageData_ = imageData_.filter(d => d.year === filteredYear)
-                }
-                setImageData(imageData_);
-                response = await axios.get('./country-bounding-box.json');
-                setCountryBounds(response.data);
-                setError(null);
-            } catch (err) {
-                console.log(err.message);
-                // setImageData(null);
-            } finally {
-                setLoading(false);
-            }
-        }
-        getData()
-    }, [filteredYear])
+    // useEffect(() => {
+    //     const getData = async () => {
+    //         try {
+    //             let response = await axios.get('./images.tsv');
+    //             let imageData_ = tsvToArray(response.data);
+    //             // let imageData_ = []
+    //             if (filteredYear !== 0) {
+    //                 imageData_ = imageData_.filter(d => d.year === filteredYear)
+    //             }
+    //             setImageData(imageData_);
+    //             response = await axios.get('./country-bounding-box.json');
+    //             setCountryBounds(response.data);
+    //             setError(null);
+    //         } catch (err) {
+    //             console.log(err.message);
+    //             // setImageData(null);
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     }
+    //     getData()
+    // }, [filteredYear])
 
     useEffect(() => {
         if (search) {
@@ -71,11 +69,7 @@ const MapContainer = (props) => {
             // if (query === 'region') {
             //     setFilteredRegion(value.replace('%20', ' '));
             // }
-            if (query === 'year') {
-                setFilteredYear(parseInt(value));
-            }
-            else if (query === 'country') {
-                setFilteredCountry(value.replace('%20', ' '));
+            if (query === 'country') {
                 let bounds = Object.values(countryBounds).filter(d => d[0] === value.replace('%20', ' '))
                 // TODO: make exceptions for when the country not in the db is selected
                 if (bounds.length !== 0) {
@@ -84,10 +78,6 @@ const MapContainer = (props) => {
                         duration: 10000
                     })
                 }
-            }
-            else {
-                setFilteredCountry(null);
-                setFilteredYear(0);
             }
         }
         // if (filteredYear !== undefined) {
@@ -106,63 +96,60 @@ const MapContainer = (props) => {
     }, [search]);
 
     useEffect(() => {
+        if (props.data.length === 0) return
+        console.log("filtered year: ", props.year)
         let regions = []
         let imagePoints_ = []
-        if (imageData.length !== 0) {
-            imageData.forEach(d => {
-                let region = d.region_en ? d.region_en : d.country_db
-                regions.push(region)
+        props.data.forEach(d => {
+            let region = d.region_en ? d.region_en : d.country_db
+            regions.push(region)
+        })
+        regions = [...new Set(regions)]
+        for (const r of regions) {
+            let imageDatum = []
+            props.data.forEach(i => {
+                let region = i.region_en ? i.region_en : i.country_db
+                if (region === r) imageDatum.push(i)
             })
-            regions = [...new Set(regions)]
-            for (const r of regions) {
-                let imageDatum = []
-                imageData.forEach(i => {
-                    let region = i.region_en ? i.region_en : i.country_db
-                    if (region === r) imageDatum.push(i)
-                })
-                let images = []
-                let years = []
-                imageDatum.forEach(i => {
+            let images = []
+            // let years = []
+            imageDatum.forEach(i => {
+                if (!props.year || props.year == i.year) {
                     images.push({
                         "file_name": i.file_name,
                         "year": i.year,
                         "caption": i.caption_title,
                         "region": i.region_en ? i.region_en + ', ' + i.country_db: i.country_db
                     })
-                    years.push(i.year)
+                }
+                // years.push(i.year)
+            })
+            // years = years ? [...new Set(years)]: [9999];
+            let coor
+            let i = imageDatum[0]
+            if (i["longitude"] && i["latitude"]) {
+                coor = [parseFloat(i.longitude), parseFloat(i.latitude)]
+            }
+            // else {
+            //     const countryMatched = countryData.features.filter(d => d.properties.COUNTRY === i.country_db );
+            //     coor = countryMatched != false ? [countryMatched[0].geometry.coordinates[0], countryMatched[0].geometry.coordinates[1]]: null
+            // }
+            if (coor !== undefined && !isNaN(coor[0]) && !isNaN(coor[1])) {
+                imagePoints_.push({
+                    "country_custom": i.country,
+                    "country": i.country_db,
+                    // "years": years,
+                    "region": r,
+                    "coor": coor,
+                    "image": images
                 })
-                years = years ? [...new Set(years)]: [9999];
-
-                let coor
-                let i = imageDatum[0]
-                if (i["longitude"] && i["latitude"]) {
-                    coor = [parseFloat(i.longitude), parseFloat(i.latitude)]
-                }
-                // else {
-                //     const countryMatched = countryData.features.filter(d => d.properties.COUNTRY === i.country_db );
-                //     coor = countryMatched != false ? [countryMatched[0].geometry.coordinates[0], countryMatched[0].geometry.coordinates[1]]: null
-                // }
-                if (coor !== undefined && !isNaN(coor[0]) && !isNaN(coor[1])) {
-                    imagePoints_.push({
-                        "country_custom": i.country,
-                        "country": i.country_db,
-                        "years": years,
-                        "region": r,
-                        "coor": coor,
-                        "image": images
-                    })
-                }
             }
         }
         setImagePoints(imagePoints_)
-    }, [imageData, filteredYear])
-
-    // useEffect(() => {
-    //
-    // }, [imagePoints])
-
+    }, [props.year, props.data])
 
     useEffect(() => {
+        if (imagePoints.length === 0 || !props.displayImages) return
         const getSignedUrl = async (file_name, i) => {
             const s3 = new AWS.S3();
             // console.log("getting signed url for", file_name)
@@ -173,23 +160,23 @@ const MapContainer = (props) => {
                     Expires: 60,
                 })
                 // imagesRef.current[i].url = signedUrl
-
             } catch(err) {
                 console.error('Error getting image:', err);
             }
         }
 
-        if (imagePoints.length !== 0 && props.displayImages === 'true') {
-            AWS.config.update({
-                accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
-                secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
-                region: 'us-east-1',
-            });
-            imagePoints.forEach((d, i) => {
-                getSignedUrl(d.image[0].file_name, i)
-            })
-        }
-    }, [imagePoints, props])
+        AWS.config.update({
+            accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+            secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+            region: 'us-east-1'
+        });
+
+        imagePoints.forEach((d, i) => {
+            if (d.image[0]) getSignedUrl(d.image[0].file_name, i)
+            else imagesRef.current[i].src = ''
+        })
+
+    }, [imagePoints, props.displayImages, props.year])
 
     // const addSources = () => {
     //     if (mapRef.current) {
@@ -218,7 +205,7 @@ const MapContainer = (props) => {
     // }
 
     return (
-        <div className="map-container" ref={mapContainer}>
+        <div className="map-container" ref={mapContainer} tabIndex={-1}>
             <ReactMapGL
                 ref={mapRef}
                 initialViewState={viewport}
@@ -226,7 +213,6 @@ const MapContainer = (props) => {
                 onViewportChange={(viewport) => setViewport(viewport)}
                 mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
             >
-
                 {
                     imagePoints.map((d, i) => (
                         <Marker longitude={d.coor[0]} latitude={d.coor[1]}

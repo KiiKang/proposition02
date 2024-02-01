@@ -17,11 +17,19 @@ const MenuBar = () => {
         <div className='MenuBar'>
             <div className='MenuBar-Bottom'>
                 <div className='MenuBar-Nav'>
-                    <div className='text-4xl p-2 m-1 cursor-pointer' onClick={goHome}>about</div>
+                    <div className='text-4xl p-2 m-1 cursor-pointer font-sans' onClick={goHome}>
+                        about
+                    </div>
                     {
                         Cookies.get("user") ?
-                            <div className='text-4xl p-2 m-1 cursor-pointer' onClick={signOut}>sign out</div> :
-                            <div className='text-4xl p-2 m-1 cursor-pointer' onClick={() => navigate("/login")}>sign in</div>
+                            <div className='text-4xl p-2 m-1 cursor-pointer font-sans'
+                                 onClick={signOut}>
+                                sign out
+                            </div> :
+                            <div className='text-4xl p-2 m-1 cursor-pointer font-sans'
+                                 onClick={() => navigate("/login")}>
+                                sign in
+                            </div>
                     }
                     {/*<div className='button-round-L' onClick={() => navigate("/login")}>*/}
                     {/*    {Cookies.get("user") ? "sign out" : "sign in"}*/}
