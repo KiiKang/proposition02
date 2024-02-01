@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react'
 import './MenuBar.css'
 import axios from "axios";
 import {tsvToArray} from "../helpers";
-import {YearContext} from "../context";
 
 const Filters = (props) => {
     /** states **/
