@@ -1,8 +1,5 @@
 import React, {startTransition, useContext, useEffect, useRef, useState} from 'react';
 import {useLocation, useNavigate} from "react-router-dom";
-import {YearContext} from "../context";
-
-// import tsvToArray from "../helpers";
 const ImageCard = React.lazy(() => import("../components/ImageCard"));
 
 const ImageReel = (props) => {
