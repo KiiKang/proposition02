@@ -5,7 +5,7 @@ const ImageCard = React.lazy(() => import("../components/ImageCard"));
 const ImageReel = (props) => {
     // const [imageData, setImageData] = useState([]);
     // const [loading, setLoading] = useState(true);
-    const filteredYear = useContext(YearContext);
+    // const filteredYear = useContext(YearContext);
     const [indexNow, setIndexNow] = useState(0);
     // const [filteredCountry, setFilteredCountry] = useState(null);
     const [filteredRegion, setFilteredRegion] = useState("");
@@ -38,11 +38,11 @@ const ImageReel = (props) => {
             let imageData_cleaned = []
             props.data.forEach(d => {
                 if (!d.region_en) d['region_en'] = d.country_db
-                if (filteredYear) {
-                    if (filteredYear == d.year) imageData_cleaned.push(d)
-                } else {
+                // if (filteredYear) {
+                //     if (filteredYear == d.year) imageData_cleaned.push(d)
+                // } else {
                     imageData_cleaned.push(d)
-                }
+                // }
             })
             if (search) {
                 let [query, value] = search.split("?")[1].split("=")
@@ -59,7 +59,8 @@ const ImageReel = (props) => {
                 setFilteredRegion(null)
             }
         })
-    }, [props.data, search, filteredRegion, filteredYear])
+    // }, [props.data, search, filteredRegion, filteredYear])
+    }, [props.data, search, filteredRegion])
 
     // useEffect(() => {
     //     if (ref.current !== null) {
