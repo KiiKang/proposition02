@@ -89,9 +89,9 @@ const Filters = (props) => {
             </div>
             <div className="fixed bottom-12 flex justify-between left-1/2 min-w-[60%] -translate-x-1/2 justify-self-center m-auto">
                 {
-                    [1945, 1946, 1947, 1948, 1949, 1950].map((d) => {
+                        Array.from({ length: (1952 - 1945) + 1 }, (_, i) => 1945 + i).map((d) => {
                         return <div
-                            className='text-3xl cursor-pointer font-sans hover:underline'
+                            className='text-2xl cursor-pointer font-sans hover:underline'
                             style={{
                                 opacity: filteredYear === null ? 1 : d == filteredYear ? 1 : 0.2
                             }}
