@@ -24,7 +24,7 @@ const MapContainer = () => {
         latitude: 20,
         zoom: 2.5,
         minZoom: 2,
-        maxZoom: 9
+        maxZoom: 9.5
     }
     const [viewport, setViewport] = useState(viewport_init);
     const [filteredCountry, setFilteredCountry] = useState(null);
