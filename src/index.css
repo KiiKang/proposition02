@@ -2,6 +2,8 @@
 /*  fonts-family: Kepler;*/
 /*  src: url("Kepler.otf") format("opentype");*/
 /*}*/
+/*@import url('https://fonts.googleapis.com/css2?family=Spectral&display=swap');*/
+
 @font-face {
   font-family: charter;
   font-style: normal;
@@ -36,7 +38,8 @@
 
 body {
   margin: 0;
-  font-family: charter, serif;
+  font-family: Charter, serif;
+  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

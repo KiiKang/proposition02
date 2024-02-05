@@ -1,13 +1,7 @@
-.MenuBar-Bottom {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-}
-
 .MenuBar-Right {
     position: absolute;
     display: flex;
-    transform: translateX(250px);
+    transform: translateX(209px);
     top: 0;
     right: 0;
 }
@@ -42,18 +36,6 @@
     white-space: nowrap;
 }
 
-.Filter-Years,
-.MenuBar-Nav{
-    width: 100%;
-    display: flex;
-    margin: 0 auto;
-    justify-content: space-between;
-}
-
-.Filter-Years {
-    max-width: 1200px;
-}
-
 .MenuBar-Countries, .MenuBar-Regions {
     width: fit-content;
     align-items: flex-end;
@@ -72,11 +54,4 @@
     max-width: 120px;
     text-align: center;
     text-shadow: var(--text-outline-L);
-}
-
-.Menubar-Countries > a {
-    text-shadow: var(--text-outline-L);
-}
-.Filter-Country {
-    width: fit-content;
 }

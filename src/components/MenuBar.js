@@ -14,19 +14,17 @@ const MenuBar = () => {
         window.location.reload();
     }
     return (
-        <div className='MenuBar'>
-            <div className='MenuBar-Bottom'>
-                <div className='MenuBar-Nav'>
-                    <div className='text-4xl p-2 m-1 cursor-pointer font-sans' onClick={goHome}>
+        <div className='absolute bottom-0 w-full flex justify-between'>
+                    <div className='text-4xl ml-3 mb-3 cursor-pointer font-sans' onClick={goHome}>
                         about
                     </div>
                     {
                         Cookies.get("user") ?
-                            <div className='text-4xl p-2 m-1 cursor-pointer font-sans'
+                            <div className='text-4xl mr-3 mb-3 cursor-pointer font-sans'
                                  onClick={signOut}>
                                 sign out
                             </div> :
-                            <div className='text-4xl p-2 m-1 cursor-pointer font-sans'
+                            <div className='text-4xl mr-3 mb-3 cursor-pointer font-sans'
                                  onClick={() => navigate("/login")}>
                                 sign in
                             </div>
@@ -34,8 +32,6 @@ const MenuBar = () => {
                     {/*<div className='button-round-L' onClick={() => navigate("/login")}>*/}
                     {/*    {Cookies.get("user") ? "sign out" : "sign in"}*/}
                     {/*</div>*/}
-                </div>
-            </div>
         </div>
     )
 }

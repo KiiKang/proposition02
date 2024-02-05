@@ -86,12 +86,12 @@ const Intro = (props) => {
                     <div className='Intro-textbox-menu-button text-3xl font-sans'>sign in</div>
                 </div>
             }
-
-            <div className='mb-2 leading-5 text-m text-center cursor-pointer'
+            <div className='mb-2 leading-5 text-sm text-center cursor-pointer'
                  onClick={toggleReadMore}>
                 <u>read more</u><br/>
                     ⌄
             </div>
+
             <div className='Intro-textbox-p'
                  style={{
                      // visibility: isReadMore? "hidden": "visible",

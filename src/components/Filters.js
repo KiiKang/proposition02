@@ -65,12 +65,12 @@ const Filters = (props) => {
                         countries
                     </div>
                 </div>
-                <div className='MenuBar-Countries text-2xl tracking-tighter cursor-pointer pt-1.5 font-sans'>
+                <div className='MenuBar-Countries text-xl tracking-tighter cursor-pointer pt-1.5 font-sans'>
                     {
                         countries.map((d, i) => {
                             return (
                                 <div
-                                    className='Filter-Country'
+                                    className='w-fit hover:underline'
                                     key={'filter-country-' + d}
                                     id={'filter-country-' + d}
                                     onClick={() => navigate({
@@ -87,9 +87,9 @@ const Filters = (props) => {
                     }
                 </div>
             </div>
-            <div className="fixed bottom-12 flex justify-between left-1/2 min-w-[60%] -translate-x-1/2 justify-self-center m-auto">
+            <div className="fixed bottom-12 flex justify-between left-1/2 min-w-[70%] -translate-x-1/2 justify-self-center m-auto">
                 {
-                        Array.from({ length: (1952 - 1945) + 1 }, (_, i) => 1945 + i).map((d) => {
+                        Array.from({ length: (1955 - 1945) + 1 }, (_, i) => 1945 + i).map((d) => {
                         return <div
                             className='text-2xl cursor-pointer font-sans hover:underline'
                             style={{
