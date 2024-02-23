@@ -98,7 +98,6 @@ const ImageCard = (props) => {
     //     )
     // }
     // if (imgLoading) return
-    console.log(props.caption)
     return (
         <div className='image-card'
              // ref={imageCardRef}
@@ -126,8 +125,8 @@ const ImageCard = (props) => {
             </div>
             {
                 props.caption !== undefined ?
-                    <div className='image-card-caption tracking-tight text-5xl'>
-                        {formatText(props.caption)}
+                    <div className={'image-card-caption tracking-tight ' + (props.caption ? 'text-5xl' : 'text-4xl')}>
+                        {props.caption ? formatText(props.caption) : props.footnote ? formatText(props.footnote) : <br/>}
                         {/*{props.caption.split(" ").slice(0, -2).map(s => {*/}
                         {/*    return s + " "*/}
                         {/*})}*/}

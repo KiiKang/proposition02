@@ -1,7 +1,7 @@
 
 export const tsvToArray = (tsv) => {
     const lines = tsv.split('\n');
-    const headers = lines[0].split('\t');
+    const headers = lines[0].split('\t').map(d => d.replace(/\s/g, ''));
     const result = [];
     for (let i = 1; i < lines.length; i++) {
         const currentLine = lines[i].split('\t');
