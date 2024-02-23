@@ -9,7 +9,7 @@ export const tsvToArray = (tsv) => {
         for (let j = 0; j < headers.length; j++) {
             obj[headers[j]] = currentLine[j];
         }
-        result.push(obj);
+        if (obj[headers[0]]) result.push(obj);
     }
     return result;
 };

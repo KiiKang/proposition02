@@ -1,46 +1,59 @@
-import { useState, useEffect } from 'react';
-import React, {startTransition} from 'react';
+import {useState} from 'react';
+import React from 'react';
 // import ContentEditable from "react-contenteditable";
 import './ImageCard.css'
 // import {useNavigate} from "react-router-dom";
-import AWS from "aws-sdk";
 
 const ImageCard = (props) => {
-    const [imgLoading, setImgLoading] = useState(true);
-    const [imageUrl, setImageUrl] = useState('');
-    const [anno, setAnno] = useState([]);
-    const [annoFocus, setAnnoFocus] = useState(false);
-    const [image, setImage] = useState(null);
-
-    useEffect(() => {
-        const getImage = async (file_name) => {
-            AWS.config.update({
-                accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
-                secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
-                region: 'us-east-1',
-            });
-            const s3 = new AWS.S3();
-            try {
-                console.log("image selected: ", file_name)
-                const signedUrl = await s3.getSignedUrlPromise('getObject', {
-                    Bucket: 'ara-images',
-                    Key: file_name,
-                    Expires: 60,
-                });
-                let img = new Image();
-                img.src = signedUrl
-                img.onload = () => setImage(img);
-                setImageUrl(signedUrl);
-            } catch (err) {
-                console.error('Error getting image:', err);
-            } finally {
-                setImgLoading(false);
-            }
-        }
-        startTransition(() => {
-            getImage(props.file_name);
-        })
-    }, [props.file_name])
+    // const [imgLoading, setImgLoading] = useState(true);
+    // const [imageUrl, setImageUrl] = useState('');
+    // const [anno, setAnno] = useState([]);
+    const [annoFocus, setAnnoFocus] = useState(true);
+    // const [image, setImage] = useState(null);
+    // const imageCardRef = useRef(null);
+    // const imageContainerRef = useRef(null);
+    // useEffect(() => {
+    //     const getImage = async (file_name) => {
+    //         try {
+    //             let img = new Image();
+    //             img.src = "https://ara-images.s3.amazonaws.com/" + file_name
+    //             img.onload = () => {
+    //                 setImage(img);
+    //                 imageCardRef.current.style.minWidth = img.width;
+    //                 imageContainerRef.current.style.minWidth = img.width;
+    //                 imageContainerRef.current.style.minHeight = img.height;
+    //             }
+    //             // setImageUrl("https://ara-images.s3.amazonaws.com/" + file_name);
+    //         } catch (err) {
+    //             console.error('Error getting image:', err);
+    //         } finally {
+    //             setImgLoading(false);
+    //         }
+    //         // AWS.config.update({
+    //         //     accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+    //         //     secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+    //         //     region: 'us-east-1',
+    //         // });
+    //         // const s3 = new AWS.S3();
+    //         // try {
+    //         //     console.log("image selected: ", file_name)
+    //         //     const signedUrl = await s3.getSignedUrlPromise('getObject', {
+    //         //         Bucket: 'ara-images',
+    //         //         Key: file_name,
+    //         //         Expires: 60,
+    //         //     });
+    //         //     let img = new Image();
+    //         //     img.src = signedUrl
+    //         //     img.onload = () => setImage(img);
+    //         //     setImageUrl(signedUrl);
+    //         // } catch (err) {
+    //         //     console.error('Error getting image:', err);
+    //         // } finally {
+    //         //     setImgLoading(false);
+    //         // }
+    //     }
+    //     getImage(props.file_name);
+    // }, [])
 
     // const addAnno = (e) => {
     //     return
@@ -66,28 +79,31 @@ const ImageCard = (props) => {
         //     resultString = resultString.replace (match[0], unicodeChar);
         //     match = ifcUnicodeRegEx.exec (text);
         // }
+        if (text[0] === '"') text = text.split('"').slice(1, -1).join("'")
         return text.split("_").map((part, index) => {
             return index % 2 === 1 ? <i key={index}>{part}</i> : part;
         });
     }
 
-    if (imgLoading || !image) {
-        return (
-            <div className='image-card'
-                 style={{
-                     width: "600px",
-                     height: "600px",
-                     background: "black",
-                     left: 'calc(50% + ' + props.index * window.innerWidth * 0.3 + 'px)',
-                     transformOrigin: 'top center',
-                 }}/>
-        )
-    }
-
+    // if (imgLoading || !image) {
+    //     return (
+    //         <div className='image-card'
+    //              style={{
+    //                  width: "600px",
+    //                  height: "600px",
+    //                  background: "black",
+    //                  left: 'calc(50% + ' + props.index * window.innerWidth * 0.3 + 'px)',
+    //                  transformOrigin: 'top center',
+    //              }}/>
+    //     )
+    // }
+    // if (imgLoading) return
+    console.log(props.caption)
     return (
         <div className='image-card'
+             // ref={imageCardRef}
              style={{
-                 minWidth: image.width,
+                 // minWidth: image.width,
                  pointerEvents: annoFocus ? 'none' : 'auto',
                  left: 'calc(50% + ' + props.index * window.innerWidth * 0.3 + 'px)',
                  transformOrigin: 'top center',
@@ -105,38 +121,36 @@ const ImageCard = (props) => {
             {/*    <i>{props.footnote && props.footnote !== "\r" ? '"' + props.footnote + '"' : null} </i></h2>*/}
             {/* </div> */}
             <div className='image-card-info text-5xl'>
-                {props.year}, {props.region === props.country ? props.country : props.region + ", " + props.country}
+                {props.country.includes('&') ? props.year + ', ' + props.region : props.region === props.country ? props.year + ', ' + props.country : props.year + ', ' + props.region + ', ' + props.country}
                 {/* {props.region_local ? props.region_local : null} */}
             </div>
-
-            {props.caption !== undefined ?
-            <div className='image-card-caption tracking-tight text-5xl'>
-                {formatText(props.caption)}
-                {/*{props.caption.split(" ").slice(0, -2).map(s => {*/}
-                {/*    return s + " "*/}
-                {/*})}*/}
-                {/*{props.caption.split(" ").slice(-2).map(s => {*/}
-                {/*    return <span style={{whiteSpace: "nowrap"}}> {s + " "} </span>*/}
-                {/*})}*/}
-            </div> : null
+            {
+                props.caption !== undefined ?
+                    <div className='image-card-caption tracking-tight text-5xl'>
+                        {formatText(props.caption)}
+                        {/*{props.caption.split(" ").slice(0, -2).map(s => {*/}
+                        {/*    return s + " "*/}
+                        {/*})}*/}
+                        {/*{props.caption.split(" ").slice(-2).map(s => {*/}
+                        {/*    return <span style={{whiteSpace: "nowrap"}}> {s + " "} </span>*/}
+                        {/*})}*/}
+                    </div> : null
             }
             <div className='image-container'
-                 style={{
-                     minWidth: image.width,
-                     minHeight: image.height
-                 }}
+                 // ref={imageContainerRef}
                  onClick={props.onSwitch}>
                 <img
-                    src={imageUrl}
-                    key={props.file_name} alt='' loading='lazy'/>
+                    src={"https://ara-images.s3.amazonaws.com/" + props.file_name}
+                    key={props.file_name} alt=''
+                    loading='lazy'/>
             </div>
             {/*<div className='image-anno' onClick={addAnno} style={{visibility: props.index === 0 ? "visible":"hidden"}}>*/}
             {/*    { anno }*/}
             {/*</div>*/}
-            <div className='image-card-description'>
-                <div>
-                    {props.footnote && props.footnote !== "\r" ? '"' + props.footnote + '"' : null}</div>
-            </div>
+            {/*<div className='image-card-description'>*/}
+            {/*    <div>*/}
+            {/*        {props.footnote && props.footnote !== "\r" ? '"' + props.footnote + '"' : null}</div>*/}
+            {/*</div>*/}
 
         </div>
     )

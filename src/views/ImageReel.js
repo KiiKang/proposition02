@@ -1,16 +1,16 @@
-import React, {startTransition, useContext, useEffect, useRef, useState} from 'react';
+import React, {startTransition, useEffect, useRef, useState, lazy, Suspense} from 'react';
 import {useLocation, useNavigate} from "react-router-dom";
-const ImageCard = React.lazy(() => import("../components/ImageCard"));
-
+import ImageCard from "../components/ImageCard";
+// const ImageCard = lazy(() => import("../components/ImageCard"));
 const ImageReel = (props) => {
     // const [imageData, setImageData] = useState([]);
     // const [loading, setLoading] = useState(true);
     // const filteredYear = useContext(YearContext);
     const [indexNow, setIndexNow] = useState(0);
     // const [filteredCountry, setFilteredCountry] = useState(null);
-    const [filteredRegion, setFilteredRegion] = useState("");
+    // const [filteredRegion, setFilteredRegion] = useState("");
     const [filteredImageData, setFilteredImageData] = useState([]);
-
+    const [coor, setCoor] = useState(null)
     const ref = useRef(null);
     const { search } = useLocation();
     let navigate = useNavigate();
@@ -31,6 +31,14 @@ const ImageReel = (props) => {
     //         getData();
     //     })
     // }, [search])
+    const coor_to_str = c => {
+        let str = [parseFloat(c.longitude), parseFloat(c.latitude)]
+        if (!isNaN(str[0]) && !isNaN(str[1])) {
+            str = JSON.stringify(str)
+            return str.substring(1, str.length - 1)
+        }
+        return null
+    }
 
     useEffect(() => {
         if (props.data.length === 0 ) return
@@ -41,7 +49,7 @@ const ImageReel = (props) => {
                 // if (filteredYear) {
                 //     if (filteredYear == d.year) imageData_cleaned.push(d)
                 // } else {
-                    imageData_cleaned.push(d)
+                imageData_cleaned.push(d)
                 // }
             })
             if (search) {
@@ -49,18 +57,24 @@ const ImageReel = (props) => {
                 // if (query === 'country') {
                 //     setFilteredCountry(value.replace('%20', ' '));
                 // } else
-                if (query === 'region') {
-                    setFilteredRegion(value.replace('%20', ' '));
-                    setFilteredImageData(imageData_cleaned.filter(d => d.region_en === filteredRegion))
-                } else {
-                    setFilteredRegion(null)
+                // if (query === 'region') {
+                //     setFilteredRegion(value.replace('%20', ' '));
+                //     setFilteredImageData(imageData_cleaned.filter(d => d.region_en === filteredRegion))
+                // } else {
+                //     setFilteredRegion(null)
+                // }
+                if (query === 'coor') {
+                    let coor = [parseFloat(value.split(",")[0]), parseFloat(value.split(",")[1])]
+                    setCoor(coor)
+                    setFilteredImageData(imageData_cleaned.filter(d => coor_to_str(d) === value))
                 }
             } else {
-                setFilteredRegion(null)
+                // setFilteredRegion(null)
+                setCoor(null)
             }
         })
     // }, [props.data, search, filteredRegion, filteredYear])
-    }, [props.data, search, filteredRegion])
+    }, [props.data, search])
 
     // useEffect(() => {
     //     if (ref.current !== null) {
@@ -86,18 +100,21 @@ const ImageReel = (props) => {
         >
             {
                 filteredImageData.map((d, i)=> (
-                    <ImageCard
-                        key={'image-card-' + d.file_name}
-                        file_name={d.file_name}
-                        caption={d.caption_title}
-                        footnote={d.caption}
-                        country={d.country}
-                        region={d.region ? d.region : d.region_en}
-                        region_local={d.region_local}
-                        year={d.year}
-                        index={i - indexNow}
-                        onSwitch={() => startTransition(() => setIndexNow(i))}
-                    />
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <ImageCard
+                            key={'image-card-' + d.file_name}
+                            file_name={d.file_name}
+                            caption={d.caption_title}
+                            footnote={d.caption}
+                            country={d.country}
+                            coor={d.coor}
+                            region={d.region ? d.region : d.region_en}
+                            // region_local={d.region_local}
+                            year={d.year}
+                            index={i - indexNow}
+                            onSwitch={() => setIndexNow(i)}
+                        />
+                    </Suspense>
                 ))
             }
         </div>

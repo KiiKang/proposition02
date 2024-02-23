@@ -1,3 +1,6 @@
+.MenuBar {
+    text-shadow: var(--text-outline-S);
+}
 .MenuBar-Right {
     position: absolute;
     display: flex;

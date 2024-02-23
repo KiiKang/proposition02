@@ -55,7 +55,7 @@ const Filters = (props) => {
         // })
     }
 
-    let navigate = useNavigate();
+    // let navigate = useNavigate();
 
     return (
         <div className='MenuBar'>
@@ -73,12 +73,18 @@ const Filters = (props) => {
                                     className='w-fit hover:underline'
                                     key={'filter-country-' + d}
                                     id={'filter-country-' + d}
-                                    onClick={() => navigate({
-                                        pathname: '/filter',
-                                        search: 'country=' + d
-                                    })}
                                     style={{
                                         opacity: filteredCountry == null ? 1: filteredCountry === d ? 1: hoveredRegion === d? 1: 0.2,
+                                    }}
+                                    onClick={() => {
+                                        if (d == filteredCountry) {
+                                            setFilteredCountry(null)
+                                            props.onCountryChange(null)
+                                        }
+                                        else {
+                                            setFilteredCountry(d)
+                                            props.onCountryChange(d)
+                                        }
                                     }}
                                 >
                                     {d === "United States of America" ? "United States": d }
@@ -104,8 +110,7 @@ const Filters = (props) => {
                                     setFilteredYear(d)
                                     props.onYearChange(d)
                                 }
-                            }
-                            }
+                            }}
                         >{d}</div>
                     })
                 }
