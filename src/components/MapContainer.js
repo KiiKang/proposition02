@@ -1,13 +1,16 @@
 import mapboxgl from 'mapbox-gl';
 import ReactMapGL from "react-map-gl";
-import React, {useEffect, useRef, useState} from "react";
+import React, {lazy, useEffect, useRef, useState} from "react";
 // import AWS from 'aws-sdk';
 
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {Marker} from "react-map-gl";
 import 'mapbox-gl/dist/mapbox-gl.css'
 import './MapContainer.css'
 import axios from "axios";
+import Cookies from "js-cookie";
+// import BlurryBackdrop from "./BlurryBackdrop";
+const Intro = lazy(() => import('./Intro'))
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN
 
@@ -34,12 +37,25 @@ const MapContainer = (props) => {
     /** states-data **/
     const [loading, setLoading] = useState(true);
     // const [error, setError] = useState(null);
-    // const [imageData, setImageData] = useState([]);
+    const [showInfo, setShowInfo] = useState(false);
     const [imagePoints, setImagePoints] = useState([]);
     // const [countryData, setCountryData] = useState(null);
     const [countryBounds, setCountryBounds] = useState(null);
     // const { search } = useLocation();
     let navigate = useNavigate();
+
+    function toggleInfo(e) {
+        e.preventDefault();
+        setShowInfo(!showInfo);
+    }
+    function hideInfo(e) {
+        e.preventDefault();
+        setShowInfo(false);
+    }
+    function signOut() {
+        Cookies.remove("user");
+        window.location.reload();
+    }
 
     useEffect(() => {
         const getData = async () => {
@@ -51,6 +67,7 @@ const MapContainer = (props) => {
                 // setImageData(null);
             } finally {
                 setLoading(false);
+                setShowInfo(true);
             }
         }
         getData()
@@ -105,7 +122,7 @@ const MapContainer = (props) => {
         // regions = [...new Set(regions)]
         coors = [...new Set(coors)]
         coors.sort()
-        console.log(coors)
+        // console.log(coors)
         coors.forEach((c) => {
             // let imageDatum = []
             let images = []
@@ -173,7 +190,7 @@ const MapContainer = (props) => {
         //         })
         //     }
         // }
-        console.log(imagePoints_)
+        // console.log(imagePoints_)
         setImagePoints(imagePoints_)
     }, [props.data])
 
@@ -202,7 +219,7 @@ const MapContainer = (props) => {
     //         [coor[0] + w, coor[1]]
     //     ]
     // }
-
+    // return (<div/>)
     return (
         <div className="map-container" ref={mapContainer} tabIndex={-1}>
             <ReactMapGL
@@ -260,6 +277,30 @@ const MapContainer = (props) => {
                     ))
                 }
             </ReactMapGL>
+            {showInfo ? <>
+                <div className={'w-full h-full top-0 fixed m-0 backdrop-blur-md backdrop-close'}
+                     onClick={hideInfo}
+                   style={{
+                       background: props.bg ? 'hsla(27,78%,32%,0.4)' : 'none',
+                       // cursor: `url("${X}") 12 12, default`
+                   }}/>
+                <Intro data={props.data}/></>: <></>}
+            <div className='absolute bottom-0 w-full flex justify-between'>
+                <div className='text-4xl ml-3 mb-3 cursor-pointer font-sans' onClick={toggleInfo}>
+                    about
+                </div>
+                {
+                    Cookies.get("user") ?
+                        <div className='text-4xl mr-3 mb-3 cursor-pointer font-sans'
+                             onClick={signOut}>
+                            sign out
+                        </div> :
+                        <div className='text-4xl mr-3 mb-3 cursor-pointer font-sans'
+                             onClick={() => navigate("/login")}>
+                            sign in
+                        </div>
+                }
+            </div>
         </div>
     );
 }

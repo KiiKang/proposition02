@@ -139,6 +139,7 @@ const ImageCard = (props) => {
                  // ref={imageContainerRef}
                  onClick={props.onSwitch}>
                 <img
+                    // title={props.footnote}
                     src={"https://ara-images.s3.amazonaws.com/" + props.file_name}
                     key={props.file_name} alt=''
                     loading='lazy'/>

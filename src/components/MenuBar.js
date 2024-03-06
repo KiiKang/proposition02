@@ -29,9 +29,6 @@ const MenuBar = () => {
                                 sign in
                             </div>
                     }
-                    {/*<div className='button-round-L' onClick={() => navigate("/login")}>*/}
-                    {/*    {Cookies.get("user") ? "sign out" : "sign in"}*/}
-                    {/*</div>*/}
         </div>
     )
 }

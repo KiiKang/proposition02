@@ -1,24 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import AWS from 'aws-sdk';
 import './Intro.css'
-// import {useNavigate} from "react-router-dom";
+
 import Cookies from 'js-cookie';
-import axios from "axios";
-import {tsvToArray} from "../helpers";
 
 const Intro = (props) => {
     const [isReadMore, setIsReadMore] = useState(true);
-    // const [imageData, setImageData] = useState([]);
-    // const [imgSelected, setImgSelected] = useState(null);
-    const [imgLoading, setImgLoading] = useState(true);
-    const [error, setError] = useState('')
-    // const [loading, setLoading] = useState(true);
-    const [imageUrl, setImageUrl] = useState('');
-
+    const [imageUrl, setImageUrl] = useState(null);
     const toggleReadMore = () => {
         setIsReadMore(!isReadMore);
     }
-    // let navigate = useNavigate();
 
     function signOut() {
         Cookies.remove("user");
@@ -26,46 +16,25 @@ const Intro = (props) => {
     }
 
     useEffect(() => {
-        const getImage = async (file_name) => {
-                AWS.config.update({
-                    accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
-                    secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
-                    region: 'us-east-1',
-                });
-                const s3 = new AWS.S3();
-                try {
-                    console.log("image selected: ", file_name)
-                    const signedUrl = await s3.getSignedUrlPromise('getObject', {
-                        Bucket: 'ara-images',
-                        Key: file_name,
-                        Expires: 60,
-                    });
-                    setImageUrl(signedUrl);
-                } catch (err) {
-                    console.error('Error getting image:', err);
-                    setError(err);
-                } finally {
-                    setImgLoading(false);
-                }
-            }
         if (props.data.length !== 0) {
-            let imgSelected = props.data[Math.floor(Math.random() * props.data.length)];
-            if (imgSelected.file_name !== undefined) getImage(imgSelected.file_name);
+            let data_cleaned = props.data.filter(d => d.file_name)
+            let imgSelected = data_cleaned[Math.floor(Math.random() * data_cleaned.length)];
+            setImageUrl("https://ara-images.s3.amazonaws.com/" + imgSelected.file_name)
         }
-    }, [props.data, error]);
+    }, [props.data]);
 
     return (
-        <div className='Intro-textbox absolute'>
-            <div className='m-[30px] text-5xl tracking-tight underline text-neutral-800'>
+        <div className='Intro-textbox fixed min-h-fit'>
+            <div className='m-[30px] text-5xl tracking-tight underline italic text-neutral-800'>
                 <p>What do you see?</p>
             </div>
             <div className='Intro-shader-container'
                  style={{
                      height: isReadMore ? "40vh" : 0,
-                     backgroundImage: imgLoading ? null : 'url(' + imageUrl + ')',
+                     backgroundImage: imageUrl ? 'url(' + imageUrl + ')': null,
                      backgroundColor: "black",
-                     borderRadius: imgLoading ? '50%' : '0',
-                     filter: imgLoading ? "blur(50px)" : null,
+                     borderRadius: imageUrl ? '0': '50%',
+                     filter: imageUrl ? null : "blur(50px)",
                  }}>
                 {/*<img src={imageUrl} alt='' loading='lazy'/>*/}
                 {/* { !imgLoading?
