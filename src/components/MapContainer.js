@@ -43,7 +43,6 @@ const MapContainer = (props) => {
     // const [countryData, setCountryData] = useState(null);
     const [countryBounds, setCountryBounds] = useState(null);
     // const [textData, setTextData] = useState(null);
-    const [center, setCenter] = useState(null);
     // const { search } = useLocation();
     let navigate = useNavigate();
 
@@ -99,16 +98,6 @@ const MapContainer = (props) => {
     //         }
     //     }
     // }, [countryBounds, search]);
-    useEffect(() => {
-        if (center) {
-            mapRef.current.flyTo({
-                center: center,
-                essential: true,
-                zoom: mapRef.current.getZoom() < 5.5 ? 5.5 : mapRef.current.getZoom(),
-                duration: 8000
-            })
-        }
-    }, [center])
 
     useEffect(() => {
         // console.log("filtered year: ", props.year)
@@ -200,6 +189,17 @@ const MapContainer = (props) => {
         setImagePoints(imagePoints_)
     }, [props.data])
 
+    const flyTo = (center) => {
+        if (center) {
+            mapRef.current.flyTo({
+                center: center,
+                essential: true,
+                zoom: mapRef.current.getZoom() < 5 ? 5 : mapRef.current.getZoom(),
+                duration: 8000
+            })
+        }
+    }
+
 
     return (
         <div className="map-container" ref={mapContainer} tabIndex={-1}>
@@ -224,7 +224,7 @@ const MapContainer = (props) => {
                                     cursor: !props.year || d.years.includes(props.year) ? 'pointer':'default',
                                 }}
                                 onClick={()=> {
-                                    if (!props.year || d.years.includes(props.year)) setCenter(d.coor)
+                                    if (!props.year || d.years.includes(props.year)) flyTo(d.coor)
                                 }}
                         >
                             <Link to={'/images?coor=' + d.coor_str}
@@ -255,6 +255,7 @@ const MapContainer = (props) => {
                             longitude={d.lon}
                             latitude={d.lat}
                             clickTolerance={10}
+                            onClick={() => flyTo([d.lon, d.lat])}
                             >
                             <Link to={'r/' + i}>
                                 <div className="border-solid border-2 bg-white opacity-50 text-[0.5rem] leading-tight w-[80px] h-[80px] overflow-clip serif">
