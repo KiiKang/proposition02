@@ -24,8 +24,8 @@ const Intro = (props) => {
     }, [props.data]);
 
     return (
-        <div className='Intro-textbox fixed min-h-fit outline-neutral-800 outline-2'>
-            <div className='m-[30px] text-5xl underline text-neutral-800'>
+        <div className='Intro-textbox fixed min-h-fit border-neutral-800 border-2 w-[480px] p-7'>
+            <div className='Intro-textbox-title mt-6 mb-7 ml-4 text-[2.5rem] decoration-2 underline underline-offset-2 text-neutral-800'>
                 <p>What do you see?</p>
             </div>
             <div className='Intro-shader-container'
@@ -51,11 +51,11 @@ const Intro = (props) => {
                 <div className='Intro-textbox-menu'>
                     {/* <div className='Intro-textbox-menu-button button-round-L' onClick={() => navigate("/signup") }>sign up</div> */}
                     {/* <div className='Intro-textbox-menu-button button-round-L' onClick={() => navigate("/login") }>sign in</div> */}
-                    <div className='Intro-textbox-menu-button text-3xl font-sans'>sign up</div>
-                    <div className='Intro-textbox-menu-button text-3xl font-sans'>sign in</div>
+                    <div className='Intro-textbox-menu-button text-[1.7rem] font-sans'>sign up</div>
+                    <div className='Intro-textbox-menu-button text-[1.7rem] font-sans'>sign in</div>
                 </div>
             }
-            <div className='mb-2 leading-5 text-sm text-center cursor-pointer'
+            <div className='leading-5 text-sm font-sans text-center cursor-pointer'
                  onClick={toggleReadMore}>
                 <u>read more</u><br/>
                     ⌄
@@ -105,11 +105,11 @@ const Intro = (props) => {
                 </p><br/>
                 <hr/>
                 <p className='mt-2 text-xs'>
-                    The project was realized thanks to the generous support from <a href='https://canadacouncil.ca/'
+                    The project was realized thanks to the generous support from <br/><a href='https://canadacouncil.ca/'
                                                                                     target='_blank'
                                                                                     rel='noreferrer'>Canada Council
                     for the Arts</a>.
-                </p><br/>
+                </p>
             </div>
         </div>
     )

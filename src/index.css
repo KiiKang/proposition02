@@ -30,6 +30,13 @@
 /*  src: url('fonts/charter_bold_italic.woff2') format('woff2');*/
 /*}*/
 
+@font-face {
+  font-family: Gaisyr;
+  font-style: normal;
+  font-weight: normal;
+  font-stretch: normal;
+  src: url('fonts/ABCGaisyr-Light.woff2') format('woff2');
+}
 
 @font-face {
   font-family: Marist;
