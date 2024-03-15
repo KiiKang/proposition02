@@ -1,44 +1,62 @@
-/*@fonts-face {*/
-/*  fonts-family: Kepler;*/
-/*  src: url("Kepler.otf") format("opentype");*/
+/*@font-face {*/
+/*  font-family: charter;*/
+/*  font-style: normal;*/
+/*  font-weight: normal;*/
+/*  font-stretch: normal;*/
+/*  src: url('fonts/charter_regular.woff2') format('woff2');*/
 /*}*/
-/*@import url('https://fonts.googleapis.com/css2?family=Spectral&display=swap');*/
+
+/*@font-face {*/
+/*  font-family: charter;*/
+/*  font-style: italic;*/
+/*  font-weight: normal;*/
+/*  font-stretch: normal;*/
+/*  src: url('fonts/charter_italic.woff2') format('woff2');*/
+/*}*/
+
+/*@font-face {*/
+/*  font-family: charter;*/
+/*  font-style: normal;*/
+/*  font-weight: bold;*/
+/*  font-stretch: normal;*/
+/*  src: url('fonts/charter_bold.woff2') format('woff2');*/
+/*}*/
+
+/*@font-face {*/
+/*  font-family: charter;*/
+/*  font-style: italic;*/
+/*  font-weight: bold;*/
+/*  font-stretch: normal;*/
+/*  src: url('fonts/charter_bold_italic.woff2') format('woff2');*/
+/*}*/
+
 
 @font-face {
-  font-family: charter;
+  font-family: Marist;
   font-style: normal;
   font-weight: normal;
   font-stretch: normal;
-  src: url('fonts/charter_regular.woff2') format('woff2');
+  src: url('fonts/ABCMarist-Regular.woff2') format('woff2');
 }
-
 @font-face {
-  font-family: charter;
+  font-family: Marist;
   font-style: italic;
   font-weight: normal;
   font-stretch: normal;
-  src: url('fonts/charter_italic.woff2') format('woff2');
+  src: url('fonts/ABCMarist-RegularItalic.woff2') format('woff2');
 }
-
 @font-face {
-  font-family: charter;
+  font-family: Marist;
   font-style: normal;
   font-weight: bold;
   font-stretch: normal;
-  src: url('fonts/charter_bold.woff2') format('woff2');
+  src: url('fonts/ABCMarist-Bold.woff2') format('woff2');
 }
 
-@font-face {
-  font-family: charter;
-  font-style: italic;
-  font-weight: bold;
-  font-stretch: normal;
-  src: url('fonts/charter_bold_italic.woff2') format('woff2');
-}
 
 body {
   margin: 0;
-  font-family: Charter, serif;
+  font-family: Marist, serif;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

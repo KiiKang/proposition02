@@ -1,8 +1,9 @@
 import mapboxgl from 'mapbox-gl';
+import {Link, redirect} from 'react-router-dom';
 import ReactMapGL from "react-map-gl";
 import React, {lazy, useEffect, useRef, useState} from "react";
 // import AWS from 'aws-sdk';
-
+import parse from 'html-react-parser';
 import {useNavigate} from "react-router-dom";
 import {Marker} from "react-map-gl";
 import 'mapbox-gl/dist/mapbox-gl.css'
@@ -10,7 +11,6 @@ import './MapContainer.css'
 import axios from "axios";
 import Cookies from "js-cookie";
 // import BlurryBackdrop from "./BlurryBackdrop";
-const Intro = lazy(() => import('./Intro'))
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN
 
@@ -37,21 +37,13 @@ const MapContainer = (props) => {
     /** states-data **/
     const [loading, setLoading] = useState(true);
     // const [error, setError] = useState(null);
-    const [showInfo, setShowInfo] = useState(false);
     const [imagePoints, setImagePoints] = useState([]);
     // const [countryData, setCountryData] = useState(null);
     const [countryBounds, setCountryBounds] = useState(null);
+    const [textData, setTextData] = useState(null);
     // const { search } = useLocation();
     let navigate = useNavigate();
 
-    function toggleInfo(e) {
-        e.preventDefault();
-        setShowInfo(!showInfo);
-    }
-    function hideInfo(e) {
-        e.preventDefault();
-        setShowInfo(false);
-    }
     function signOut() {
         Cookies.remove("user");
         window.location.reload();
@@ -62,16 +54,18 @@ const MapContainer = (props) => {
             try {
                 let response = await axios.get('./country-bounding-box.json');
                 setCountryBounds(response.data);
+                response = await axios.get('text.json');
+                setTextData(response.data);
             } catch (err) {
                 console.log(err.message);
                 // setImageData(null);
             } finally {
                 setLoading(false);
-                setShowInfo(true);
             }
         }
         getData()
     }, [])
+
     useEffect(() => {
         if (props.country && !loading) {
             let bounds = Object.values(countryBounds).filter(d => d[0] === props.country)
@@ -104,7 +98,6 @@ const MapContainer = (props) => {
     // }, [countryBounds, search]);
 
     useEffect(() => {
-        if (props.data.length === 0) return
         // console.log("filtered year: ", props.year)
         // let regions = []
         let coors = []
@@ -220,6 +213,7 @@ const MapContainer = (props) => {
     //     ]
     // }
     // return (<div/>)
+
     return (
         <div className="map-container" ref={mapContainer} tabIndex={-1}>
             <ReactMapGL
@@ -244,10 +238,6 @@ const MapContainer = (props) => {
                                 }}
                                 onClick={()=> {
                                     if (!props.year || d.years.includes(props.year)) {
-                                        navigate({
-                                            pathname: '/images',
-                                            search: 'coor=' + d.coor_str
-                                        })
                                         mapRef.current.flyTo({
                                             center: d.coor,
                                             essential: true,
@@ -257,6 +247,8 @@ const MapContainer = (props) => {
                                     }
                                 }}
                         >
+                            <Link to={'/images?coor=' + d.coor_str}
+                            className={'w-full h-full'}>
                             <img ref={ img => imagesRef.current[i] = img }
                                  src={"https://ara-images.s3.amazonaws.com/" + d.images[0].file_name}
                                  key={"thumbnail-" + d.region}
@@ -267,6 +259,7 @@ const MapContainer = (props) => {
                                  }}
                                  alt=""
                             />
+                            </Link>
                             {/*<div className='country-label'*/}
                             {/*     key={'country-label-' + d.country + '-' + d.region + '-' + d.years.join('_') + '-' + i}*/}
                             {/*     id={'country-label-' + d.country + '-' + d.region + '-' + d.years.join('_') + '-' + i}*/}
@@ -276,19 +269,42 @@ const MapContainer = (props) => {
                         </Marker>
                     ))
                 }
+                {   textData ?
+                    textData.map((d, i) => (
+                        <Marker
+                            longitude={d.lon}
+                            latitude={d.lat}
+                            clickTolerance={10}
+                            >
+                            <Link to={'/r'}>
+                                <div className="border-solid border-2 bg-white opacity-50 text-[0.5rem] leading-tight w-[80px] h-[80px] overflow-clip serif">
+                                {parse(d.html)}
+                                </div>
+                            </Link>
+                        </Marker>
+                    )) : null
+                }
+                {/*<Marker longitude={-71.44} latitude={-33.043}*/}
+                {/*        anchor= {-63.510 > 30 ? 'bottom-left': 'bottom-right'}*/}
+                {/*        clickTolerance={10}*/}
+                {/*    >*/}
+                {/*    <div className="border-solid border-2 bg-white opacity-50 text-[0.5rem] w-[80px] h-[80px] overflow-clip serif">*/}
+                {/*        <p className="text-[0.5rem] leading-tight">*/}
+                {/*        Shoot. Shot. Shoot. Bernice M. Goetz, el disparador de National Geographic no sabía lo que hacía al*/}
+                {/*        disparar al médico brujo. Pretendiendo venir del futuro, no sabía que su captura, la apariencia, el rostro*/}
+                {/*        del médico brujo, era ya una cosa del pasado. My face is a map of everything that happened to my face*/}
+                {/*        (Morton). Mucho menos sabía que la esencia del médico brujo, su futuro, es ahora mi glitcheado*/}
+                {/*        presente. We can’t draw the line decisively as to when the face stops and its explanatory context begins*/}
+                {/*        (Morton). Recuerdo su máquina apuntando a mi rostro. Y veo mi historia a través de los ojos del*/}
+                {/*        médico brujo.*/}
+                {/*        </p>*/}
+                {/*    </div>*/}
+                {/*</Marker>*/}
             </ReactMapGL>
-            {showInfo ? <>
-                <div className={'w-full h-full top-0 fixed m-0 backdrop-blur-md backdrop-close'}
-                     onClick={hideInfo}
-                   style={{
-                       background: props.bg ? 'hsla(27,78%,32%,0.4)' : 'none',
-                       // cursor: `url("${X}") 12 12, default`
-                   }}/>
-                <Intro data={props.data}/></>: <></>}
             <div className='absolute bottom-0 w-full flex justify-between'>
-                <div className='text-4xl ml-3 mb-3 cursor-pointer font-sans' onClick={toggleInfo}>
+                <Link className='text-4xl ml-3 mb-3 cursor-pointer font-sans' to={"/"}>
                     about
-                </div>
+                </Link>
                 {
                     Cookies.get("user") ?
                         <div className='text-4xl mr-3 mb-3 cursor-pointer font-sans'

@@ -1,4 +1,4 @@
-import React, {startTransition, useEffect, useRef, useState, lazy, Suspense} from 'react';
+import React, {startTransition, useEffect, useRef, useState} from 'react';
 import {useLocation, useNavigate} from "react-router-dom";
 import ImageCard from "../components/ImageCard";
 // const ImageCard = lazy(() => import("../components/ImageCard"));
@@ -100,21 +100,19 @@ const ImageReel = (props) => {
         >
             {
                 filteredImageData.map((d, i)=> (
-                    <Suspense fallback={<div>Loading...</div>}>
-                        <ImageCard
-                            key={'image-card-' + d.file_name}
-                            file_name={d.file_name}
-                            caption={d.caption_title}
-                            footnote={d.caption}
-                            country={d.country}
-                            coor={d.coor}
-                            region={d.region ? d.region : d.region_en}
-                            // region_local={d.region_local}
-                            year={d.year}
-                            index={i - indexNow}
-                            onSwitch={() => setIndexNow(i)}
-                        />
-                    </Suspense>
+                    <ImageCard
+                        key={'image-card-' + d.file_name}
+                        file_name={d.file_name}
+                        caption={d.caption_title}
+                        footnote={d.caption}
+                        country={d.country}
+                        coor={d.coor}
+                        region={d.region ? d.region : d.region_en}
+                        // region_local={d.region_local}
+                        year={d.year}
+                        index={i - indexNow}
+                        onSwitch={() => setIndexNow(i)}
+                    />
                 ))
             }
         </div>

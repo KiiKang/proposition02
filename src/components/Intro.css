@@ -13,6 +13,12 @@
     box-shadow: var(--shadow);
     outline: #2a2525 2px solid;
 }
+
+.Intro-textbox > p {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
 .Intro-textbox-title{
     /*fonts-family: 'Cormorant Garamond', serif;*/
 

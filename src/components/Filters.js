@@ -1,59 +1,30 @@
 import {useLocation, useNavigate} from "react-router-dom";
 import React, {useEffect, useState} from 'react'
 import './MenuBar.css'
-import axios from "axios";
-import {tsvToArray} from "../helpers";
 
 const Filters = (props) => {
     /** states **/
-    const [loading, setLoading] = useState(true);
-    const [imageData, setImageData] = useState(null);
-    const [hoveredRegion, setHoveredRegion] = useState('Seoul');
+    // const [loading, setLoading] = useState(true);
     const [filteredCountry, setFilteredCountry] = useState(null);
     // TODO: set year filter to global state
     const [filteredYear, setFilteredYear] = useState(null);
     // const [filteredRegion, setFilteredRegion] = useState(null);
-    const { search } = useLocation();
-
-    useEffect(() => {
-        const getData = async () => {
-            try {
-                let response = await axios.get('./images.tsv');
-                setImageData(tsvToArray(response.data));
-            } catch (err) {
-                console.error(err.message);
-                setImageData(null);
-            } finally {
-                setLoading(false);
-                if (search) {
-                    let [query, value] = search.split("?")[1].split("=")
-                    if (query === 'country') {
-                        setFilteredCountry(value.replace('%20', ' '));
-                    }
-                }
-            }
-        }
-        getData();
-    }, [search, filteredCountry])
-
-    let countries = [];
+    const [countries, setCountries] = useState([]);
     // let regions = [];
     // let regions_set = []
-    if(!loading) {
-        imageData.forEach(d => {
-            // TODO: multiple countries
-            if (d.country_db && !d.country_db.includes("&")) countries.push(d.country_db)
-            // let region = d.region ? d.region : d.country_db
-            // regions.push(region)
-        })
-        countries = [...new Set(countries)].sort()
-        // regions = [...new Set(regions)].sort()
-        // regions.forEach(r => {
-        //     let region_local = imageData.filter(d => d.region ? d.region === r : d.country_db === r)[0].region_local
-        //     if (region_local && r) regions_set.push({"region": r, "region_local": region_local})
-        //     else if (r && r !== ' ') regions_set.push({"region": r, "region_local": r})
-        // })
-    }
+    useEffect(() => {
+        let countries = [];
+        if (props.data) {
+            props.data.forEach(d => {
+                // TODO: multiple countries
+                if (d.country_db && !d.country_db.includes("&")) countries.push(d.country_db)
+                // let region = d.region ? d.region : d.country_db
+                // regions.push(region)
+            })
+            countries = [...new Set(countries)].sort()
+            setCountries(countries)
+        }
+    }, [props.data])
 
     // let navigate = useNavigate();
 
@@ -73,9 +44,6 @@ const Filters = (props) => {
                                     className='w-fit hover:underline'
                                     key={'filter-country-' + d}
                                     id={'filter-country-' + d}
-                                    style={{
-                                        opacity: filteredCountry == null ? 1: filteredCountry === d ? 1: hoveredRegion === d? 1: 0.2,
-                                    }}
                                     onClick={() => {
                                         if (d == filteredCountry) {
                                             setFilteredCountry(null)

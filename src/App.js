@@ -4,12 +4,19 @@ import React, { lazy, useEffect, useState } from 'react';
 import axios from "axios";
 import tsvToArray from "./helpers";
 // https://legacy.reactjs.org/docs/code-splitting.html#route-based-code-splitting
-import ImageReel from "./views/ImageReel";
-const MapContainer = lazy(() => import('./components/MapContainer'))
-const BlurryBackdrop = lazy(() => import('./components/BlurryBackdrop'))
+// import ImageReel from "./views/ImageReel";
+// const MapContainer = lazy(() => import('./components/MapContainer'))
+// const BlurryBackdrop = lazy(() => import('./components/BlurryBackdrop'))
 // const MenuBar = lazy(() => import('./components/MenuBar'))
-const Filters = lazy(() => import('./components/Filters'))
+// const Filters = lazy(() => import('./components/Filters'))
 // const ImageReel = lazy(() => import("./views/ImageReel"));
+import Image from "./views/Image";
+import Home from "./views/Home";
+// import Map from "./views/Map";
+import MapContainer from "./components/MapContainer";
+import Filters from "./components/Filters";
+import Text from "./views/Text";
+
 
 function App() {
     const [data, setData] = useState([]);
@@ -35,26 +42,29 @@ function App() {
 
   return (
     <Router>
+        <MapContainer data={data}
+                      year={filteredYear}
+                      country={filteredCountry}/>
+        <Filters data={data}
+                 onYearChange={setFilteredYear}
+                 onCountryChange={setFilteredCountry}/>
       <Routes>
-        <Route
-            path="/"
-            element={<>
-                <MapContainer data={data}
-                              year={filteredYear}
-                              country={filteredCountry}
-                />
-                <Filters onYearChange={setFilteredYear} onCountryChange={setFilteredCountry}/>
-            </>}
-        />
-      <Route
-          path="/images"
-          element={<>
-              <MapContainer data={data} year={filteredYear} displayImages={true}/>
-              <Filters/>
-              <BlurryBackdrop bg={true}/>
-              <ImageReel data={data}/>
-          </>}
-      />
+          <Route
+              path="/"
+              element={<Home data={data}/>}
+          />
+          <Route
+              path="/map"
+              element={<div/>}
+          />
+          <Route
+            path="/images"
+            element={<Image data={data}/>}
+          />
+          <Route
+              path="/r"
+              element={<Text data={data}/>}
+          />
       </Routes>
     </Router>
   );

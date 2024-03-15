@@ -25,7 +25,7 @@ const Intro = (props) => {
 
     return (
         <div className='Intro-textbox fixed min-h-fit'>
-            <div className='m-[30px] text-5xl tracking-tight underline italic text-neutral-800'>
+            <div className='m-[30px] text-5xl underline text-neutral-800'>
                 <p>What do you see?</p>
             </div>
             <div className='Intro-shader-container'

@@ -67,7 +67,7 @@
 
 
 .mapboxgl-marker {
-    pointer-events: none;
+    font-family: Charter, serif;
 }
 
 .mapboxgl-marker img {
