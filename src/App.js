@@ -22,6 +22,7 @@ function App() {
     const [data, setData] = useState([]);
     const [filteredYear, setFilteredYear] = useState(null);
     const [filteredCountry, setFilteredCountry] = useState(null);
+    const [center, setCenter] = useState(null);
 
     useEffect(() => {
         console.log(filteredYear)
@@ -44,6 +45,7 @@ function App() {
     <Router>
         <MapContainer data={data}
                       year={filteredYear}
+                      center={center}
                       country={filteredCountry}/>
         <Filters data={data}
                  onYearChange={setFilteredYear}
@@ -62,8 +64,9 @@ function App() {
             element={<Image data={data}/>}
           />
           <Route
-              path="/r"
-              element={<Text data={data}/>}
+              path="/r/:textId"
+              // element={<Text onCenterChange={setCenter}/>}
+              element={<Text/>}
           />
       </Routes>
     </Router>

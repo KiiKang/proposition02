@@ -24,7 +24,7 @@ const Intro = (props) => {
     }, [props.data]);
 
     return (
-        <div className='Intro-textbox fixed min-h-fit'>
+        <div className='Intro-textbox fixed min-h-fit outline-neutral-800 outline-2'>
             <div className='m-[30px] text-5xl underline text-neutral-800'>
                 <p>What do you see?</p>
             </div>

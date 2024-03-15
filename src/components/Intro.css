@@ -11,7 +11,6 @@
     transform: translate(-50%, -50%);
     background: rgba(255, 255, 255, 0.5);
     box-shadow: var(--shadow);
-    outline: #2a2525 2px solid;
 }
 
 .Intro-textbox > p {

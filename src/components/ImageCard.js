@@ -112,7 +112,7 @@ const ImageCard = (props) => {
                     src={"https://ara-images.s3.amazonaws.com/" + props.file_name}
                     key={props.file_name} alt=''
                     />
-                <div className='image-anno w-full h-full relative top-0 left-0'
+                <div className='image-anno w-full h-full relative -top-full left-0 opacity-0 bg-white hover:opacity-20 transition-opacity'
                      onClick={addAnno}
                      style={{ visibility: props.index === 0 ? "visible":"hidden" }}>
                     { anno }

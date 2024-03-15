@@ -28,11 +28,6 @@
 .image-card-description, .image-card-year, .image-card-caption {
     align-self: center;
     width: 100%;
-    /*min-width: 600px;*/
-    /*max-width: 100%;*/
-    /*padding: 10px;*/
-    /*text-shadow: var(--text-outline-S);*/
-    /*pointer-events: none;*/
 }
 
 .image-card-description {
@@ -46,28 +41,12 @@
 }
 
 .image-card-info {
-    /*text-shadow: var(--text-outline-S);*/
     text-decoration-skip-ink: none;
     white-space: nowrap;
-    /*margin-left: -100%;*/
-    /*margin-right: -100%;*/
-}
-
-.image-card-description > div {
-    /*text-align: center;*/
-    /*margin: 0 auto;*/
-}
-
-
-.image-card-year > p {
-    /*margin: 0 auto;*/
-    /*font-size: 3rem;*/
-    /*line-height: 2rem;*/
 }
 
 .image-container > img {
-    transform: scale(105%);
-    /*box-shadow: var(--shadow);*/
+    transform: scale(103%);
 }
 
 .image-card-container::-webkit-scrollbar-thumb {

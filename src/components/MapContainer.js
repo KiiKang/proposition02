@@ -1,5 +1,5 @@
 import mapboxgl from 'mapbox-gl';
-import {Link, redirect} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import ReactMapGL from "react-map-gl";
 import React, {lazy, useEffect, useRef, useState} from "react";
 // import AWS from 'aws-sdk';
@@ -10,6 +10,8 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import './MapContainer.css'
 import axios from "axios";
 import Cookies from "js-cookie";
+import textData from "../text.json";
+
 // import BlurryBackdrop from "./BlurryBackdrop";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN
@@ -40,7 +42,8 @@ const MapContainer = (props) => {
     const [imagePoints, setImagePoints] = useState([]);
     // const [countryData, setCountryData] = useState(null);
     const [countryBounds, setCountryBounds] = useState(null);
-    const [textData, setTextData] = useState(null);
+    // const [textData, setTextData] = useState(null);
+    const [center, setCenter] = useState(null);
     // const { search } = useLocation();
     let navigate = useNavigate();
 
@@ -54,8 +57,8 @@ const MapContainer = (props) => {
             try {
                 let response = await axios.get('./country-bounding-box.json');
                 setCountryBounds(response.data);
-                response = await axios.get('text.json');
-                setTextData(response.data);
+                // response = await axios.get('text.json');
+                // setTextData(response.data);
             } catch (err) {
                 console.log(err.message);
                 // setImageData(null);
@@ -96,6 +99,16 @@ const MapContainer = (props) => {
     //         }
     //     }
     // }, [countryBounds, search]);
+    useEffect(() => {
+        if (center) {
+            mapRef.current.flyTo({
+                center: center,
+                essential: true,
+                zoom: mapRef.current.getZoom() < 5.5 ? 5.5 : mapRef.current.getZoom(),
+                duration: 8000
+            })
+        }
+    }, [center])
 
     useEffect(() => {
         // console.log("filtered year: ", props.year)
@@ -187,32 +200,6 @@ const MapContainer = (props) => {
         setImagePoints(imagePoints_)
     }, [props.data])
 
-    // const addSources = () => {
-    //     if (mapRef.current) {
-    //         mapRef.current.addSource("mapbox-dem", {
-    //             type: "raster-dem",
-    //             url: "mapbox://mapbox.mapbox-terrain-dem-v1",
-    //             tileSize: 512,
-    //             maxZoom: 16,
-    //         })
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     if (mapRef.current !== undefined) {
-    //         addSources()
-    //     }
-    // }, [])
-
-    // const coorToBox = (coor, w=1, h=1) => {
-    //     return [
-    //         [coor[0] + w, coor[1] + h],
-    //         [coor[0], coor[1] + h],
-    //         [coor[0], coor[1]],
-    //         [coor[0] + w, coor[1]]
-    //     ]
-    // }
-    // return (<div/>)
 
     return (
         <div className="map-container" ref={mapContainer} tabIndex={-1}>
@@ -237,14 +224,7 @@ const MapContainer = (props) => {
                                     cursor: !props.year || d.years.includes(props.year) ? 'pointer':'default',
                                 }}
                                 onClick={()=> {
-                                    if (!props.year || d.years.includes(props.year)) {
-                                        mapRef.current.flyTo({
-                                            center: d.coor,
-                                            essential: true,
-                                            zoom: mapRef.current.getZoom() < 5.5 ? 5.5 : mapRef.current.getZoom(),
-                                            duration: 8000
-                                        })
-                                    }
+                                    if (!props.year || d.years.includes(props.year)) setCenter(d.coor)
                                 }}
                         >
                             <Link to={'/images?coor=' + d.coor_str}
@@ -276,7 +256,7 @@ const MapContainer = (props) => {
                             latitude={d.lat}
                             clickTolerance={10}
                             >
-                            <Link to={'/r'}>
+                            <Link to={'r/' + i}>
                                 <div className="border-solid border-2 bg-white opacity-50 text-[0.5rem] leading-tight w-[80px] h-[80px] overflow-clip serif">
                                 {parse(d.html)}
                                 </div>
