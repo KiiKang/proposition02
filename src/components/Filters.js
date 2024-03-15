@@ -1,4 +1,3 @@
-import {useLocation, useNavigate} from "react-router-dom";
 import React, {useEffect, useState} from 'react'
 import './MenuBar.css'
 
@@ -31,12 +30,10 @@ const Filters = (props) => {
     return (
         <div className='MenuBar'>
             <div className='MenuBar-Right '>
-                <div className= 'MenuBar-RightLeft'>
-                    <div className='text-4xl mr-4 cursor-pointer font-sans mt-2'>
+                    <div className='text-3xl mr-4 cursor-pointer font-sans mt-2'>
                         countries
                     </div>
-                </div>
-                <div className='MenuBar-Countries text-xl tracking-tighter cursor-pointer pt-1.5 font-sans'>
+                <div className='MenuBar-Countries text-lg tracking-tighter cursor-pointer pt-1.5 font-sans'>
                     {
                         countries.map((d, i) => {
                             return (
@@ -65,7 +62,7 @@ const Filters = (props) => {
                 {
                         Array.from({ length: (1955 - 1945) + 1 }, (_, i) => 1945 + i).map((d) => {
                         return <div
-                            className='text-2xl cursor-pointer font-sans hover:underline'
+                            className='text-[1.32rem] cursor-pointer font-sans hover:underline'
                             style={{
                                 opacity: filteredYear === null ? 1 : d == filteredYear ? 1 : 0.2
                             }}

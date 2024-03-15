@@ -1,10 +1,11 @@
 .MenuBar {
     text-shadow: var(--text-outline-S);
 }
+
 .MenuBar-Right {
     position: absolute;
     display: flex;
-    transform: translateX(209px);
+    transform: translateX(189px);
     top: 0;
     right: 0;
 }

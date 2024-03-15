@@ -2,17 +2,31 @@ import {useState, useEffect, useRef} from 'react';
 import React from 'react';
 import ContentEditable from "react-contenteditable";
 import './ImageCard.css'
-// import {useNavigate} from "react-router-dom";
 
 const ImageCard = (props) => {
-    const [imgLoading, setImgLoading] = useState(true);
-    // const [imageUrl, setImageUrl] = useState('');
     const [anno, setAnno] = useState([]);
     // const [annoFocus, setAnnoFocus] = useState(true);
     const [image, setImage] = useState(null);
-    const [imageSize, setImageSize] = useState([660, 660])
-    // const imageCardRef = useRef(null);
-    const imageContainerRef = useRef(null);
+    const [imageSize, setImageSize] = useState([800, 600])
+    const [mouse, setMouse] = useState({x:null, y:null})
+    const [showAnno, setShowAnno] = useState(false);
+    useEffect(() => {
+        if (props.index === 0) {
+            const updateMousePosition = ev => {
+                if (ev.target.id === "anno-canvas"){
+                    let rect = ev.target.getBoundingClientRect()
+                    setMouse({x: ev.clientX - rect.left, y: ev.clientY - rect.top});
+                } else {
+                    setMouse({x: null, y:null})
+                }
+            };
+            window.addEventListener('mousemove', updateMousePosition);
+            return () => {
+                window.removeEventListener('mousemove', updateMousePosition);
+            };
+        }
+    }, [props.index]);
+
     useEffect(() => {
         const getImage = async (file_name) => {
             try {
@@ -20,23 +34,16 @@ const ImageCard = (props) => {
                 img.src = "https://ara-images.s3.amazonaws.com/" + file_name
                 img.onload = () => {
                     setImage(img);
-                    // imageCardRef.current.style.minWidth = img.width;
-                    setImageSize([img.width, img.height])
-                    // imageContainerRef.current.style.width = img.width;
-                    // imageContainerRef.current.style.height = img.height;
+                    setImageSize([img.width-20, img.height-20])
                 }
-                // setImageUrl("https://ara-images.s3.amazonaws.com/" + file_name);
             } catch (err) {
                 console.error('Error getting image:', err);
-            } finally {
-                setImgLoading(false);
             }
         }
         getImage(props.file_name);
-    }, [])
+    }, [props.file_name])
 
     const addAnno = (e) => {
-        console.log(e);
         if (e.target.className === "image-anno") {
             let x = e.clientX - e.target.getBoundingClientRect().left;
             let y = e.clientY - e.target.getBoundingClientRect().top;
@@ -50,32 +57,12 @@ const ImageCard = (props) => {
     }
 
     const formatText = (text) => {
-        // const ifcUnicodeRegEx = /\\X2\\(.*?)\\X0\\/uig;
-        // let resultString = text;
-        // let match = ifcUnicodeRegEx.exec (text);
-        // while (match) {
-        //     const unicodeChar = String.fromCharCode (parseInt (match[1], 16));
-        //     resultString = resultString.replace (match[0], unicodeChar);
-        //     match = ifcUnicodeRegEx.exec (text);
-        // }
         if (text[0] === '"') text = text.split('"').slice(1, -1).join("'")
         return text.split("_").map((part, index) => {
             return index % 2 === 1 ? <i key={index}>{part}</i> : part;
         });
     }
 
-    // if (imgLoading || !image) {
-    //     return (
-    //         <div className='image-card'
-    //              style={{
-    //                  width: "600px",
-    //                  height: "600px",
-    //                  background: "black",
-    //                  left: 'calc(50% + ' + props.index * window.innerWidth * 0.3 + 'px)',
-    //                  transformOrigin: 'top center',
-    //              }}/>
-    //     )
-    // }
     return (
         <div className='image-card border-[1px] border-neutral-700 min-w-[600px]'
              // ref={imageCardRef}
@@ -85,7 +72,7 @@ const ImageCard = (props) => {
                  width: imageSize[0] + 60 + 'px',
                  left: 'calc(50% + ' + props.index * window.innerWidth * 0.3 + 'px)',
                  transformOrigin: 'top center',
-                 scale: props.index === 0 ? '90%' : '70%',
+                 scale: props.index === 0 ? '100%' : '70%',
                  filter: props.index === 0 ? 'blur(0)' : 'blur(6px)',
                  zIndex: 999 - Math.abs(props.index),
                  opacity: 1 - Math.abs(props.index) * 0.2,
@@ -113,10 +100,17 @@ const ImageCard = (props) => {
                     src={"https://ara-images.s3.amazonaws.com/" + props.file_name}
                     key={props.file_name} alt=''
                     />
-                <div className='image-anno w-full h-full relative -top-full left-0 opacity-0 bg-white hover:opacity-20 transition-opacity'
-                     onClick={addAnno}
-                     style={{ visibility: props.index === 0 ? "visible":"hidden" }}>
+                <div className='image-anno w-full h-full relative -top-full left-0 bg-[rgba(255,255,255,0)] hover:bg-[rgba(255,255,255,0.2)] transition-colors cursor-crosshair'
+                     id='anno-canvas'
+                     onMouseEnter={() => setShowAnno(true)}
+                     onMouseLeave={() => setShowAnno(false)}
+                     onClick={addAnno}>
                     { anno }
+                    <div className='relative text-sm image-anno-content border-[0.5px] border-neutral-800 w-fit max-w-full pr-1 pl-1 italic tracking-wide'
+                    style={{left: mouse.x + 'px', top: mouse.y + 'px', visibility: showAnno ? "visible": "hidden"}}
+                    >
+                        what do you see?
+                    </div>
                 </div>
 
             </div>
@@ -135,10 +129,11 @@ const ImageCard = (props) => {
             }
             {
                 props.footnote !== undefined ?
-                    <div className={'image-card-caption tracking-wide text-xl mt-2 text-neutral-700'}>
+                    <div className={'image-card-caption tracking-wide text-lg mt-2 text-neutral-700'}>
                         {formatText(props.footnote)}
                     </div> : null
             }
+
 
             {/*<div className='image-card-description'>*/}
             {/*    <div>*/}

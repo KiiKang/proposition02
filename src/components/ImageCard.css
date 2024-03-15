@@ -1,6 +1,6 @@
 .image-card {
     position: fixed;
-    top: 50%;
+    top: 50vh;
     display:flex;
     padding:30px;
     background-color: rgba(255, 255, 255, 0.5);
@@ -34,19 +34,12 @@
     white-space: nowrap;
 }
 
-.image-container > img {
-    transform: scale(103%);
-}
-
 .image-card-container::-webkit-scrollbar-thumb {
     background: #414141;
 }
 
 .image-anno-content {
-    position: fixed;
-    width: 80px;
-    background: rgba(255, 255, 255, 0.56);
-    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.3);
     pointer-events: auto;
     transform: translate(-50%, -50%);
 }

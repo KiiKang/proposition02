@@ -219,7 +219,7 @@ const MapContainer = (props) => {
                                 key={'country-marker-' + d.country + i}
                                 id={'country-marker-' + d.country + i}
                                 style={{
-                                    opacity: !props.year || d.years.includes(props.year) ? 0.8 : 0.05,
+                                    opacity: !props.year || d.years.includes(props.year) ? 0.75 : 0.07,
                                     pointerEvents: !props.year || d.years.includes(props.year) ? 'auto':'none',
                                     cursor: !props.year || d.years.includes(props.year) ? 'pointer':'default',
                                 }}
@@ -259,7 +259,7 @@ const MapContainer = (props) => {
                             >
                             <Link to={'r/' + i}>
                                 <div className="border-solid border-2 bg-white opacity-50 text-[0.5rem] leading-tight w-[80px] h-[80px] overflow-clip serif">
-                                {parse(d.html)}
+                                {parse(d.html.split("<p>")[1])}
                                 </div>
                             </Link>
                         </Marker>
@@ -282,17 +282,17 @@ const MapContainer = (props) => {
                 {/*    </div>*/}
                 {/*</Marker>*/}
             </ReactMapGL>
-            <div className='absolute bottom-0 w-full flex justify-between'>
-                <Link className='text-4xl ml-3 mb-3 cursor-pointer font-sans' to={"/"}>
+            <div className='MenuBar absolute bottom-0 w-full flex justify-between'>
+                <Link className='text-3xl ml-3 mb-3 cursor-pointer font-sans' to={"/"}>
                     about
                 </Link>
                 {
                     Cookies.get("user") ?
-                        <div className='text-4xl mr-3 mb-3 cursor-pointer font-sans'
+                        <div className='text-3xl mr-3 mb-3 cursor-pointer font-sans'
                              onClick={signOut}>
                             sign out
                         </div> :
-                        <div className='text-4xl mr-3 mb-3 cursor-pointer font-sans'
+                        <div className='text-3xl mr-3 mb-3 cursor-pointer font-sans'
                              onClick={() => navigate("/login")}>
                             sign in
                         </div>

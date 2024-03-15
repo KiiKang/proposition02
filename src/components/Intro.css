@@ -18,6 +18,14 @@
     hyphenate-limit-chars: 12;
 }
 
+.Intro-textbox > img {
+    width: 200px;
+    margin: 0 auto;
+    padding-bottom: 10px;
+    opacity: 0.8;
+}
+
+
 .Intro-textbox-title{
     /*font-family: 'Gaisyr', serif;*/
 }

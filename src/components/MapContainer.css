@@ -53,11 +53,6 @@
 .mapboxgl-marker:hover {
     z-index: 100;
 }
-/* .mapboxgl-marker:hover .country-label {
-    filter: blur(0);
-    animation-name: blur-out;
-    animation-duration: 250ms;
-} */
 
 .mapboxgl-marker:hover img {
     margin: 0 auto;

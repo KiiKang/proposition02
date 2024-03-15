@@ -10,7 +10,6 @@ const TextContainer = (props) => {
     // const [content, setContent] = useState(null);
     // const [loading, setLoading] = useState(true);
     const ref = useRef();
-    console.log(textData)
     useEffect(() => {
         ref.current.scroll({
             top: 0
