@@ -9,9 +9,7 @@
     max-height: 98vh;
     /* display: inline-flex; */
     flex-direction: column;
-    border: #2f2f2f solid 1px;
     transform: translate(-50%, -50%);
-    /*transform: translate(-50%, -50%);*/
     z-index: 999;
     transition: 300ms ease-in-out;
     box-shadow: var(--shadow);
@@ -20,9 +18,6 @@
 .image-container {
     border-radius: 5px;
     overflow: hidden;
-    /*pointer-events: auto;*/
-    /*object-fit: fill;*/
-    /*max-height: 800px;*/
 }
 
 .image-card-description, .image-card-year, .image-card-caption {
@@ -32,12 +27,6 @@
 
 .image-card-description {
     position: relative;
-    /*margin-left: 10px;*/
-}
-
-.image-card-caption, .image-card-info {
-    /*margin: 0 auto;*/
-    /*text-align: center;*/
 }
 
 .image-card-info {

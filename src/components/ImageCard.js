@@ -10,7 +10,7 @@ const ImageCard = (props) => {
     const [anno, setAnno] = useState([]);
     // const [annoFocus, setAnnoFocus] = useState(true);
     const [image, setImage] = useState(null);
-    const [imageSize, setImageSize] = useState([600, 600])
+    const [imageSize, setImageSize] = useState([660, 660])
     // const imageCardRef = useRef(null);
     const imageContainerRef = useRef(null);
     useEffect(() => {
@@ -77,11 +77,12 @@ const ImageCard = (props) => {
     //     )
     // }
     return (
-        <div className='image-card'
+        <div className='image-card border-[1px] border-neutral-700 min-w-[600px]'
              // ref={imageCardRef}
              onClick={props.onSwitch}
              style={{
                  // minWidth: image.width,
+                 width: imageSize[0] + 60 + 'px',
                  left: 'calc(50% + ' + props.index * window.innerWidth * 0.3 + 'px)',
                  transformOrigin: 'top center',
                  scale: props.index === 0 ? '90%' : '70%',
