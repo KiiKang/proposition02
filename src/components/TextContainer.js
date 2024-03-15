@@ -18,7 +18,7 @@ const TextContainer = (props) => {
     }, [props.id])
 
     return (
-        <div className='Intro-textbox w-[520px] text-lg fixed hyphens-auto min-h-fit max-h-[80%] overflow-y-scroll'
+        <div className='Intro-textbox w-[520px] p-7 text-lg fixed hyphens-auto min-h-fit max-h-[80%] overflow-y-scroll'
         ref={ref}>
             <br/>
             <center>
