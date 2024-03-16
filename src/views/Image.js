@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import BlurryBackdrop from "../components/BlurryBackdrop";
 import ImageReel from "./ImageReel";
 

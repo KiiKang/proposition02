@@ -34,7 +34,7 @@ const ImageCard = (props) => {
                 img.src = "https://ara-images.s3.amazonaws.com/" + file_name
                 img.onload = () => {
                     setImage(img);
-                    setImageSize([img.width-20, img.height-20])
+                    setImageSize([img.width*0.9, img.height*0.9])
                 }
             } catch (err) {
                 console.error('Error getting image:', err);
@@ -85,7 +85,7 @@ const ImageCard = (props) => {
             {/*<h2>*/}
             {/*    <i>{props.footnote && props.footnote !== "\r" ? '"' + props.footnote + '"' : null} </i></h2>*/}
             {/* </div> */}
-            <div className='image-card-info text-2xl font-bold tracking-wide text-neutral-700 mb-5'>
+            <div className='image-card-info text-xl font-bold tracking-wide text-neutral-700 mb-2'>
                 {props.country.includes('&') ? props.year + ', ' + props.region : props.region === props.country ? props.year + ', ' + props.country : props.year + ', ' + props.region + ', ' + props.country}
                 {/* {props.region_local ? props.region_local : null} */}
             </div>
@@ -116,7 +116,7 @@ const ImageCard = (props) => {
             </div>
             {
                 props.caption !== undefined ?
-                    <div className={'image-card-caption tracking-wide text-xl mt-2 text-neutral-700 font-bold mt-8'}>
+                    <div className={'image-card-caption tracking-wide text-[1.1rem] mt-[15px] text-neutral-700 font-bold mt-8'}>
                         {formatText(props.caption)}
                         {/*{props.caption ? formatText(props.caption) : props.footnote ? formatText(props.footnote) : <br/>}*/}
                         {/*{props.caption.split(" ").slice(0, -2).map(s => {*/}
@@ -129,7 +129,7 @@ const ImageCard = (props) => {
             }
             {
                 props.footnote !== undefined ?
-                    <div className={'image-card-caption tracking-wide text-lg mt-2 text-neutral-700'}>
+                    <div className={'image-card-caption tracking-wide text-base mt-1 text-neutral-700'}>
                         {formatText(props.footnote)}
                     </div> : null
             }

@@ -20,6 +20,11 @@
     overflow: hidden;
 }
 
+.image-container > img {
+    object-fit: contain;
+    scale: 102%;
+}
+
 .image-card-description, .image-card-year, .image-card-caption {
     align-self: center;
     width: 100%;

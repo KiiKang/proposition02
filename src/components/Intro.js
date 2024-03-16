@@ -24,8 +24,8 @@ const Intro = (props) => {
     }, [props.data]);
 
     return (
-        <div className='Intro-textbox fixed min-h-fit border-neutral-800 border-2 w-[480px] p-7 pb-2'>
-            <div className='Intro-textbox-title mt-3 mb-3 ml-1 text-[2.5rem] decoration-2 underline underline-offset-2 text-neutral-800'>
+        <div className='Intro-textbox fixed min-h-fit border-neutral-800 border-2 w-[420px] p-7 pb-2 tracking-wide'>
+            <div className='Intro-textbox-title mt-3 mb-3 ml-1 text-[2.2rem] decoration-2 underline underline-offset-2 text-neutral-800'>
                 <p>What do you see?</p>
             </div>
             <div className='Intro-shader-container'
