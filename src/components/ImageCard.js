@@ -1,7 +1,7 @@
-import {useState, useEffect, useRef} from 'react';
+import {useState, useEffect} from 'react';
 import React from 'react';
 import ContentEditable from "react-contenteditable";
-import './ImageCard.css'
+import './ImageCard.css';
 
 const ImageCard = (props) => {
     const [anno, setAnno] = useState([]);
@@ -57,7 +57,7 @@ const ImageCard = (props) => {
     }
 
     const formatText = (text) => {
-        if (text[0] === '"') text = text.split('"').slice(1, -1).join("'")
+        // if (text[0] === '"') text = text.split('"').slice(1, -1).join("'")
         return text.split("_").map((part, index) => {
             return index % 2 === 1 ? <i key={index}>{part}</i> : part;
         });

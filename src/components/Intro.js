@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import './Intro.css'
-
+import './Intro.css';
+import '../App.css';
 import Cookies from 'js-cookie';
 
 const Intro = (props) => {
@@ -25,7 +25,7 @@ const Intro = (props) => {
 
     return (
         <div className='Intro-textbox fixed min-h-fit border-neutral-800 border-2 w-[420px] p-7 pb-2 tracking-wide'>
-            <div className='Intro-textbox-title mt-3 mb-3 ml-1 text-[2.2rem] decoration-2 underline underline-offset-2 text-neutral-800'>
+            <div className='Intro-textbox-title text-outline-sm mt-3 mb-3 ml-1 text-[2.2rem] underline decoration-2 underline-offset-2 text-neutral-800'>
                 <p>What do you see?</p>
             </div>
             <div className='Intro-shader-container'
@@ -44,22 +44,24 @@ const Intro = (props) => {
                 } */}
             </div>
 
-            {Cookies.get("user") ?
+            {
+                Cookies.get("user") ?
                 <div className='Intro-textbox-menu'>
                     <div className='Intro-textbox-menu-button button-round-L' onClick={signOut}>sign out</div>
                 </div> :
                 <div className='Intro-textbox-menu'>
                     {/* <div className='Intro-textbox-menu-button button-round-L' onClick={() => navigate("/signup") }>sign up</div> */}
                     {/* <div className='Intro-textbox-menu-button button-round-L' onClick={() => navigate("/login") }>sign in</div> */}
-                    <div className='Intro-textbox-menu-button text-[1.5rem] font-sans'>
+                    <div className='Intro-textbox-menu-button text-outline-sm font-medium text-[1.5rem] font-sans'>
                         <p className='w-fit m-auto hover:underline cursor-pointer'>sign up</p>
                     </div>
-                    <div className='Intro-textbox-menu-button text-[1.5rem] font-sans'>
+                    <div className='Intro-textbox-menu-button text-outline-sm font-medium text-[1.5rem] font-sans'>
                         <p className='w-fit m-auto hover:underline cursor-pointer'>sign in</p>
                     </div>
                 </div>
             }
-            <div className='text-sm font-sans text-center cursor-pointer'
+
+            <div className='text-[0.75rem] font-sans text-center cursor-pointer'
                  onClick={toggleReadMore}>
                 <u>read more</u><br/>
                     ⌄
