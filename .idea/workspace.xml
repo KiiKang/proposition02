@@ -3,8 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="1449800b-bf37-4035-bba0-61bd282dc759" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/amplify-meta.json" beforeDir="false" afterPath="$PROJECT_DIR$/amplify/backend/amplify-meta.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/Authenticator.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Authenticator.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +133,7 @@
       <workItem from="1709749398968" duration="3122000" />
       <workItem from="1709951520102" duration="6677000" />
       <workItem from="1710351070261" duration="46879000" />
-      <workItem from="1711153879698" duration="31790000" />
+      <workItem from="1711153879698" duration="32174000" />
     </task>
     <servers />
   </component>
