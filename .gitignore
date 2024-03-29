@@ -46,3 +46,4 @@ amplifytools.xcconfig
 **.sample
 #amplify-do-not-edit-end
 .env.secrets
+.idea/workspace.xml

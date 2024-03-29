@@ -10,7 +10,7 @@ const ImageReel = (props) => {
     // const [filteredCountry, setFilteredCountry] = useState(null);
     // const [filteredRegion, setFilteredRegion] = useState("");
     const [filteredImageData, setFilteredImageData] = useState([]);
-    const [coor, setCoor] = useState(null)
+    // const [coor, setCoor] = useState(null)
     const ref = useRef(null);
     const { search } = useLocation();
     let navigate = useNavigate();
@@ -64,13 +64,10 @@ const ImageReel = (props) => {
                 //     setFilteredRegion(null)
                 // }
                 if (query === 'coor') {
-                    let coor = [parseFloat(value.split(",")[0]), parseFloat(value.split(",")[1])]
-                    setCoor(coor)
+                    // let coor = [parseFloat(value.split(",")[0]), parseFloat(value.split(",")[1])]
+                    // setCoor(coor)
                     setFilteredImageData(imageData_cleaned.filter(d => coor_to_str(d) === value))
                 }
-            } else {
-                // setFilteredRegion(null)
-                setCoor(null)
             }
         })
     // }, [props.data, search, filteredRegion, filteredYear])
