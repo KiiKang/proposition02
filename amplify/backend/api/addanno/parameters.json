@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "addanno",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authreindexarchiveb6f7105c",
+      "Outputs.UserPoolId"
+    ]
+  }
+}

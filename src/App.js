@@ -1,7 +1,8 @@
-import './App.css';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import React, { lazy, useEffect, useState } from 'react';
+import {getCurrentUser} from "aws-amplify/auth";
 import axios from "axios";
+import './App.css';
 import tsvToArray from "./helpers";
 // https://legacy.reactjs.org/docs/code-splitting.html#route-based-code-splitting
 // import ImageReel from "./views/ImageReel";
@@ -17,16 +18,20 @@ import MapContainer from "./components/MapContainer";
 import Filters from "./components/Filters";
 import Text from "./views/Text";
 
-
 function App() {
     const [data, setData] = useState([]);
     const [filteredYear, setFilteredYear] = useState(null);
     const [filteredCountry, setFilteredCountry] = useState(null);
     const [center, setCenter] = useState(null);
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
-        console.log(filteredYear)
-    }, [filteredYear])
+        getCurrentUser()
+            .then(user => setUser(user.username))
+            .catch(err => {
+                setUser(null)
+            })
+    }, [])
 
     useEffect(()=> {
         const getData = async () => {
@@ -34,7 +39,6 @@ function App() {
                 let response = await axios.get('./images.tsv');
                 setData(tsvToArray(response.data));
             } catch (err) {
-                console.log(err.message);
                 setData(null);
             }
         }
@@ -50,10 +54,10 @@ function App() {
         <Filters data={data}
                  onYearChange={setFilteredYear}
                  onCountryChange={setFilteredCountry}/>
-      <Routes>
+        <Routes>
           <Route
               path="/"
-              element={<Home data={data}/>}
+              element={<Home data={data} user={user}/>}
           />
           <Route
               path="/map"

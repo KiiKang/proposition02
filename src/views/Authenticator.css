@@ -1,0 +1,139 @@
+.auth-container {
+    position: fixed;
+    z-index: 999;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(227, 227, 227, 0.8);
+    box-shadow: var(--shadow);
+    width: 360px;
+}
+
+.auth {
+    padding: 1.75rem;
+}
+
+.amplify-label {
+    font-family: "Helvetica Neue", sans-serif;
+    font-size: 1.0rem;
+    text-transform: lowercase;
+    font-weight: 500;
+}
+
+.amplify-tabs__list {
+    display: flex;
+    justify-content: center;
+    visibility: hidden;
+    height: 15px;
+}
+
+.amplify-tabs__item {
+    /*visibility: hidden;*/
+    font-size: 1.5rem;
+    /*font-weight: 500;*/
+    text-transform: lowercase;
+    font-family: "Helvetica Neue", serif;
+    /*border: 5px solid black;*/
+}
+
+.amplify-button {
+    font-family: "Helvetica Neue", serif;
+    text-transform: lowercase;
+    font-size: 0.8rem;
+    /*text-align: left;*/
+}
+
+.amplify-field-group__field-wrapper {
+    width: 100%;
+}
+.amplify-field-group__field-wrapper > input{
+    width: 100%;
+}
+
+.amplify-flex {
+    display: flex;
+    flex-direction: column;
+}
+
+.amplify-field-group {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.amplify-field-group--horizontal {
+    flex-direction: row;
+}
+.amplify-field {
+    flex-direction: column;
+}
+.amplify-visually-hidden, .amplify-alert__icon{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    fill: transparent;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+.amplify-text--error, .amplify-alert__body {
+    opacity: 0.5;
+    color: darkred;
+    font-size: 0.8rem;
+    margin: 0 0 5px;
+    padding: 0;
+}
+.amplify-alert {
+    flex-direction: row;
+}
+
+.amplify-icon {
+    background-color: white;
+}
+
+.amplify-field-group {
+    align-self: stretch;
+}
+
+input {
+    padding: 3px;
+}
+
+.amplify-field-group__outer-start,
+.amplify-field-group__outer-end {
+    display: flex;
+    padding: 3px;
+    flex-shrink: 0;
+    background: white;
+}
+
+.data-amplify-footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+[type='submit'] {
+    text-shadow: var(--text-outline-S);
+    margin-top: 10px;
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+
+[type='submit']:hover {
+    text-decoration: underline;
+}
+
+.close {
+    position: absolute;
+    width: fit-content;
+    height: fit-content;
+    cursor: pointer;
+    /*border: 1px solid black;*/
+    background: rgb(249 250 251);
+    right: 0;
+    margin: 0;
+}

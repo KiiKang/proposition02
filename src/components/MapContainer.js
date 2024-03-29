@@ -1,8 +1,7 @@
 import mapboxgl from 'mapbox-gl';
 import {Link} from 'react-router-dom';
 import ReactMapGL from "react-map-gl";
-import React, {lazy, useEffect, useRef, useState} from "react";
-// import AWS from 'aws-sdk';
+import React, {useEffect, useRef, useState} from "react";
 import parse from 'html-react-parser';
 import {useNavigate} from "react-router-dom";
 import {Marker} from "react-map-gl";
@@ -42,7 +41,6 @@ const MapContainer = (props) => {
     const [imagePoints, setImagePoints] = useState([]);
     // const [countryData, setCountryData] = useState(null);
     const [countryBounds, setCountryBounds] = useState(null);
-    // const [textData, setTextData] = useState(null);
     // const { search } = useLocation();
     let navigate = useNavigate();
 
@@ -56,8 +54,6 @@ const MapContainer = (props) => {
             try {
                 let response = await axios.get('./country-bounding-box.json');
                 setCountryBounds(response.data);
-                // response = await axios.get('text.json');
-                // setTextData(response.data);
             } catch (err) {
                 console.log(err.message);
                 // setImageData(null);
@@ -250,7 +246,7 @@ const MapContainer = (props) => {
                     ))
                 }
                 {   textData ?
-                    textData.map((d, i) => (
+                    textData.content.map((d, i) => (
                         <Marker
                             longitude={d.lon}
                             latitude={d.lat}
@@ -265,22 +261,6 @@ const MapContainer = (props) => {
                         </Marker>
                     )) : null
                 }
-                {/*<Marker longitude={-71.44} latitude={-33.043}*/}
-                {/*        anchor= {-63.510 > 30 ? 'bottom-left': 'bottom-right'}*/}
-                {/*        clickTolerance={10}*/}
-                {/*    >*/}
-                {/*    <div className="border-solid border-2 bg-white opacity-50 text-[0.5rem] w-[80px] h-[80px] overflow-clip serif">*/}
-                {/*        <p className="text-[0.5rem] leading-tight">*/}
-                {/*        Shoot. Shot. Shoot. Bernice M. Goetz, el disparador de National Geographic no sabía lo que hacía al*/}
-                {/*        disparar al médico brujo. Pretendiendo venir del futuro, no sabía que su captura, la apariencia, el rostro*/}
-                {/*        del médico brujo, era ya una cosa del pasado. My face is a map of everything that happened to my face*/}
-                {/*        (Morton). Mucho menos sabía que la esencia del médico brujo, su futuro, es ahora mi glitcheado*/}
-                {/*        presente. We can’t draw the line decisively as to when the face stops and its explanatory context begins*/}
-                {/*        (Morton). Recuerdo su máquina apuntando a mi rostro. Y veo mi historia a través de los ojos del*/}
-                {/*        médico brujo.*/}
-                {/*        </p>*/}
-                {/*    </div>*/}
-                {/*</Marker>*/}
             </ReactMapGL>
             <div className='MenuBar absolute bottom-0 w-full flex justify-between'>
                 <Link className='text-3xl ml-3 mb-3 cursor-pointer font-sans' to={"/"}>

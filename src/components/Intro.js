@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import './Intro.css';
 import '../App.css';
-import Cookies from 'js-cookie';
+import {signOut} from "aws-amplify/auth";
+// import AWS from 'aws-sdk';
 
 const Intro = (props) => {
     const [isReadMore, setIsReadMore] = useState(true);
@@ -10,9 +11,11 @@ const Intro = (props) => {
         setIsReadMore(!isReadMore);
     }
 
-    function signOut() {
-        Cookies.remove("user");
-        window.location.reload();
+    function handleSignOut() {
+        // Cookies.remove("user");
+        signOut().then(() =>
+            window.location.reload()
+        )
     }
 
     useEffect(() => {
@@ -43,20 +46,31 @@ const Intro = (props) => {
                         key={imgSelected} alt='' loading='lazy'></img>:null
                 } */}
             </div>
-
             {
-                Cookies.get("user") ?
+                props.user ?
                 <div className='Intro-textbox-menu'>
-                    <div className='Intro-textbox-menu-button button-round-L' onClick={signOut}>sign out</div>
+                    <div className='text-outline-sm font-medium text-[1.5rem] font-sans' onClick={handleSignOut}>
+                        <p className='w-fit m-auto cursor-pointer'>sign out</p>
+                    </div>
                 </div> :
                 <div className='Intro-textbox-menu'>
                     {/* <div className='Intro-textbox-menu-button button-round-L' onClick={() => navigate("/signup") }>sign up</div> */}
                     {/* <div className='Intro-textbox-menu-button button-round-L' onClick={() => navigate("/login") }>sign in</div> */}
-                    <div className='Intro-textbox-menu-button text-outline-sm font-medium text-[1.5rem] font-sans'>
-                        <p className='w-fit m-auto hover:underline cursor-pointer'>sign up</p>
+                    <div className='w-1/2 text-outline-sm font-medium text-[1.5rem] font-sans'
+                         onClick={() => {
+                             props.onShowAuth(true)
+                             props.onInOrUp(true)
+                         }}
+                    >
+                        <p className='w-fit m-auto cursor-pointer'>sign up</p>
                     </div>
-                    <div className='Intro-textbox-menu-button text-outline-sm font-medium text-[1.5rem] font-sans'>
-                        <p className='w-fit m-auto hover:underline cursor-pointer'>sign in</p>
+                    <div className='w-1/2 text-outline-sm font-medium text-[1.5rem] font-sans'
+                         onClick={() => {
+                             props.onShowAuth(true)
+                             props.onInOrUp(false)
+                         }}
+                    >
+                        <p className='w-fit m-auto cursor-pointer'>sign in</p>
                     </div>
                 </div>
             }
@@ -74,7 +88,7 @@ const Intro = (props) => {
                  }}>
                 <p>
                     <b>Archive Reindex Archive</b> presents an archival collection of photographic images and
-                    captions from National Geographic issues from 1945 to 1959, explorable through a global map.
+                    captions from National Geographic issues from 1945 to 1959, explorable through the global map.
                     <br/><br/>
                     <b>Archive Reindex Archive</b> was conceived by <a href='https://ivettakang.com/'
                                                                               target='_blank' rel='noreferrer'>Ivetta
