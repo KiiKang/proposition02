@@ -1,4 +1,10 @@
+h2 {
+    font-size: 2rem;
+}
 
+h3 {
+    margin: 15px;
+}
 .Intro-textbox {
     z-index: 9;
     left: 50%;
