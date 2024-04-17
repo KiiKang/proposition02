@@ -85,11 +85,11 @@ const ImageCard = (props) => {
             {/*<h2>*/}
             {/*    <i>{props.footnote && props.footnote !== "\r" ? '"' + props.footnote + '"' : null} </i></h2>*/}
             {/* </div> */}
-            <div className='image-card-info text-xl font-bold tracking-wide text-neutral-700 mb-2'>
+            <div className='image-card-info text-xl font-bold tracking-wide text-neutral-700 mb-2 select-none'>
                 {props.country.includes('&') ? props.year + ', ' + props.region : props.region === props.country ? props.year + ', ' + props.country : props.year + ', ' + props.region + ', ' + props.country}
                 {/* {props.region_local ? props.region_local : null} */}
             </div>
-            <div className='image-container m-auto relative'
+            <div className='image-container m-auto relative select-none'
                  style = {{width: imageSize[0] + 'px', height: imageSize[1] + 'px',
             background: !image ? 'black': 'none', borderRadius: !image ? '50%': '5px', filter: !image ? 'blur(50px)' : 'none'}}
                  >
@@ -116,7 +116,7 @@ const ImageCard = (props) => {
             </div>
             {
                 props.caption !== undefined ?
-                    <div className={'image-card-caption tracking-wide text-[1.1rem] mt-[15px] text-neutral-700 font-bold mt-8'}>
+                    <div className={'image-card-caption tracking-wide text-[1.1rem] mt-[15px] text-neutral-700 font-bold mt-8 select-none'}>
                         {formatText(props.caption)}
                         {/*{props.caption ? formatText(props.caption) : props.footnote ? formatText(props.footnote) : <br/>}*/}
                         {/*{props.caption.split(" ").slice(0, -2).map(s => {*/}
@@ -129,7 +129,7 @@ const ImageCard = (props) => {
             }
             {
                 props.footnote !== undefined ?
-                    <div className={'image-card-caption tracking-wide text-base mt-1 text-neutral-700'}>
+                    <div className={'image-card-caption tracking-wide text-base mt-1 text-neutral-700 select-none'}>
                         {formatText(props.footnote)}
                     </div> : null
             }

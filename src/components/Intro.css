@@ -95,10 +95,14 @@ h3 {
 }
 
 .Intro-textbox-p {
-    max-height: 500px;
-    color: var(--black);
-    overflow: scroll;
     transition: height 500ms ease-in-out;
+}
+
+.Intro-textbox-p > p{
+    margin-top: 12px;
+    margin-bottom: 12px;
+    hyphens: auto;
+    hyphenate-limit-chars: 5 3 3;
 }
 
 .Intro-textbox-p > p > a {
@@ -107,7 +111,7 @@ h3 {
 
 .Intro-textbox-p > p > a:hover {
     font-style: italic;
-    letter-spacing: 1.05px;
+    letter-spacing: 0.9px;
 }
 
 .Intro-shader-container {
