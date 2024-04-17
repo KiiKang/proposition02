@@ -60,7 +60,7 @@ const TextContainer = (props) => {
     }
 
     return (
-        <div className='Intro-textbox overflow-x-clip w-[520px] p-7 text-lg fixed hyphens-auto min-h-fit max-h-[80%] overflow-y-scroll'
+        <div className='Intro-textbox overflow-x-clip w-[480px] p-7 text-base fixed hyphens-auto min-h-fit max-h-[80%] overflow-y-scroll'
         ref={ref}>
             <br/>
             <center>
@@ -80,7 +80,7 @@ const TextContainer = (props) => {
             </center>
             <br/>
             <div ref={bibRef}
-                 className='fixed leading-tight pointer-events-none max-w-[80%] min-w-[200px] w-fit left-0 top-0 bg-white border-2 border-gray-700 p-1 font-sans text-sm'
+                 className='fixed leading-tight pointer-events-none max-w-[80%] min-w-[200px] w-fit left-0 top-0 bg-white border-2 border-gray-700 p-1 font-sans text-xs'
             />
         </div>
     )

@@ -1,9 +1,12 @@
 h2 {
     font-size: 2rem;
+    margin-bottom: 20px;
 }
 
 h3 {
-    margin: 15px;
+    font-size: 0.95rem;
+    line-height: 1.1rem;
+    margin: 8px;
 }
 .Intro-textbox {
     z-index: 9;
@@ -15,8 +18,8 @@ h3 {
 }
 
 .Intro-textbox > p {
-    margin-top: 4px;
-    margin-bottom: 4px;
+    margin-top: 12px;
+    margin-bottom: 12px;
     hyphenate-limit-chars: 12;
 }
 
