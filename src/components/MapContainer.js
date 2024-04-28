@@ -8,8 +8,9 @@ import {Marker} from "react-map-gl";
 import 'mapbox-gl/dist/mapbox-gl.css'
 import './MapContainer.css'
 import axios from "axios";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 import textData from "../text.json";
+import {signOut} from "aws-amplify/auth";
 
 // import BlurryBackdrop from "./BlurryBackdrop";
 
@@ -42,11 +43,12 @@ const MapContainer = (props) => {
     // const [countryData, setCountryData] = useState(null);
     const [countryBounds, setCountryBounds] = useState(null);
     // const { search } = useLocation();
-    let navigate = useNavigate();
+    // let navigate = useNavigate();
 
-    function signOut() {
-        Cookies.remove("user");
-        window.location.reload();
+    function handleSignOut() {
+        signOut().then(() =>
+            window.location.reload()
+        )
     }
 
     useEffect(() => {
@@ -215,7 +217,7 @@ const MapContainer = (props) => {
                                 key={'country-marker-' + d.country + i}
                                 id={'country-marker-' + d.country + i}
                                 style={{
-                                    opacity: !props.year || d.years.includes(props.year) ? 0.75 : 0.07,
+                                    opacity: !props.year ? 0.35 : d.years.includes(props.year) ? 0.5 : 0.06,
                                     pointerEvents: !props.year || d.years.includes(props.year) ? 'auto':'none',
                                     cursor: !props.year || d.years.includes(props.year) ? 'pointer':'default',
                                 }}
@@ -235,13 +237,13 @@ const MapContainer = (props) => {
                                  }}
                                  alt=""
                             />
+                                {/*<div className='country-label w-fit text-[0.65rem] p-[1px] text-gray-800 bg-white mt-2 border-gray-700 border-[0.5px]'*/}
+                                {/*     key={'country-label-' + d.country + '-' + d.region + '-' + d.years.join('_') + '-' + i}*/}
+                                {/*     id={'country-label-' + d.country + '-' + d.region + '-' + d.years.join('_') + '-' + i}*/}
+                                {/*>*/}
+                                {/*    <p className='leading-tight'>{d.images[0].caption}</p></div>*/}
                             </Link>
-                            {/*<div className='country-label'*/}
-                            {/*     key={'country-label-' + d.country + '-' + d.region + '-' + d.years.join('_') + '-' + i}*/}
-                            {/*     id={'country-label-' + d.country + '-' + d.region + '-' + d.years.join('_') + '-' + i}*/}
-                            {/*>*/}
-                            {/* {d.image[Math.floor(Math.random(0,d.image.length))].caption.split(" ").filter(d=>d.length > 4)[0].split("—")[0].split(",")[0]}*/}
-                            {/* </div>*/}
+
                         </Marker>
                     ))
                 }
@@ -267,13 +269,16 @@ const MapContainer = (props) => {
                     about
                 </Link>
                 {
-                    Cookies.get("user") ?
+                    props.user ?
                         <div className='text-3xl mr-3 mb-3 cursor-pointer font-sans'
-                             onClick={signOut}>
+                             onClick={handleSignOut}>
                             sign out
                         </div> :
                         <div className='text-3xl mr-3 mb-3 cursor-pointer font-sans'
-                             onClick={() => navigate("/login")}>
+                             onClick={() => {
+                                 props.onShowAuth(true)
+                                 props.onInOrUp(false)
+                             }}>
                             sign in
                         </div>
                 }

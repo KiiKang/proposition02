@@ -105,6 +105,7 @@ const ImageReel = (props) => {
                         country={d.country}
                         coor={d.coor}
                         region={d.region ? d.region : d.region_en}
+                        user={props.user}
                         // region_local={d.region_local}
                         year={d.year}
                         index={i - indexNow}

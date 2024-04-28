@@ -1,31 +1,38 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import React from 'react';
-import ContentEditable from "react-contenteditable";
 import './ImageCard.css';
+import ContentEditable from "react-contenteditable";
+// import {DynamoDB} from 'aws-sdk'
+import { post } from 'aws-amplify/api';
 
 const ImageCard = (props) => {
+    const [user, setUser] = useState(null);
     const [anno, setAnno] = useState([]);
-    // const [annoFocus, setAnnoFocus] = useState(true);
+    const [annoFocus, setAnnoFocus] = useState(false);
     const [image, setImage] = useState(null);
     const [imageSize, setImageSize] = useState([800, 600])
-    const [mouse, setMouse] = useState({x:null, y:null})
+    // const [mouse, setMouse] = useState({x:null, y:null})
     const [showAnno, setShowAnno] = useState(false);
+    const annoRefs = useRef([]);
+    // useEffect(() => {
+    //     if (props.index === 0) {
+    //         const updateMousePosition = ev => {
+    //             if (ev.target.id === "anno-canvas"){
+    //                 let rect = ev.target.getBoundingClientRect()
+    //                 setMouse({x: ev.clientX - rect.left, y: ev.clientY - rect.top});
+    //             } else {
+    //                 setMouse({x: null, y:null})
+    //             }
+    //         };
+    //         window.addEventListener('mousemove', updateMousePosition);
+    //         return () => {
+    //             window.removeEventListener('mousemove', updateMousePosition);
+    //         };
+    //     }
+    // }, [props.index]);
     useEffect(() => {
-        if (props.index === 0) {
-            const updateMousePosition = ev => {
-                if (ev.target.id === "anno-canvas"){
-                    let rect = ev.target.getBoundingClientRect()
-                    setMouse({x: ev.clientX - rect.left, y: ev.clientY - rect.top});
-                } else {
-                    setMouse({x: null, y:null})
-                }
-            };
-            window.addEventListener('mousemove', updateMousePosition);
-            return () => {
-                window.removeEventListener('mousemove', updateMousePosition);
-            };
-        }
-    }, [props.index]);
+        setUser(props.user)
+    }, [props.user])
 
     useEffect(() => {
         const getImage = async (file_name) => {
@@ -43,17 +50,84 @@ const ImageCard = (props) => {
         getImage(props.file_name);
     }, [props.file_name])
 
-    const addAnno = (e) => {
-        if (e.target.className === "image-anno") {
-            let x = e.clientX - e.target.getBoundingClientRect().left;
-            let y = e.clientY - e.target.getBoundingClientRect().top;
-            setAnno(anno.concat(
-                <ContentEditable className='image-anno-content'
-                                 style={{left: x + 'px', top: y + 'px'}}
-                 html={<div></div>}/>
-            ))
-            // navigate(window.location)
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function postAnno(data) {
+        try {
+            const restOperation = post({
+                apiName: 'araapi',
+                path: '/ara-anno',
+                options: {
+                    body: data
+                }
+            });
+
+            // const { body } = await restOperation.response;
+            // const response = await body.json();
+            //
+            // console.log('POST call succeeded');
+            console.log(restOperation.response);
+        } catch (e) {
+            console.log('POST call failed: ', JSON.parse(e.response.body));
         }
+
+    }
+    async function handleBlur(e, id) {
+        console.log(e.target, id)
+        let anno_updated = []
+        anno.forEach(a => {
+            if (a.id === id) a.content = e.target.innerHTML
+            anno_updated.push(a)
+        })
+        setAnno(anno_updated)
+        console.log(anno)
+
+        // setTimeout(() => {
+        //     console.log()
+        // }, 500);
+        // await sleep(100);
+        await(postAnno(anno[0]))
+
+        setAnnoFocus(false)
+    }
+
+    const addAnno = (e) => {
+        if (!user) return
+        if (annoFocus) return
+        if (props.index !== 0) return
+        if (!e.target.classList.contains("image-anno")) return
+
+        // if (e.target.className === "image-anno") {
+        //     e.preventDefault();
+
+        let x = e.clientX - e.target.getBoundingClientRect().left;
+        let y = e.clientY - e.target.getBoundingClientRect().top;
+        setAnno([ ...anno, {
+            img: props.file_name,
+            id: anno.length + 1,
+            x: x,
+            y: y,
+            user: user,
+            timeStamp: e.timeStamp,
+            content: "what do you see?"
+        }]);
+
+        // setAnno(anno.concat(
+            //     <ContentEditable className='absolute text-sm image-anno-content border-[0.5px] border-neutral-800 w-fit max-w-full pr-1 pl-1'
+            //          ref={r => annoRefs.current.push(r)}
+            //          onFocus={() => setAnnoFocus(true)}
+            //          onKeyDown={(e) => {
+            //              if (e.code === "Enter") e.currentTarget.blur()
+            //          }}
+            //          onBlur={handleBlur}
+            //          style={{left: x + 'px', top: y + 'px'}}
+            //          html={"what do you see?"}
+            //     />
+            // ))
+            // navigate(window.location)
+        // }
     }
 
     const formatText = (text) => {
@@ -76,7 +150,7 @@ const ImageCard = (props) => {
                  filter: props.index === 0 ? 'blur(0)' : 'blur(6px)',
                  zIndex: 999 - Math.abs(props.index),
                  opacity: 1 - Math.abs(props.index) * 0.2,
-                 cursor: props.index === 0 ? 'default' : props.index > 0 ? 'e-resize' : 'w-resize'
+                 cursor: props.index === 0 ? 'default' : props.index > 0 ? 'e-resize' : 'w-resize',
              }}>
             {/* <div className='image-card-year'> */}
             {/*<h4>{props.region_local ? props.region_local : null}<br/>{props.region === props.country ? props.country : props.region + ", " + props.country}*/}
@@ -105,12 +179,28 @@ const ImageCard = (props) => {
                      onMouseEnter={() => setShowAnno(true)}
                      onMouseLeave={() => setShowAnno(false)}
                      onClick={addAnno}>
-                    { anno }
-                    <div className='relative text-sm image-anno-content border-[0.5px] border-neutral-800 w-fit max-w-full pr-1 pl-1 italic tracking-wide'
-                    style={{left: mouse.x + 'px', top: mouse.y + 'px', visibility: showAnno ? "visible": "hidden"}}
-                    >
-                        what do you see?
-                    </div>
+                    {/*<div className='absolute text-sm image-anno-content border-[0.5px] border-neutral-800 w-fit max-w-full pr-1 pl-1 italic tracking-wide'*/}
+                    {/*     style={{left: mouse.x + 'px', top: mouse.y + 'px', visibility: showAnno ? "visible": "hidden"}}*/}
+                    {/*>*/}
+                    {/*    what do you see?*/}
+                    {/*</div>*/}
+                    { anno.map((d) => (
+                        <ContentEditable className='absolute text-sm image-anno-content w-fit max-w-full pr-1 pl-1'
+                                         ref={r => annoRefs.current.push(r)}
+                                         onFocus={() => setAnnoFocus(true)}
+                                         onKeyDown={(e) => {
+                                             if (e.code === "Enter") e.currentTarget.blur()
+                                         }}
+                                         disabled={d.user !== user}
+                                         onBlur={(e) => handleBlur(e, d.id)}
+                                         style={{
+                                             left: d.x + 'px',
+                                             top: d.y + 'px',
+                                             border: d.user === user ? 'solid 0.5px rgb(180 0 0)': 'solid 0.5px rgb(38 38 38)'
+                                         }}
+                                         html={d.content}
+                        />
+                    ))}
                 </div>
 
             </div>

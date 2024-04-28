@@ -6,7 +6,7 @@ const Image = (props) => {
     return (
         <div>
             <BlurryBackdrop bg={true}/>
-            <ImageReel data={props.data}/>
+            <ImageReel data={props.data} user={props.user}/>
         </div>
     );
 }
