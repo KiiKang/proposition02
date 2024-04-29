@@ -1,32 +1,22 @@
 import React, {startTransition, useEffect, useRef, useState} from 'react';
 import {useLocation, useNavigate} from "react-router-dom";
 import ImageCard from "../components/ImageCard";
-const ImageReel = (props) => {
+const ImagePresentation = (props) => {
     const [indexNow, setIndexNow] = useState(0);
-    // const [filteredCountry, setFilteredCountry] = useState(null);
-    // const [filteredRegion, setFilteredRegion] = useState("");
     const [filteredImageData, setFilteredImageData] = useState([]);
-    // const [coor, setCoor] = useState(null)
     const ref = useRef(null);
     const { search } = useLocation();
     let navigate = useNavigate();
 
-    // useEffect(() => {
-    //     const getData = async () => {
-    //         try {
-    //             let response = await axios.get('./images.tsv');
-    //             setImageData(tsvToArray(response.data));
-    //         } catch (err) {
-    //             console.log(err.message);
-    //             setImageData(null);
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    //     }
-    //     startTransition(() => {
-    //         getData();
-    //     })
-    // }, [search])
+
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setIndexNow(prevNumber => prevNumber < 50 ? prevNumber + 1 : 0); 
+      }, 3000); 
+  
+      return () => clearInterval(interval); 
+    }, []); 
+  
     const coor_to_str = c => {
         let str = [parseFloat(c.longitude), parseFloat(c.latitude)]
         if (!isNaN(str[0]) && !isNaN(str[1])) {
@@ -42,39 +32,11 @@ const ImageReel = (props) => {
             let imageData_cleaned = []
             props.data.forEach(d => {
                 if (!d.region_en) d['region_en'] = d.country_db
-                // if (filteredYear) {
-                //     if (filteredYear == d.year) imageData_cleaned.push(d)
-                // } else {
-                imageData_cleaned.push(d)
-                // }
+                if (d.country) imageData_cleaned.push(d)
             })
-            if (search) {
-                let [query, value] = search.split("?")[1].split("=")
-                // if (query === 'country') {
-                //     setFilteredCountry(value.replace('%20', ' '));
-                // } else
-                // if (query === 'region') {
-                //     setFilteredRegion(value.replace('%20', ' '));
-                //     setFilteredImageData(imageData_cleaned.filter(d => d.region_en === filteredRegion))
-                // } else {
-                //     setFilteredRegion(null)
-                // }
-                if (query === 'coor') {
-                    // let coor = [parseFloat(value.split(",")[0]), parseFloat(value.split(",")[1])]
-                    // setCoor(coor)
-                    setFilteredImageData(imageData_cleaned.filter(d => coor_to_str(d) === value))
-                }
-            }
+            setFilteredImageData(imageData_cleaned.slice(0,50))
         })
-    // }, [props.data, search, filteredRegion, filteredYear])
     }, [props.data, search])
-
-    // useEffect(() => {
-    //     if (ref.current !== null) {
-    //         ref.current.tabIndex = 0;
-    //         ref.current.focus();
-    //     }
-    // }, [ref])
 
     const handleKeyDown = (e) => {
         if (e.key === 'ArrowLeft') {
@@ -113,4 +75,4 @@ const ImageReel = (props) => {
     )
 }
 
-export default ImageReel
+export default ImagePresentation
