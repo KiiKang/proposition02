@@ -11,7 +11,7 @@ const MenuBar = () => {
     }
     return (
         <div className='absolute bottom-0 w-full flex justify-between'>
-                    <Link to='/' className='text-3xl ml-3 mb-3 cursor-pointer font-sans'>
+                    <Link to='/' className='text-2xl ml-3 mb-3 cursor-pointer font-sans'>
                         about
                     </Link>
                     {

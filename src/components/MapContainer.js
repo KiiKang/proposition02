@@ -3,16 +3,12 @@ import {Link} from 'react-router-dom';
 import ReactMapGL from "react-map-gl";
 import React, {useEffect, useRef, useState} from "react";
 import parse from 'html-react-parser';
-import {useNavigate} from "react-router-dom";
 import {Marker} from "react-map-gl";
 import 'mapbox-gl/dist/mapbox-gl.css'
 import './MapContainer.css'
 import axios from "axios";
-// import Cookies from "js-cookie";
 import textData from "../text.json";
 import {signOut} from "aws-amplify/auth";
-
-// import BlurryBackdrop from "./BlurryBackdrop";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN
 
@@ -217,7 +213,7 @@ const MapContainer = (props) => {
                                 key={'country-marker-' + d.country + i}
                                 id={'country-marker-' + d.country + i}
                                 style={{
-                                    opacity: !props.year ? 0.35 : d.years.includes(props.year) ? 0.5 : 0.06,
+                                    opacity: !props.year ? 0.50 : d.years.includes(props.year) ? 0.75 : 0.06,
                                     pointerEvents: !props.year || d.years.includes(props.year) ? 'auto':'none',
                                     cursor: !props.year || d.years.includes(props.year) ? 'pointer':'default',
                                 }}
@@ -265,16 +261,16 @@ const MapContainer = (props) => {
                 }
             </ReactMapGL>
             <div className='MenuBar absolute bottom-0 w-full flex justify-between'>
-                <Link className='text-3xl ml-3 mb-3 cursor-pointer font-sans' to={"/"}>
+                <Link className='text-2xl text-gray-700 ml-3 mb-2 cursor-pointer font-sans' to={"/"}>
                     about
                 </Link>
                 {
                     props.user ?
-                        <div className='text-3xl mr-3 mb-3 cursor-pointer font-sans'
+                        <div className='text-2xl text-gray-700 mr-3 mb-2 cursor-pointer font-sans'
                              onClick={handleSignOut}>
                             sign out
                         </div> :
-                        <div className='text-3xl mr-3 mb-3 cursor-pointer font-sans'
+                        <div className='text-2xl text-gray-700 mr-3 mb-3 cursor-pointer font-sans'
                              onClick={() => {
                                  props.onShowAuth(true)
                                  props.onInOrUp(false)

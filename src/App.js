@@ -13,7 +13,7 @@ import tsvToArray from "./helpers";
 // const ImageReel = lazy(() => import("./views/ImageReel"));
 import Image from "./views/Image";
 import ImagePresentation from "./views/ImagePresentation";
-import Home from "./views/Home";
+// import Home from "./views/Home";
 // import Map from "./views/Map";
 import MapContainer from "./components/MapContainer";
 import Filters from "./components/Filters";

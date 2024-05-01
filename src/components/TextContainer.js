@@ -1,10 +1,9 @@
 import React, {useEffect, useRef} from 'react';
 import './Intro.css'
 import parse from 'html-react-parser';
-
-// import axios from "axios";
 import {Link} from "react-router-dom";
 import textData from "../text.json";
+
 const TextContainer = (props) => {
     // const [textData, setTextData] = useState(null);
     // const [content, setContent] = useState(null);
@@ -60,7 +59,7 @@ const TextContainer = (props) => {
     }
 
     return (
-        <div className='Intro-textbox overflow-x-clip w-[480px] p-7 text-base fixed hyphens-auto min-h-fit max-h-[80%] overflow-y-scroll'
+        <div className='Intro-textbox text-gray-700 overflow-x-clip w-[400px] p-5 text-sm fixed hyphens-auto min-h-fit max-h-[80%] overflow-y-scroll'
         ref={ref}>
             <br/>
             <center>
@@ -80,7 +79,7 @@ const TextContainer = (props) => {
             </center>
             <br/>
             <div ref={bibRef}
-                 className='fixed leading-tight pointer-events-none max-w-[80%] min-w-[200px] w-fit left-0 top-0 bg-white border-2 border-gray-700 p-1 font-sans text-xs'
+                 className='fixed leading-tighter pointer-events-none max-w-[80%] min-w-[200px] w-fit left-0 top-0 bg-gray-50 border border-gray-700 p-1 font-sans text-[0.65rem] leading-3'
             />
         </div>
     )

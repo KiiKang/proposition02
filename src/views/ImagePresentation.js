@@ -1,3 +1,4 @@
+// https://github.com/aamirpervez/React-JS-Complete-Course/blob/master/CRUD%20in%20React%20JS%20using%20firebase%20Database/src/App.js
 import React, {startTransition, useEffect, useRef, useState} from 'react';
 import {useLocation, useNavigate} from "react-router-dom";
 import ImageCard from "../components/ImageCard";
@@ -11,12 +12,12 @@ const ImagePresentation = (props) => {
 
     useEffect(() => {
       const interval = setInterval(() => {
-        setIndexNow(prevNumber => prevNumber < 50 ? prevNumber + 1 : 0); 
-      }, 3000); 
-  
-      return () => clearInterval(interval); 
-    }, []); 
-  
+        setIndexNow(prevNumber => prevNumber < 50 -1 ? prevNumber + 1 : 0);
+      }, 3000);
+
+      return () => clearInterval(interval);
+    }, []);
+
     const coor_to_str = c => {
         let str = [parseFloat(c.longitude), parseFloat(c.latitude)]
         if (!isNaN(str[0]) && !isNaN(str[1])) {

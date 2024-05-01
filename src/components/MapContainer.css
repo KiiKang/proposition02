@@ -12,19 +12,8 @@
 
 .mapboxgl-control-container {
     opacity: 0.25;
-    /* visibility: hidden; */
+    visibility: hidden;
 }
-/*.country-markers{*/
-/*    position: absolute;*/
-/*    fill: #3d3a3a;*/
-/*    width: 100px;*/
-/*    height: 100px;*/
-/*    stroke: None;*/
-/*    transition: filter, fill 500ms;*/
-/*    rx: 50%;*/
-/*    cursor: pointer;*/
-/*    z-index:99;*/
-/*}*/
 
 .graticule {
     /*stroke-width: 0.5px;*/

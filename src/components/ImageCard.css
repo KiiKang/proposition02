@@ -2,7 +2,6 @@
     position: fixed;
     top: 50vh;
     display:flex;
-    padding:30px;
     background-color: rgba(255, 255, 255, 0.5);
     justify-content: center;
     /*max-width: fit-content;*/
@@ -43,8 +42,4 @@
     background: #414141;
 }
 
-.image-anno-content {
-    background: rgba(255, 255, 255, 0.3);
-    pointer-events: auto;
-    transform: translate(-50%, -50%);
-}
+
