@@ -250,8 +250,9 @@ const MapContainer = (props) => {
                             latitude={d.lat}
                             clickTolerance={10}
                             onClick={() => flyTo([d.lon, d.lat])}
+                            key={"text-marker-"+i}
                             >
-                            <Link to={'r/' + i}>
+                            <Link to={'r/' + i} >
                                 <div className="border-solid border-2 bg-white opacity-50 text-[0.5rem] leading-tight w-[80px] h-[80px] overflow-clip serif">
                                 {parse(d.html.split("<p>")[1])}
                                 </div>

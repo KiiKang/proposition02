@@ -1,9 +1,11 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import React, { lazy, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {getCurrentUser} from "aws-amplify/auth";
 import axios from "axios";
 import './App.css';
 import tsvToArray from "./helpers";
+// import Cookies from "js-cookie";
+import "./views/Authenticator.css"
 // https://legacy.reactjs.org/docs/code-splitting.html#route-based-code-splitting
 // import ImageReel from "./views/ImageReel";
 // const MapContainer = lazy(() => import('./components/MapContainer'))
@@ -31,7 +33,7 @@ function App() {
     const [center, setCenter] = useState(null);
     const [user, setUser] = useState(null);
 
-    const [timer, setTimer] = useState(0);
+    // const [timer, setTimer] = useState(0);
 
     const [showAuth, setShowAuth] = useState(false);
     const [isSignUp, setIsSignUp] = useState(true);

@@ -28,7 +28,6 @@ yarn-error.log*
 .idea/workspace.xml
 .idea/workspace.xml
 .idea/workspace.xml
-
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*
@@ -43,6 +42,7 @@ node_modules/
 aws-exports.js
 awsconfiguration.json
 amplifyconfiguration.dart
+amplifyconfiguration.json
 amplify-build-config.json
 amplify-gradle-config.json
 amplifytools.xcconfig

@@ -6,7 +6,7 @@ import {Authenticator, useAuthenticator,} from "@aws-amplify/ui-react";
 import { GrClose } from "react-icons/gr";
 // import '@aws-amplify/ui-react/styles.css';
 import './Authenticator.css';
-import {Hub} from "aws-amplify/utils";
+// import {Hub} from "aws-amplify/utils";
 // import {SignUp} from "@aws-amplify/ui-react/dist/types/components/Authenticator/Authenticator";
 
 const Home = (props) => {

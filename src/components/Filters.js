@@ -76,6 +76,7 @@ const Filters = (props) => {
                                     props.onYearChange(d)
                                 }
                             }}
+                            key={'year-filter-'+d}
                         >{d}</div>
                     })
                 }
