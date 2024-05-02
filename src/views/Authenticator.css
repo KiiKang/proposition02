@@ -17,7 +17,7 @@
 
 .amplify-label {
     font-family: "Helvetica Neue", sans-serif;
-    font-size: 1.0rem;
+    font-size: 0.85rem;
     text-transform: lowercase;
     font-weight: 500;
     text-shadow: var(--text-outline-S);
@@ -32,7 +32,7 @@
 
 .amplify-tabs__item {
     /*visibility: hidden;*/
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     /*font-weight: 500;*/
     text-transform: lowercase;
     font-family: "Helvetica Neue", serif;
@@ -42,7 +42,7 @@
 .amplify-button {
     font-family: "Helvetica Neue", serif;
     text-transform: lowercase;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     /*text-align: left;*/
 }
 
@@ -122,7 +122,7 @@ input {
 [type='submit'] {
     text-shadow: var(--text-outline-S);
     margin-top: 10px;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 400;
 }
 

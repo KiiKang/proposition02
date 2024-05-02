@@ -49,6 +49,8 @@ const Filters = (props) => {
                                         else {
                                             setFilteredCountry(d)
                                             props.onCountryChange(d)
+                                            setFilteredYear(null)
+                                            props.onYearChange(null)
                                         }
                                     }}
                                 >

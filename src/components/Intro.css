@@ -31,11 +31,6 @@ h3 {
 }
 
 
-.Intro-textbox-title{
-    font-family: 'Gaisyr', serif;
-    /*font-style: italic;*/
-}
-
 @media screen and (max-width: 480px) {
     .Intro-textbox, .Intro-textbox-sign {
         scale: 80%;
@@ -68,11 +63,6 @@ h3 {
     padding: 0;
 }
 
-.Intro-textbox-menu {
-    display: flex;
-    justify-content: center;
-    margin: 20px;
-}
 
 .Intro-textbox-menu-button {
     /*fonts-family: Helvetica, sans-serif;*/

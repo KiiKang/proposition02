@@ -131,7 +131,7 @@ function App() {
                 <div className='close'
                      onClick={() => setShowAuth(false)}
                 >
-                    <GrClose size={18}/>
+                    <GrClose size={15}/>
                 </div>
                 <div className='auth'>
                     <Authenticator loginMechanism="email" initialState= {isSignUp ? "signUp":"signIn"} />

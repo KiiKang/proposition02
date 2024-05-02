@@ -194,7 +194,6 @@ const MapContainer = (props) => {
         }
     }
 
-
     return (
         <div className="map-container" ref={mapContainer} tabIndex={-1}>
             <ReactMapGL
@@ -253,7 +252,7 @@ const MapContainer = (props) => {
                             key={"text-marker-"+i}
                             >
                             <Link to={'r/' + i} >
-                                <div className="border-solid border-2 bg-white opacity-50 text-[0.5rem] leading-tight w-[80px] h-[80px] overflow-clip serif">
+                                <div className="border-solid border-2 bg-white opacity-30 text-[0.3rem] leading-tight w-[60px] h-[60px] overflow-clip serif">
                                 {parse(d.html.split("<p>")[1])}
                                 </div>
                             </Link>

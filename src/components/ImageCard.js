@@ -28,7 +28,6 @@ const ImageCard = (props) => {
     const [showAnnoPreview, setShowAnnoPreview] = useState(false);
     // const annoRefs = useRef([]);
 
-    const [showMenu, setShowMenu] = useState(false);
     const [showMenus, setShowMenus] = useState({});
     const [delayHandler, setDelayHandler] = useState(null)
 

@@ -7,6 +7,12 @@ import {signOut} from "aws-amplify/auth";
 const Intro = (props) => {
     const [isReadMore, setIsReadMore] = useState(true);
     const [imageUrl, setImageUrl] = useState(null);
+    const [isPortrait, setIsPortrait] = useState(null)
+    const [isLoading, setIsLoading] = useState(true);
+
+    const [mouse, setMouse] = useState({x:null, y:null})
+    const [showAnnoPreview, setShowAnnoPreview] = useState(false);
+
     const toggleReadMore = () => {
         setIsReadMore(!isReadMore);
     }
@@ -17,46 +23,92 @@ const Intro = (props) => {
             window.location.reload()
         )
     }
+    useEffect(() => {
+        if (!isLoading) {
+            const updateMousePosition = ev => {
+                if (ev.target.id === "anno-canvas"){
+                    let rect = ev.target.getBoundingClientRect()
+                    setMouse({x: ev.clientX - rect.left, y: ev.clientY - rect.top});
+                } else {
+                    setMouse({x: null, y:null})
+                }
+            };
+            window.addEventListener('mousemove', updateMousePosition);
+            return () => {
+                window.removeEventListener('mousemove', updateMousePosition);
+            };
+        }
+    }, [isLoading]);
 
     useEffect(() => {
         if (props.data.length !== 0) {
             let data_cleaned = props.data.filter(d => d.file_name)
             let imgSelected = data_cleaned[Math.floor(Math.random() * data_cleaned.length)];
             setImageUrl("https://ara-images.s3.amazonaws.com/" + imgSelected.file_name)
+            const getImage = async (file_name) => {
+                try {
+                    let img = new Image();
+                    img.src = "https://ara-images.s3.amazonaws.com/" + file_name
+                    img.onload = () => {
+                        setIsPortrait(img.height > img.width)
+                    }
+                } catch (err) {
+                    console.error('Error getting image:', err);
+                }
+            }
+            getImage(imgSelected.file_name);
+            setIsLoading(false);
         }
     }, [props.data]);
 
     return (
-        <div className='Intro-textbox fixed min-h-fit border-neutral-800 border-2 w-[435px] p-7 pb-2 tracking-wide'>
-            <div className='Intro-textbox-title text-outline-sm mt-3 mb-3 ml-1 text-[2.4rem] underline decoration-2 underline-offset-2 text-neutral-800'>
-                <p>What do you see?</p>
+        <div className='Intro-textbox fixed min-h-fit border-neutral-800 border-2 w-[440px] p-[20px] pb-2 tracking-wide'>
+            <div className='Intro-textbox-title w-full text-outline-sm font-medium font-sans mt-1.5 mb-3.5 text-lg underline decoration-1 underline-offset-2 text-neutral-800 tracking-widest'>
+                <p>Archive Reindex Archive: Memex Room</p>
             </div>
-            <div className='Intro-shader-container'
+            <div className='Intro-shader-container border-neutral-600'
+                 onMouseEnter={() => setShowAnnoPreview(true)}
+                 onMouseLeave={() => setShowAnnoPreview(false)}
                  style={{
                      height: isReadMore ? "400px" : 0,
-                     backgroundImage: imageUrl ? 'url(' + imageUrl + ')': null,
+                     border: isReadMore ? "1px solid" : '0',
+                     // backgroundImage: imageUrl ? 'url(' + imageUrl + ')': null,
                      backgroundColor: "black",
-                     borderRadius: imageUrl ? '0': '50%',
-                     filter: imageUrl ? null : "blur(50px)",
+                     borderRadius: !isLoading ? '0': '50%',
+                     filter: !isLoading ? null : "blur(50px)",
                  }}>
-                {/*<img src={imageUrl} alt='' loading='lazy'/>*/}
-                {/* { !imgLoading?
-                        <img
-                        src={'/images/gl/' + imgSelected}
-                        key={imgSelected} alt='' loading='lazy'></img>:null
-                } */}
+                {isPortrait !== null ?
+                    <img
+                        className={'object-cover'}
+                        src={imageUrl}
+                        alt=''
+                        loading='eager'
+                        style={{
+                            width: isPortrait ? '420px':'auto',
+                            height: isPortrait ? 'auto':'420px',
+                            scale: '102%'
+                        }}
+                    />
+                    :null
+                }
             </div>
+            <div className='absolute text-[0.75rem] border-[0.5px] bg-[rgba(232,228,225,0.2)] border-neutral-800 w-fit max-w-full pr-1 pl-1 -translate-x-1/2 whitespace-nowrap pointer-events-none'
+                 style={{left: mouse.x + 'px', top: mouse.y + 'px', visibility: showAnnoPreview ? "visible": "hidden"}}
+            >
+                what do you see?
+            </div>
+
             {
                 props.user ?
-                <div className='Intro-textbox-menu'>
-                    <div className='text-outline-sm font-medium text-[1.5rem] font-sans' onClick={handleSignOut}>
-                        <p className='w-fit m-auto cursor-pointer'>sign out</p>
+                <div className='w-full flex p-3'>
+                    <div className='w-full text-outline-sm font-medium text-xl font-sans' onClick={handleSignOut}>
+                        <p className='m-auto cursor-pointer text-center'>sign out</p>
                     </div>
                 </div> :
-                <div className='Intro-textbox-menu'>
+                <div className='flex p-3'>
                     {/* <div className='Intro-textbox-menu-button button-round-L' onClick={() => navigate("/signup") }>sign up</div> */}
                     {/* <div className='Intro-textbox-menu-button button-round-L' onClick={() => navigate("/login") }>sign in</div> */}
-                    <div className='w-1/2 text-outline-sm font-medium text-[1.5rem] font-sans'
+                    <div className='w-1/2 text-outline-sm font-medium text-xl font-sans'
                          onClick={() => {
                              props.onShowAuth(true)
                              props.onInOrUp(true)
@@ -64,7 +116,7 @@ const Intro = (props) => {
                     >
                         <p className='w-fit m-auto cursor-pointer'>sign up</p>
                     </div>
-                    <div className='w-1/2 text-outline-sm font-medium text-[1.5rem] font-sans'
+                    <div className='w-1/2 text-outline-sm font-medium text-xl font-sans'
                          onClick={() => {
                              props.onShowAuth(true)
                              props.onInOrUp(false)
@@ -75,7 +127,7 @@ const Intro = (props) => {
                 </div>
             }
 
-            <div className='text-[0.75rem] font-sans text-center cursor-pointer'
+            <div className='text-xs text-neutral-800 font-sans text-center cursor-pointer'
                  onClick={toggleReadMore}>
                 <u>read more</u><br/>
                     ⌄
@@ -179,7 +231,7 @@ const Intro = (props) => {
                 </p>
                 <hr/>
                 <p className='text-xs'>
-                    The project was realized thanks to the generous support from <br/><a href='https://canadacouncil.ca/'
+                    The project was realized with the support from <br/><a href='https://canadacouncil.ca/'
                                                                                     target='_blank'
                                                                                     rel='noreferrer'>Canada Council
                     for the Arts</a>.
