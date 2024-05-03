@@ -33,7 +33,7 @@ const Filters = (props) => {
         <div className='MenuBar'>
             <div className='MenuBar-Right absolute top-0 right-0'>
                     <div className='text-2xl text-gray-900 mr-4 cursor-pointer font-sans mt-1'>
-                        countries
+                        territories
                     </div>
                 <div className='MenuBar-Countries text-sm text-gray-900 text-outline-xs tracking-tighter cursor-pointer pt-1.5 font-sans'>
                     {

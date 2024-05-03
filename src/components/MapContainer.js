@@ -58,12 +58,28 @@ const MapContainer = (props) => {
 
     useEffect(() => {
         if (props.country && !loading) {
-            let bounds = Object.values(countryBounds).filter(d => d[0] === props.country)
+            let country_filter = props.country === "South Korea" || props.country === "North Korea" ? "Korea" : props.country
+            let bounds = Object.values(countryBounds).filter(d => d[0] === country_filter)
             // TODO: make exceptions for when the country not in the db is selected
-            if (bounds.length !== 0) {
-                bounds = bounds[0][1];
+            if (bounds.length === 0) return
+            bounds = bounds[0][1];
+            if (bounds.length === 4) {
                 mapRef.current.fitBounds([[bounds[0], bounds[1]], [bounds[2], bounds[3]]], {
                     duration: 10000
+                })
+            } else if (bounds.length === 2) {
+                mapRef.current.flyTo({
+                    center: bounds,
+                    essential: true,
+                    zoom: 8,
+                    duration: 8000
+                })
+            }else if (bounds.length === 3) {
+                mapRef.current.flyTo({
+                    center: [bounds[0], bounds[1]],
+                    essential: true,
+                    zoom: bounds[2],
+                    duration: 8000
                 })
             }
         }
@@ -208,7 +224,7 @@ const MapContainer = (props) => {
                                 style={{
                                     opacity: !props.year ? 0.50 : d.years.includes(props.year) ? 0.75 : 0.06,
                                     pointerEvents: !props.year || d.years.includes(props.year) ? 'auto':'none',
-                                    cursor: !props.year || d.years.includes(props.year) ? 'pointer':'default',
+                                    cursor: !props.year || d.years.includes(props.year) ? 'pointer':'default'
                                 }}
                                 onClick={()=> {
                                     if (!props.year || d.years.includes(props.year)) flyTo(d.coor)
