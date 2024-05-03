@@ -16,7 +16,9 @@ const Filters = (props) => {
         if (props.data) {
             props.data.forEach(d => {
                 // TODO: multiple countries
-                if (d.country_db && !d.country_db.includes("&")) countries.push(d.country_db)
+                if (d.country_db && !d.country_db.includes("&")) {
+                    countries.push(d.country_db.split("\r")[0])
+                }
                 // let region = d.region ? d.region : d.country_db
                 // regions.push(region)
             })
@@ -54,7 +56,7 @@ const Filters = (props) => {
                                         }
                                     }}
                                 >
-                                    {d === "United States of America" ? "United States": d }
+                                    {d}
                                 </div>
                             )})
                     }
