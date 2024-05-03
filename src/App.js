@@ -7,12 +7,6 @@ import tsvToArray from "./helpers";
 // import Cookies from "js-cookie";
 import "./views/Authenticator.css"
 // https://legacy.reactjs.org/docs/code-splitting.html#route-based-code-splitting
-// import ImageReel from "./views/ImageReel";
-// const MapContainer = lazy(() => import('./components/MapContainer'))
-// const BlurryBackdrop = lazy(() => import('./components/BlurryBackdrop'))
-// const MenuBar = lazy(() => import('./components/MenuBar'))
-// const Filters = lazy(() => import('./components/Filters'))
-// const ImageReel = lazy(() => import("./views/ImageReel"));
 import Image from "./views/Image";
 import ImagePresentation from "./views/ImagePresentation";
 // import Home from "./views/Home";
@@ -119,7 +113,7 @@ function App() {
           />
           <Route
             path="/images"
-            element={<Image data={data} user={user}/>}
+            element={<Image data={data} user={user} filteredYear={filteredYear}/>}
           />
           <Route
             path="/p"

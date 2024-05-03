@@ -44,6 +44,7 @@ const ImageCard = (props) => {
     }
 
     useEffect(() => {
+        setAnno({content: "what do you see?"})
         getAnnos();
     }, [props.indexNow])
 
@@ -103,6 +104,7 @@ const ImageCard = (props) => {
     }
 
     async function handleBlur(e) {
+        setAnnoFocus(false)
         setAnno({...anno, content: e.target.innerText})
         await postAnno({...anno, content: e.target.innerText})
         setAnno({content: "what do you see?"})
@@ -129,7 +131,6 @@ const ImageCard = (props) => {
     const addAnno = (e) => {
         // to be unlocked
         if (props.file_name !== "vol-89_no-02_Feb-1946_09.jpg") return
-
         if (!user) return
         if (annoFocus) return
         if (props.index !== 0) return
@@ -277,12 +278,12 @@ const ImageCard = (props) => {
                                              }, 1300))
                                              clearTimeout(delayHandler)
                                          }}
-                                         disabled={false}
+                                         disabled={true}
                                          style={{
                                              left: d.x + 'px',
                                              top: d.y + 'px',
                                              border: d.user === user ? 'solid 0.5px rgb(130 0 0)': 'solid 0.5px rgb(38 38 38)',
-                                             cursor: d.user === user ? 'text' : 'inherit'
+                                             cursor: d.user === user ? 'pointer' : 'inherit'
                                          }}
                                          html={d.content}
                                          key={props.file_name + "-" + id}

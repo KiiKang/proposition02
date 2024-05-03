@@ -50,24 +50,17 @@ const ImageReel = (props) => {
             })
             if (search) {
                 let [query, value] = search.split("?")[1].split("=")
-                // if (query === 'country') {
-                //     setFilteredCountry(value.replace('%20', ' '));
-                // } else
-                // if (query === 'region') {
-                //     setFilteredRegion(value.replace('%20', ' '));
-                //     setFilteredImageData(imageData_cleaned.filter(d => d.region_en === filteredRegion))
-                // } else {
-                //     setFilteredRegion(null)
-                // }
                 if (query === 'coor') {
-                    // let coor = [parseFloat(value.split(",")[0]), parseFloat(value.split(",")[1])]
-                    // setCoor(coor)
-                    setFilteredImageData(imageData_cleaned.filter(d => coor_to_str(d) === value))
+                    let imageData = imageData_cleaned.filter(d => coor_to_str(d) === value)
+                    if (props.filteredYear) {
+                        imageData = imageData.filter(d => d.year == props.filteredYear)
+                    }
+                    setFilteredImageData(imageData)
                 }
             }
         })
     // }, [props.data, search, filteredRegion, filteredYear])
-    }, [props.data, search])
+    }, [props.data, props.filteredYear, search])
 
     // useEffect(() => {
     //     if (ref.current !== null) {
