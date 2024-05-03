@@ -130,7 +130,7 @@ const ImageCard = (props) => {
 
     const addAnno = (e) => {
         // to be unlocked
-        if (props.file_name !== "vol-89_no-02_Feb-1946_09.jpg") return
+        // if (props.file_name !== "vol-89_no-02_Feb-1946_09.jpg") return
         if (!user) return
         if (annoFocus) return
         if (props.index !== 0) return
