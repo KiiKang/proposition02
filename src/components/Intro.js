@@ -17,12 +17,6 @@ const Intro = (props) => {
         setIsReadMore(!isReadMore);
     }
 
-    function handleSignOut() {
-        // Cookies.remove("user");
-        signOut().then(() =>
-            window.location.reload()
-        )
-    }
     useEffect(() => {
         const updateMousePosition = ev => {
             if (ev.target.id === "anno-canvas"){
@@ -60,7 +54,7 @@ const Intro = (props) => {
     }, [props.data]);
 
     return (
-        <div className='Intro-textbox bg-[rgba(255,255,255,0.5)] bg-transparent fixed min-h-fit border-neutral-800 border-2 w-[440px] p-[20px] pb-2 tracking-wide'>
+        <div className='Intro-textbox bg-[rgba(255,255,255,0.5)] fixed min-h-fit border-neutral-800 border-2 w-[440px] p-[20px] pb-2 tracking-wide'>
             <div className='Intro-textbox-title w-full text-outline-xs font-medium font-sans mt-1.5 mb-3.5 text-lg decoration-1 underline-offset-2 text-neutral-800 tracking-widest'>
                 <p>Archive Reindex Archive: Memex Room</p>
             </div>
@@ -233,7 +227,7 @@ const Intro = (props) => {
                 </p>
                 <hr/>
                 <p className='text-xs'>
-                    The project was realized with the support from <br/><a href='https://canadacouncil.ca/'
+                    The project was realized with the support from <a href='https://canadacouncil.ca/'
                                                                                     target='_blank'
                                                                                     rel='noreferrer'>Canada Council
                     for the Arts</a>.
