@@ -4,7 +4,7 @@
 
 .MenuBar-Right {
     display: flex;
-    transform: translateX(172px);
+    transform: translateX(150px);
     transition: transform 500ms ease-in-out;
 }
 

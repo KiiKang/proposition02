@@ -1,6 +1,6 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {BrowserRouter as Router, Link, Route, Routes} from "react-router-dom";
 import React, { useEffect, useState } from 'react';
-import {getCurrentUser} from "aws-amplify/auth";
+import {getCurrentUser, signOut} from "aws-amplify/auth";
 import axios from "axios";
 import './App.css';
 import tsvToArray from "./helpers";
@@ -48,6 +48,11 @@ function App() {
             setShowAuth(false);
             window.location.reload();
         }
+    }
+    function handleSignOut() {
+        signOut().then(() =>
+            window.location.reload()
+        )
     }
     Hub.listen('auth', shout);
     useEffect(() => {
@@ -126,6 +131,35 @@ function App() {
               element={<Text/>}
           />
         </Routes>
+        <Link className='absolute top-1 left-2 text-2xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference' to={"/"}>
+            about
+        </Link>
+        {
+            !user ?
+            <div className='absolute left-2 bottom-2 text-2xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference'
+                 onClick={() => {
+                     setShowAuth(true)
+                     setIsSignUp(true)
+                 }}
+            >
+                <p className='w-fit m-auto cursor-pointer'>sign up</p>
+            </div> : null
+        }
+        {
+            user ?
+                <div className='absolute right-2 bottom-2 text-2xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference'
+                     onClick={handleSignOut}>
+                    sign out
+                </div> :
+                <div className='absolute right-2 bottom-2 text-2xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference'
+                     onClick={() => {
+                         setShowAuth(true)
+                         setIsSignUp(false)
+                     }}>
+                    sign in
+                </div>
+        }
+
         {   showAuth ?
             <div className='auth-container bg-gray-50'>
                 <div className='close'

@@ -1,7 +1,7 @@
 import {Link, useNavigate} from "react-router-dom";
 import React from 'react'
 import './MenuBar.css'
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 
 const MenuBar = () => {
     let navigate = useNavigate();

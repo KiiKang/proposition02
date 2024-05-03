@@ -105,6 +105,7 @@ const ImageReel = (props) => {
                         // region_local={d.region_local}
                         year={d.year}
                         index={i - indexNow}
+                        indexNow={indexNow}
                         onSwitch={() => setIndexNow(i)}
                     />
                 ))

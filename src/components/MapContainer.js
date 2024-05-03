@@ -41,12 +41,6 @@ const MapContainer = (props) => {
     // const { search } = useLocation();
     // let navigate = useNavigate();
 
-    function handleSignOut() {
-        signOut().then(() =>
-            window.location.reload()
-        )
-    }
-
     useEffect(() => {
         const getData = async () => {
             try {
@@ -260,25 +254,6 @@ const MapContainer = (props) => {
                     )) : null
                 }
             </ReactMapGL>
-            <div className='MenuBar absolute bottom-0 w-full flex justify-between'>
-                <Link className='text-2xl text-gray-700 ml-3 mb-2 cursor-pointer font-sans' to={"/"}>
-                    about
-                </Link>
-                {
-                    props.user ?
-                        <div className='text-2xl text-gray-700 mr-3 mb-2 cursor-pointer font-sans'
-                             onClick={handleSignOut}>
-                            sign out
-                        </div> :
-                        <div className='text-2xl text-gray-700 mr-3 mb-3 cursor-pointer font-sans'
-                             onClick={() => {
-                                 props.onShowAuth(true)
-                                 props.onInOrUp(false)
-                             }}>
-                            sign in
-                        </div>
-                }
-            </div>
         </div>
     );
 }

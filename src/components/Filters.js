@@ -30,10 +30,10 @@ const Filters = (props) => {
     return (
         <div className='MenuBar'>
             <div className='MenuBar-Right absolute top-0 right-0'>
-                    <div className='text-2xl text-gray-700 mr-4 cursor-pointer font-sans mt-1'>
+                    <div className='text-2xl text-gray-900 mr-4 cursor-pointer font-sans mt-1'>
                         countries
                     </div>
-                <div className='MenuBar-Countries text-base text-gray-600 tracking-tighter cursor-pointer pt-1.5 font-sans'>
+                <div className='MenuBar-Countries text-sm text-gray-900 text-outline-xs tracking-tighter cursor-pointer pt-1.5 font-sans'>
                     {
                         countries.map((d, i) => {
                             return (
@@ -64,7 +64,7 @@ const Filters = (props) => {
                 {
                         Array.from({ length: (1955 - 1945) + 1 }, (_, i) => 1945 + i).map((d) => {
                         return <div
-                            className='text-lg cursor-pointer text-gray-700 font-sans hover:underline'
+                            className='text-lg cursor-pointer text-gray-900 font-sans hover:underline'
                             style={{
                                 opacity: filteredYear === null ? 1 : d == filteredYear ? 1 : 0.2
                             }}

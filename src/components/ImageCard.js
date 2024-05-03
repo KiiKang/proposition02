@@ -38,14 +38,14 @@ const ImageCard = (props) => {
     }
 
     const deleteAnno = async (id) => {
-        const annoDoc = doc(db, "anno", id);
+        const annoDoc = doc(db,"anno", id);
         await deleteDoc(annoDoc);
         setTimeout(getAnnos, 1000);
     }
 
     useEffect(() => {
-        getAnnos()
-    }, [])
+        getAnnos();
+    }, [props.indexNow])
 
     useEffect(() => {
         let showMenus_ = {};
@@ -175,7 +175,6 @@ const ImageCard = (props) => {
 
     return (
         <div className='image-card p-[20px] border-[1px] border-neutral-700 min-w-[600px]'
-             // ref={imageCardRef}
              onClick={props.onSwitch}
              style={{
                  // minWidth: image.width,
@@ -239,14 +238,18 @@ const ImageCard = (props) => {
                         what do you see?
                     </div>
                     { annos.map((d, id) => (
-                        <div>
+                        <div key={"anno-container-" + id}>
                             <div className='absolute bg-[#bcb6b280] cursor-pointer font-sans text-[0.6rem] text-stone-600'
-                                 onClick={() => deleteAnno(d.id)}
+                                 onClick={() => {
+                                     if (d.user !== user) return
+                                     deleteAnno(d.id)
+                                 }}
                                  style={{
                                      left: d.x + 'px',
                                      top: d.y + 20 + 'px',
-                                     visibility: showMenus[id] ? 'visible':'hidden'
+                                     visibility: d.user === user && showMenus[id] ? 'visible':'hidden'
                                  }}
+                                 key={"anno-delete-" + id}
                             >
                                 delete
                             </div>
@@ -274,7 +277,7 @@ const ImageCard = (props) => {
                                              }, 1300))
                                              clearTimeout(delayHandler)
                                          }}
-                                         disabled={d.user !== user}
+                                         disabled={false}
                                          style={{
                                              left: d.x + 'px',
                                              top: d.y + 'px',
@@ -282,6 +285,7 @@ const ImageCard = (props) => {
                                              cursor: d.user === user ? 'text' : 'inherit'
                                          }}
                                          html={d.content}
+                                         key={props.file_name + "-" + id}
                         />
                         </div>
                     ))}

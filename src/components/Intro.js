@@ -24,21 +24,19 @@ const Intro = (props) => {
         )
     }
     useEffect(() => {
-        if (!isLoading) {
-            const updateMousePosition = ev => {
-                if (ev.target.id === "anno-canvas"){
-                    let rect = ev.target.getBoundingClientRect()
-                    setMouse({x: ev.clientX - rect.left, y: ev.clientY - rect.top});
-                } else {
-                    setMouse({x: null, y:null})
-                }
-            };
-            window.addEventListener('mousemove', updateMousePosition);
-            return () => {
-                window.removeEventListener('mousemove', updateMousePosition);
-            };
-        }
-    }, [isLoading]);
+        const updateMousePosition = ev => {
+            if (ev.target.id === "anno-canvas"){
+                let rect = ev.target.getBoundingClientRect()
+                setMouse({x: ev.clientX - rect.left, y: ev.clientY - rect.top});
+            } else {
+                setMouse({x: null, y:null})
+            }
+        };
+        window.addEventListener('mousemove', updateMousePosition);
+        return () => {
+            window.removeEventListener('mousemove', updateMousePosition);
+        };
+    }, []);
 
     useEffect(() => {
         if (props.data.length !== 0) {
@@ -62,11 +60,11 @@ const Intro = (props) => {
     }, [props.data]);
 
     return (
-        <div className='Intro-textbox fixed min-h-fit border-neutral-800 border-2 w-[440px] p-[20px] pb-2 tracking-wide'>
-            <div className='Intro-textbox-title w-full text-outline-sm font-medium font-sans mt-1.5 mb-3.5 text-lg underline decoration-1 underline-offset-2 text-neutral-800 tracking-widest'>
+        <div className='mix-blend-difference Intro-textbox bg-[rgba(255,255,255,0.5)] bg-transparent fixed min-h-fit border-neutral-800 border-2 w-[440px] p-[20px] pb-2 tracking-wide'>
+            <div className='Intro-textbox-title w-full text-outline-xs font-medium font-sans mt-1.5 mb-3.5 text-lg decoration-1 underline-offset-2 text-neutral-800 tracking-widest'>
                 <p>Archive Reindex Archive: Memex Room</p>
             </div>
-            <div className='Intro-shader-container border-neutral-600'
+            <div className='Intro-shader-container relative border-neutral-600'
                  onMouseEnter={() => setShowAnnoPreview(true)}
                  onMouseLeave={() => setShowAnnoPreview(false)}
                  style={{
@@ -91,43 +89,47 @@ const Intro = (props) => {
                     />
                     :null
                 }
-            </div>
-            <div className='absolute text-[0.75rem] border-[0.5px] bg-[rgba(232,228,225,0.2)] border-neutral-800 w-fit max-w-full pr-1 pl-1 -translate-x-1/2 whitespace-nowrap pointer-events-none'
-                 style={{left: mouse.x + 'px', top: mouse.y + 'px', visibility: showAnnoPreview ? "visible": "hidden"}}
-            >
-                what do you see?
-            </div>
-
-            {
-                props.user ?
-                <div className='w-full flex p-3'>
-                    <div className='w-full text-outline-sm font-medium text-xl font-sans' onClick={handleSignOut}>
-                        <p className='m-auto cursor-pointer text-center'>sign out</p>
-                    </div>
-                </div> :
-                <div className='flex p-3'>
-                    {/* <div className='Intro-textbox-menu-button button-round-L' onClick={() => navigate("/signup") }>sign up</div> */}
-                    {/* <div className='Intro-textbox-menu-button button-round-L' onClick={() => navigate("/login") }>sign in</div> */}
-                    <div className='w-1/2 text-outline-sm font-medium text-xl font-sans'
-                         onClick={() => {
-                             props.onShowAuth(true)
-                             props.onInOrUp(true)
+                <div className='image-anno w-full h-full relative m-0 left-0 bg-[rgba(255,255,255,0)] hover:bg-[rgba(255,255,255,0.2)] transition-colors cursor-crosshair'>
+                    <div className='absolute text-[0.75rem] border-[0.5px] bg-[rgba(232,228,225,0.2)] border-neutral-800 w-fit max-w-full pr-1 pl-1 -translate-x-1/2 whitespace-nowrap'
+                         style={{
+                             left: mouse.x + 'px', top: mouse.y + 'px',
+                             // visibility: showAnnoPreview ? "visible": "hidden"
                          }}
                     >
-                        <p className='w-fit m-auto cursor-pointer'>sign up</p>
-                    </div>
-                    <div className='w-1/2 text-outline-sm font-medium text-xl font-sans'
-                         onClick={() => {
-                             props.onShowAuth(true)
-                             props.onInOrUp(false)
-                         }}
-                    >
-                        <p className='w-fit m-auto cursor-pointer'>sign in</p>
+                        what do you see?
                     </div>
                 </div>
-            }
+            </div>
+            {/*{*/}
+            {/*    props.user ?*/}
+            {/*    <div className='w-full flex p-3'>*/}
+            {/*        <div className='w-full text-outline-sm font-medium text-xl font-sans' onClick={handleSignOut}>*/}
+            {/*            <p className='m-auto cursor-pointer text-center'>sign out</p>*/}
+            {/*        </div>*/}
+            {/*    </div> :*/}
+            {/*    <div className='flex p-3'>*/}
+            {/*        /!* <div className='Intro-textbox-menu-button button-round-L' onClick={() => navigate("/signup") }>sign up</div> *!/*/}
+            {/*        /!* <div className='Intro-textbox-menu-button button-round-L' onClick={() => navigate("/login") }>sign in</div> *!/*/}
+            {/*        <div className='w-1/2 text-outline-sm font-medium text-xl font-sans'*/}
+            {/*             onClick={() => {*/}
+            {/*                 props.onShowAuth(true)*/}
+            {/*                 props.onInOrUp(true)*/}
+            {/*             }}*/}
+            {/*        >*/}
+            {/*            <p className='w-fit m-auto cursor-pointer'>sign up</p>*/}
+            {/*        </div>*/}
+            {/*        <div className='w-1/2 text-outline-sm font-medium text-xl font-sans'*/}
+            {/*             onClick={() => {*/}
+            {/*                 props.onShowAuth(true)*/}
+            {/*                 props.onInOrUp(false)*/}
+            {/*             }}*/}
+            {/*        >*/}
+            {/*            <p className='w-fit m-auto cursor-pointer'>sign in</p>*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*}*/}
 
-            <div className='text-xs text-neutral-800 font-sans text-center cursor-pointer'
+            <div className='text-xs mt-4 text-neutral-800 font-sans text-center cursor-pointer'
                  onClick={toggleReadMore}>
                 <u>read more</u><br/>
                     ⌄
