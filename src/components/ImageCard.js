@@ -1,7 +1,7 @@
-import {useState, useEffect, useRef} from 'react';
+import {useState, useEffect} from 'react';
 import React from 'react';
 import './ImageCard.css';
-import ContentEditable from "react-contenteditable";
+// import ContentEditable from "react-contenteditable";
 // import {DynamoDB} from 'aws-sdk'
 // import { post } from 'aws-amplify/api';
 import { db } from "../utils/firebase";
@@ -45,8 +45,8 @@ const ImageCard = (props) => {
 
     useEffect(() => {
         setAnno({content: "what do you see?"})
-        getAnnos();
-    }, [props.indexNow])
+        if(user) getAnnos();
+    }, [props.indexNow, user])
 
     useEffect(() => {
         let showMenus_ = {};
@@ -187,6 +187,7 @@ const ImageCard = (props) => {
                  zIndex: 999 - Math.abs(props.index),
                  opacity: 1 - Math.abs(props.index) * 0.2,
                  cursor: props.index === 0 ? 'default' : props.index > 0 ? 'e-resize' : 'w-resize',
+
              }}>
             {/* <div className='image-card-year'> */}
             {/*<h4>{props.region_local ? props.region_local : null}<br/>{props.region === props.country ? props.country : props.region + ", " + props.country}*/}
@@ -217,7 +218,7 @@ const ImageCard = (props) => {
                      onClick={addAnno}>
                     {
                         anno.x ?
-                            <ContentEditable className='absolute text-[0.75rem] bg-[#e8e4e180] image-anno-content w-fit max-w-full pr-1 pl-1 -translate-x-1/2 whitespace-nowrap'
+                            <div contentEditable className='absolute text-[0.75rem] bg-[#e8e4e180] image-anno-content w-fit max-w-full pr-1 pl-1 -translate-x-1/2 whitespace-nowrap'
                                 // ref={r => annoRefs.current.push(r)}
                                              onFocus={() => setAnnoFocus(true)}
                                              onKeyDown={(e) => {
@@ -230,7 +231,6 @@ const ImageCard = (props) => {
                                                  cursor:'text'
                                              }}
                                              onBlur={handleBlur}
-                                             html={anno.content}
                             /> : null
                     }
                     <div className='absolute text-[0.75rem] border-[0.5px] bg-[rgba(232,228,225,0.2)] border-neutral-800 w-fit max-w-full pr-1 pl-1 -translate-x-1/2 whitespace-nowrap pointer-events-none'
@@ -254,13 +254,13 @@ const ImageCard = (props) => {
                             >
                                 delete
                             </div>
-                            <ContentEditable className='absolute text-[0.75rem] bg-[#a8a29e80] image-anno-content w-fit max-w-full pr-1 pl-1 -translate-x-1/2 whitespace-nowrap'
+                            <div className='absolute text-[0.75rem] bg-[#a8a29e80] image-anno-content w-fit max-w-full pr-1 pl-1 -translate-x-1/2 whitespace-nowrap'
                                          // ref={r => annoRefs.current.push(r)}
-                                         onFocus={() => setAnnoFocus(true)}
                                          onKeyDown={(e) => {
                                              if (e.code === "Enter") e.currentTarget.blur()
                                          }}
                                          onMouseEnter={() => {
+                                             if (annoFocus) return
                                              setShowAnnoPreview(false)
                                              setDelayHandler(setTimeout(() => {
                                                  setShowMenus(d => ({
@@ -270,6 +270,7 @@ const ImageCard = (props) => {
                                              clearTimeout(delayHandler)
                                          }}
                                          onMouseLeave={() => {
+                                             if (annoFocus) return
                                              setDelayHandler(setTimeout(() => {
                                                  setShowMenus(d => ({
                                                      ...d, [id]: false
@@ -278,16 +279,14 @@ const ImageCard = (props) => {
                                              }, 1300))
                                              clearTimeout(delayHandler)
                                          }}
-                                         disabled={true}
                                          style={{
                                              left: d.x + 'px',
                                              top: d.y + 'px',
                                              border: d.user === user ? 'solid 0.5px rgb(130 0 0)': 'solid 0.5px rgb(38 38 38)',
                                              cursor: d.user === user ? 'pointer' : 'inherit'
                                          }}
-                                         html={d.content}
                                          key={props.file_name + "-" + id}
-                        />
+                        >{d.content}</div>
                         </div>
                     ))}
                 </div>
