@@ -12,7 +12,7 @@ import {
     getDocs,
     updateDoc,
     doc,
-    deleteDoc,
+    deleteDoc
 } from "firebase/firestore";
 
 
@@ -32,6 +32,7 @@ const ImageCard = (props) => {
     const [delayHandler, setDelayHandler] = useState(null)
 
     const getAnnos = async () => {
+        if (props.isLocked) return
         const data = await getDocs(annoCollection);
         let docs = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
         setAnnos(docs.filter(d => d.img === props.file_name))
@@ -40,13 +41,18 @@ const ImageCard = (props) => {
     const deleteAnno = async (id) => {
         const annoDoc = doc(db,"anno", id);
         await deleteDoc(annoDoc);
-        setTimeout(getAnnos, 1000);
+        // setTimeout(getAnnos, 1000);
     }
+    useEffect(() => {
+        if (props.isLocked) {
+            setAnnos(props.annoData.filter(d => d.img === props.file_name))
+        }
+    }, [props.annoData])
 
     useEffect(() => {
         setAnno({content: "what do you see?"})
         if(user) getAnnos();
-    }, [props.indexNow, user])
+    }, [props.indexNow])
 
     useEffect(() => {
         let showMenus_ = {};
@@ -129,6 +135,7 @@ const ImageCard = (props) => {
     }
 
     const addAnno = (e) => {
+        if (props.isLocked) return
         // to be unlocked
         // if (props.file_name !== "vol-89_no-02_Feb-1946_09.jpg") return
         if (!user) return

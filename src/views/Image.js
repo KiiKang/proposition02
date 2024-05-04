@@ -6,7 +6,12 @@ const Image = (props) => {
     return (
         <div>
             <BlurryBackdrop bg={true}/>
-            <ImageReel data={props.data} user={props.user} filteredYear={props.filteredYear}/>
+            <ImageReel data={props.data}
+                       user={props.user}
+                       filteredYear={props.filteredYear}
+                       isLocked={props.isLocked}
+                       annoData={props.annoData}
+            />
         </div>
     );
 }

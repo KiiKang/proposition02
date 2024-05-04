@@ -100,6 +100,8 @@ const ImageReel = (props) => {
                         index={i - indexNow}
                         indexNow={indexNow}
                         onSwitch={() => setIndexNow(i)}
+                        isLocked={props.isLocked}
+                        annoData={props.annoData}
                     />
                 ))
             }

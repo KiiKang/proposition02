@@ -8,7 +8,7 @@ import tsvToArray from "./helpers";
 import "./views/Authenticator.css"
 // https://legacy.reactjs.org/docs/code-splitting.html#route-based-code-splitting
 import Image from "./views/Image";
-import ImagePresentation from "./views/ImagePresentation";
+// import ImagePresentation from "./views/ImagePresentation";
 // import Home from "./views/Home";
 // import Map from "./views/Map";
 import MapContainer from "./components/MapContainer";
@@ -19,9 +19,15 @@ import {Authenticator, useAuthenticator} from "@aws-amplify/ui-react";
 import {Hub} from "aws-amplify/utils";
 import Intro from "./components/Intro";
 import BlurryBackdrop from "./components/BlurryBackdrop";
+import {collection, getDocs} from "firebase/firestore";
+import {db} from "./utils/firebase";
 
 function App() {
+    const isLocked = true;
+    const annoCollection = collection(db, "anno")
+
     const [data, setData] = useState([]);
+    const [annoData, setAnnoData] = useState([]);
     const [filteredYear, setFilteredYear] = useState(null);
     const [filteredCountry, setFilteredCountry] = useState(null);
     const [center, setCenter] = useState(null);
@@ -37,6 +43,13 @@ function App() {
             toSignIn,
         ]
     );
+
+    const getAnnos = async () => {
+        const data = await getDocs(annoCollection);
+        let docs = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        setAnnoData(docs)
+    }
+
     const shout = (r) => {
         if (r.payload.event === "signedIn") {
             setShowAuth(false);
@@ -54,6 +67,9 @@ function App() {
         else toSignIn()
     }, [isSignUp])
 
+    useEffect(() => {
+        if(isLocked) getAnnos()
+    }, [])
     // useEffect(() => {
     //     const interval = setInterval(() => {
     //         setTimer(prev => prev + 1);
@@ -113,12 +129,12 @@ function App() {
           />
           <Route
             path="/images"
-            element={<Image data={data} user={user} filteredYear={filteredYear}/>}
+            element={<Image data={data} user={user} filteredYear={filteredYear} isLocked={isLocked} annoData={annoData}/>}
           />
-          <Route
-            path="/p"
-            element={<><BlurryBackdrop bg="red"/><ImagePresentation  data={data} user={user}/></>}
-          />
+          {/*<Route*/}
+          {/*  path="/p"*/}
+          {/*  element={<><BlurryBackdrop bg="red"/><ImagePresentation  data={data} user={user}/></>}*/}
+          {/*/>*/}
           <Route
               path="/r/:textId"
               // element={<Text onCenterChange={setCenter}/>}
@@ -128,17 +144,17 @@ function App() {
         <Link className='absolute top-1 left-2 text-2xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference' to={"/"}>
             about
         </Link>
-        {
-            !user ?
-            <div className='absolute left-2 bottom-2 text-2xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference'
-                 onClick={() => {
-                     setShowAuth(true)
-                     setIsSignUp(true)
-                 }}
-            >
-                <p className='w-fit m-auto cursor-pointer'>sign up</p>
-            </div> : null
-        }
+        {/*{*/}
+        {/*    !user ?*/}
+        {/*    <div className='absolute left-2 bottom-2 text-2xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference'*/}
+        {/*         onClick={() => {*/}
+        {/*             setShowAuth(true)*/}
+        {/*             setIsSignUp(true)*/}
+        {/*         }}*/}
+        {/*    >*/}
+        {/*        <p className='w-fit m-auto cursor-pointer'>sign up</p>*/}
+        {/*    </div> : null*/}
+        {/*}*/}
         {
             user ?
                 <div className='absolute right-2 bottom-2 text-2xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference'
