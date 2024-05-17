@@ -16,6 +16,10 @@ h3 {
     box-shadow: var(--shadow);
 }
 
+.Intro-textbox-title > p {
+    font-stretch: 120%;
+}
+
 .Intro-textbox > p {
     margin-top: 12px;
     margin-bottom: 12px;

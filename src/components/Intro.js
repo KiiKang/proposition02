@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import './Intro.css';
 import '../App.css';
-import {signOut} from "aws-amplify/auth";
+// import {signOut} from "aws-amplify/auth";
 // import AWS from 'aws-sdk';
 
 const Intro = (props) => {
@@ -54,9 +54,9 @@ const Intro = (props) => {
     }, [props.data]);
 
     return (
-        <div className='Intro-textbox bg-[rgba(255,255,255,0.5)] fixed min-h-fit border-neutral-800 border-2 w-[440px] p-[20px] pb-2 tracking-wide'>
-            <div className='Intro-textbox-title w-full text-outline-xs font-medium font-sans mt-1.5 mb-3.5 text-lg decoration-1 underline-offset-2 text-neutral-800 tracking-widest'>
-                <p>Archive Reindex Archive: Memex Room</p>
+        <div className='Intro-textbox bg-[rgba(255,255,255,0.5)] fixed min-h-fit border-neutral-800 border-2 w-[440px] p-[20px] pb-2'>
+            <div className='Intro-textbox-title scale-x-[116%] text-outline-xs justify-center font-medium font-sans mt-1.5 mb-3.5 w-fit m-auto text-lg text-neutral-800 tracking-[0.37rem]'>
+                Archive Reindex Archive
             </div>
             <div className='Intro-shader-container relative border-neutral-600'
                  onMouseEnter={() => setShowAnnoPreview(true)}
@@ -129,7 +129,7 @@ const Intro = (props) => {
                     ⌄
             </div>
 
-            <div className='Intro-textbox-p max-h-[500px] overflow-y-scroll text-neutral-800 text-sm'
+            <div className='Intro-textbox-p max-h-[500px] overflow-y-scroll text-neutral-800 text-sm tracking-wide'
                  style={{
                      // visibility: isReadMore? "hidden": "visible",
                      height: isReadMore ? 0 : '500px'
@@ -155,14 +155,15 @@ const Intro = (props) => {
                     and embodied semantics converge and intersect one another.
             </p><p>
 
-                <b>ARA</b> is also a platform for growing collections of texts through which authors, poets and writers
-                    respond to layers of the latent concepts and emotions that emerged from, stuck to, and imbued
-                    with the artists throughout the entire creation.
+                <b>ARA</b> is a platform for growing collections of texts through which authors,
+                poets and writers respond to the latent concepts and emotions, emerged from, stuck to,
+                and imbued with the artists throughout the entire creation.
 
 
 
 
-                    {/*<b>Archive Reindex Archive</b> presents an archival collection of photographic images and*/}
+
+                {/*<b>Archive Reindex Archive</b> presents an archival collection of photographic images and*/}
                     {/*captions from National Geographic issues from 1945 to 1959, explorable through the global map.*/}
                     {/*<br/><br/>*/}
                     {/*<b>Archive Reindex Archive</b> was conceived by <a href='https://ivettakang.com/'*/}
@@ -226,7 +227,7 @@ const Intro = (props) => {
 
                 </p>
                 <hr/>
-                <p className='text-xs'>
+                <p className='text-xs tracking-normal'>
                     The project was realized with the support from <a href='https://canadacouncil.ca/'
                                                                                     target='_blank'
                                                                                     rel='noreferrer'>Canada Council
