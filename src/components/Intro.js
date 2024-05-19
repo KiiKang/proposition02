@@ -148,8 +148,7 @@ const Intro = (props) => {
                 </p><p>
                     <b>ARA</b> is a full collaboration between <a href='https://ivettakang.com/'
                                                            target='_blank' rel='noreferrer'>Ivetta
-                    Sunyoung Kang</a> and <a href='https://k--kang.com/' target='_blank'
-                                                                      rel='noreferrer'>Kii (Wonki) Kang</a> through
+                    Sunyoung Kang</a> and Kii (Wonki) Kang through
                     which Ivetta’s interests in linguistics,
                     poetics, and ethnographic indexicality studies and Kii’s interests in the critical use of computation
                     and embodied semantics converge and intersect one another.
