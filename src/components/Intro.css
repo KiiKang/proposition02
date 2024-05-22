@@ -9,10 +9,6 @@ h3 {
     margin: 8px;
 }
 .Intro-textbox {
-    z-index: 9;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
     box-shadow: var(--shadow);
 }
 

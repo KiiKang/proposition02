@@ -54,7 +54,7 @@ const Intro = (props) => {
     }, [props.data]);
 
     return (
-        <div className='Intro-textbox bg-[rgba(255,255,255,0.5)] fixed min-h-fit border-neutral-800 border-2 w-[440px] p-[20px] pb-2'>
+        <div className='Intro-textbox left-[50vw] top-[50vh] -translate-x-1/2 -translate-y-1/2 bg-[rgba(255,255,255,0.5)] absolute min-h-fit border-neutral-800 border-2 w-[440px] p-[20px] pb-2'>
             <div className='Intro-textbox-title scale-x-[116%] text-outline-xs justify-center font-medium font-sans mt-1.5 mb-3.5 w-fit m-auto text-lg text-neutral-800 tracking-[0.37rem]'>
                 Archive Reindex Archive
             </div>
@@ -94,36 +94,14 @@ const Intro = (props) => {
                     </div>
                 </div>
             </div>
-            {/*{*/}
-            {/*    props.user ?*/}
-            {/*    <div className='w-full flex p-3'>*/}
-            {/*        <div className='w-full text-outline-sm font-medium text-xl font-sans' onClick={handleSignOut}>*/}
-            {/*            <p className='m-auto cursor-pointer text-center'>sign out</p>*/}
-            {/*        </div>*/}
-            {/*    </div> :*/}
-            {/*    <div className='flex p-3'>*/}
-            {/*        /!* <div className='Intro-textbox-menu-button button-round-L' onClick={() => navigate("/signup") }>sign up</div> *!/*/}
-            {/*        /!* <div className='Intro-textbox-menu-button button-round-L' onClick={() => navigate("/login") }>sign in</div> *!/*/}
-            {/*        <div className='w-1/2 text-outline-sm font-medium text-xl font-sans'*/}
-            {/*             onClick={() => {*/}
-            {/*                 props.onShowAuth(true)*/}
-            {/*                 props.onInOrUp(true)*/}
-            {/*             }}*/}
-            {/*        >*/}
-            {/*            <p className='w-fit m-auto cursor-pointer'>sign up</p>*/}
-            {/*        </div>*/}
-            {/*        <div className='w-1/2 text-outline-sm font-medium text-xl font-sans'*/}
-            {/*             onClick={() => {*/}
-            {/*                 props.onShowAuth(true)*/}
-            {/*                 props.onInOrUp(false)*/}
-            {/*             }}*/}
-            {/*        >*/}
-            {/*            <p className='w-fit m-auto cursor-pointer'>sign in</p>*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*}*/}
-
-            <div className='text-xs mt-4 text-neutral-800 font-sans text-center cursor-pointer'
+            {
+                props.isMobile ? (
+                    <div className='text-sm mt-1 -mb-1 text-neutral-800 font-sans text-center text-red-800'>
+                        * please use a non-mobile device for best experience.
+                    </div>
+                ) : null
+            }
+            <div className='text-xs mt-4 text-neutral-800 font-sans text-center w-fit m-auto cursor-pointer'
                  onClick={toggleReadMore}>
                 <u>read more</u><br/>
                     ⌄

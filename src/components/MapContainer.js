@@ -42,6 +42,7 @@ const MapContainer = (props) => {
     // let navigate = useNavigate();
 
     useEffect(() => {
+        if (props.isMobile) return
         const getData = async () => {
             try {
                 let response = await axios.get('./country-bounding-box.json');
@@ -57,6 +58,8 @@ const MapContainer = (props) => {
     }, [])
 
     useEffect(() => {
+        if (props.isMobile) return
+
         if (props.country && !loading) {
             let country_filter = props.country === "South Korea" || props.country === "North Korea" ? "Korea" : props.country
             let bounds = Object.values(countryBounds).filter(d => d[0] === country_filter)
@@ -84,26 +87,9 @@ const MapContainer = (props) => {
             }
         }
     }, [props.country])
-    // useEffect(() => {
-    //     if (search) {
-    //         let [query, value] = search.split("?")[1].split("=")
-    //         // if (query === 'region') {
-    //         //     setFilteredRegion(value.replace('%20', ' '));
-    //         // }
-    //         if (query === 'country') {
-    //             let bounds = Object.values(countryBounds).filter(d => d[0] === value.replace('%20', ' '))
-    //             // TODO: make exceptions for when the country not in the db is selected
-    //             if (bounds.length !== 0) {
-    //                 bounds = bounds[0][1];
-    //                 mapRef.current.fitBounds([[bounds[0], bounds[1]], [bounds[2], bounds[3]]], {
-    //                     duration: 10000
-    //                 })
-    //             }
-    //         }
-    //     }
-    // }, [countryBounds, search]);
 
     useEffect(() => {
+        if (props.isMobile) return
         // console.log("filtered year: ", props.year)
         // let regions = []
         let coors = []

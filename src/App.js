@@ -22,9 +22,14 @@ import BlurryBackdrop from "./components/BlurryBackdrop";
 import {collection, getDocs} from "firebase/firestore";
 import {db} from "./utils/firebase";
 
+const isMobileDevice = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+};
+
 function App() {
     const isLocked = true;
     const annoCollection = collection(db, "anno")
+    const [isMobile, setIsMobile] = useState(false);
 
     const [data, setData] = useState([]);
     const [annoData, setAnnoData] = useState([]);
@@ -43,6 +48,10 @@ function App() {
             toSignIn,
         ]
     );
+    useEffect(() => {
+        setIsMobile(isMobileDevice());
+        console.log(isMobileDevice())
+    }, []);
 
     const getAnnos = async () => {
         const data = await getDocs(annoCollection);
@@ -108,19 +117,24 @@ function App() {
                       country={filteredCountry}
                       onShowAuth={setShowAuth}
                       onInOrUp={setIsSignUp}
+                      isMobile={isMobile}
         />
-        <Filters data={data}
-                 onYearChange={setFilteredYear}
-                 onCountryChange={setFilteredCountry}/>
+        {!isMobile ?
+            <Filters data={data}
+                     onYearChange={setFilteredYear}
+                     onCountryChange={setFilteredCountry}
+            /> : null
+        }
         <Routes>
           <Route
               path="/"
-              element={<><BlurryBackdrop/>
+              element={<><BlurryBackdrop isMobile={isMobile}/>
                   <Intro
                     data={data}
                     user={user}
                     onShowAuth={setShowAuth}
                     onInOrUp={setIsSignUp}
+                    isMobile={isMobile}
                   /></>}
           />
           <Route
@@ -141,9 +155,13 @@ function App() {
               element={<Text/>}
           />
         </Routes>
-        <Link className='absolute top-1 left-2 text-2xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference' to={"/"}>
-            about
-        </Link>
+        {
+            !isMobile ?
+                <Link className='absolute top-1 left-2 text-2xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference' to={"/"}>
+                    about
+                </Link>
+                : null
+        }
         {/*{*/}
         {/*    !user ?*/}
         {/*    <div className='absolute left-2 bottom-2 text-2xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference'*/}
@@ -156,6 +174,7 @@ function App() {
         {/*    </div> : null*/}
         {/*}*/}
         {
+            !isMobile ?
             user ?
                 <div className='absolute right-2 bottom-2 text-2xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference'
                      onClick={handleSignOut}>
@@ -167,7 +186,7 @@ function App() {
                          setIsSignUp(false)
                      }}>
                     sign in
-                </div>
+                </div> : null
         }
 
         {   showAuth ?
