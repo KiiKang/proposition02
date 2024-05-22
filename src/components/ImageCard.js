@@ -10,10 +10,10 @@ import {
     addDoc,
     collection,
     getDocs,
-    updateDoc,
     doc,
     deleteDoc
 } from "firebase/firestore";
+import {useSwipeable} from "react-swipeable";
 
 
 const ImageCard = (props) => {
@@ -23,13 +23,38 @@ const ImageCard = (props) => {
     const [anno, setAnno] = useState({content: "what do you see?"});
     const [annoFocus, setAnnoFocus] = useState(false);
     const [image, setImage] = useState(null);
-    const [imageSize, setImageSize] = useState([720, 600])
+    const [imageSize, setImageSize] = useState([540, 420])
     const [mouse, setMouse] = useState({x:null, y:null})
     const [showAnnoPreview, setShowAnnoPreview] = useState(false);
     // const annoRefs = useRef([]);
+    const [windowSize, setWindowSize] = useState(getWindowSize());
 
     const [showMenus, setShowMenus] = useState({});
     const [delayHandler, setDelayHandler] = useState(null)
+
+    const onSwipedRight = () => {
+        if (props.indexNow < props.reelLength - 1 ) props.onSwitch(props.indexNow + 1)
+    }
+
+    const onSwipedLeft = () => {
+        if (props.indexNow > 0) props.onSwitch(props.indexNow - 1)
+    }
+
+
+    const handlers = useSwipeable({
+        onSwipedLeft: onSwipedLeft,
+        onSwipedRight: onSwipedRight,
+        preventDefaultTouchmoveEvent: true,
+        trackMouse: true // For mouse swipe detection, if needed
+    });
+
+    function getWindowSize() {
+        const { innerWidth: width, innerHeight: height } = window;
+        return {
+            width,
+            height
+        };
+    }
 
     const getAnnos = async () => {
         if (props.isLocked) return
@@ -43,6 +68,7 @@ const ImageCard = (props) => {
         await deleteDoc(annoDoc);
         // setTimeout(getAnnos, 1000);
     }
+
     useEffect(() => {
         if (props.isLocked) {
             setAnnos(props.annoData.filter(d => d.img === props.file_name))
@@ -82,13 +108,25 @@ const ImageCard = (props) => {
     }, [props.user])
 
     useEffect(() => {
+        function handleResize() {
+            setWindowSize(getWindowSize());
+        }
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    useEffect(() => {
         const getImage = async (file_name) => {
             try {
                 let img = new Image();
                 img.src = "https://ara-images.s3.amazonaws.com/" + file_name
                 img.onload = () => {
                     setImage(img);
-                    setImageSize([img.width*0.85, img.height*0.85])
+                    if (img.width > windowSize.width * 0.9 - 40){
+                        setImageSize([windowSize.width * 0.9 - 40, img.height * (windowSize.width * 0.9 - 40 ) / img.width])
+                    } else {
+                        setImageSize([img.width, img.height])
+                    }
                 }
             } catch (err) {
                 console.error('Error getting image:', err);
@@ -182,12 +220,13 @@ const ImageCard = (props) => {
     }
 
     return (
-        <div className='image-card p-[20px] border-[1px] border-neutral-700 min-w-[600px]'
+        <div {...handlers}
+             className='image-card p-[20px] border-[1px] border-neutral-700 sm:min-w-[600px] max-h-fit overflow-y-scroll overflow-x-clip'
              onClick={props.onSwitch}
              style={{
                  // minWidth: image.width,
-                 width: imageSize[0] + 40 + 'px',
-                 left: 'calc(50% + ' + props.index * window.innerWidth * 0.3 + 'px)',
+                 maxWidth: imageSize[0] + 40 + 'px',
+                 left: 'calc(50vw + ' + props.index * window.innerWidth * 0.3 + 'px)',
                  transformOrigin: 'top center',
                  scale: props.index === 0 ? '100%' : '70%',
                  filter: props.index === 0 ? 'blur(0)' : 'blur(6px)',
@@ -203,11 +242,11 @@ const ImageCard = (props) => {
             {/*<h2>*/}
             {/*    <i>{props.footnote && props.footnote !== "\r" ? '"' + props.footnote + '"' : null} </i></h2>*/}
             {/* </div> */}
-            <div className='image-card-info text-lg font-bold tracking-wide text-neutral-700 mb-2 select-none'>
+            <div className='image-card-info sm:text-lg text-[0.9rem] font-bold tracking-wide text-neutral-700 mb-2 select-none'>
                 {props.country ? props.country.includes('&') ? props.year + ', ' + props.region : props.region === props.country ? props.year + ', ' + props.country : props.year + ', ' + props.region + ', ' + props.country : null}
                 {/* {props.region_local ? props.region_local : null} */}
             </div>
-            <div className='image-container m-auto relative select-none'
+            <div className='image-container m-auto relative select-none max-w-[calc(90vw - 40px)]'
                  style = {{width: imageSize[0] + 'px', height: imageSize[1] + 'px',
             background: !image ? 'black': 'none', borderRadius: !image ? '50%': '5px', filter: !image ? 'blur(50px)' : 'none'}}
                  >
@@ -301,7 +340,7 @@ const ImageCard = (props) => {
             </div>
             {
                 props.caption !== undefined ?
-                    <div className={'image-card-caption tracking-wider text-sm mt-[15px] text-neutral-700 font-bold mt-8 select-none'}>
+                    <div className={'image-card-caption tracking-wider sm:text-sm text-xs mt-[15px] text-neutral-700 font-bold mt-8 select-none'}>
                         {formatText(props.caption)}
                         {/*{props.caption ? formatText(props.caption) : props.footnote ? formatText(props.footnote) : <br/>}*/}
                         {/*{props.caption.split(" ").slice(0, -2).map(s => {*/}
@@ -314,7 +353,7 @@ const ImageCard = (props) => {
             }
             {
                 props.footnote !== undefined ?
-                    <div className={'image-card-caption tracking-wider text-sm mt-1 text-neutral-700 select-none'}>
+                    <div className={'image-card-caption tracking-wider sm:text-sm text-xs mt-1 text-neutral-700 select-none'}>
                         {formatText(props.footnote)}
                     </div> : null
             }

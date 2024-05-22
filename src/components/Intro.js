@@ -54,7 +54,7 @@ const Intro = (props) => {
     }, [props.data]);
 
     return (
-        <div className='Intro-textbox bg-[rgba(255,255,255,0.5)] fixed min-h-fit border-neutral-800 border-2 w-[440px] p-[20px] pb-2'>
+        <div className='Intro-textbox z-10 fixed left-[50vw] top-[53vh] -translate-x-1/2 -translate-y-1/2 bg-[rgba(255,255,255,0.5)] fixed min-h-fit border-neutral-800 border-2 w-[440px] p-[20px] pb-2'>
             <div className='Intro-textbox-title scale-x-[116%] text-outline-xs justify-center font-medium font-sans mt-1.5 mb-3.5 w-fit m-auto text-lg text-neutral-800 tracking-[0.37rem]'>
                 Archive Reindex Archive
             </div>
@@ -148,7 +148,8 @@ const Intro = (props) => {
                 </p><p>
                     <b>ARA</b> is a full collaboration between <a href='https://ivettakang.com/'
                                                            target='_blank' rel='noreferrer'>Ivetta
-                    Sunyoung Kang</a> and Kii (Wonki) Kang through
+                    Sunyoung Kang</a> and <a href='https://k--kang.com/' target='_blank'
+                                                                      rel='noreferrer'>Kii (Wonki) Kang</a> through
                     which Ivetta’s interests in linguistics,
                     poetics, and ethnographic indexicality studies and Kii’s interests in the critical use of computation
                     and embodied semantics converge and intersect one another.

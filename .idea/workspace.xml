@@ -3,9 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="1449800b-bf37-4035-bba0-61bd282dc759" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Intro.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Intro.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/TextContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TextContainer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/text.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/text.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ImageCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ImageCard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Intro.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Intro.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/ImageReel.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/ImageReel.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

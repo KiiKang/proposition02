@@ -141,7 +141,7 @@ function App() {
               element={<Text/>}
           />
         </Routes>
-        <Link className='absolute top-1 left-2 text-2xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference' to={"/"}>
+        <Link className='absolute sm:text-2xl text-xl top-1 left-2 text-gray-900 cursor-pointer font-sans hover:mix-blend-difference' to={"/"}>
             about
         </Link>
         {/*{*/}
@@ -157,11 +157,11 @@ function App() {
         {/*}*/}
         {
             user ?
-                <div className='absolute right-2 bottom-2 text-2xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference'
+                <div className='absolute right-2 bottom-2 sm:text-2xl text-xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference'
                      onClick={handleSignOut}>
                     sign out
                 </div> :
-                <div className='absolute right-2 bottom-2 text-2xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference'
+                <div className='absolute right-2 bottom-2 sm:text-2xl text-xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference'
                      onClick={() => {
                          setShowAuth(true)
                          setIsSignUp(false)

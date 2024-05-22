@@ -1,6 +1,7 @@
 import React, {startTransition, useEffect, useRef, useState} from 'react';
 import {useLocation, useNavigate} from "react-router-dom";
 import ImageCard from "../components/ImageCard";
+import {useSwipeable} from "react-swipeable";
 const ImageReel = (props) => {
     const [indexNow, setIndexNow] = useState(0);
     // const [filteredCountry, setFilteredCountry] = useState(null);
@@ -99,9 +100,10 @@ const ImageReel = (props) => {
                         year={d.year}
                         index={i - indexNow}
                         indexNow={indexNow}
-                        onSwitch={() => setIndexNow(i)}
+                        onSwitch={setIndexNow}
                         isLocked={props.isLocked}
                         annoData={props.annoData}
+                        reelLength={filteredImageData.length}
                     />
                 ))
             }
