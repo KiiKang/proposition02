@@ -97,7 +97,7 @@ const Intro = (props) => {
             {
                 props.isMobile ? (
                     <div className='text-sm mt-1 -mb-1 text-neutral-800 font-sans text-center text-red-800'>
-                        * please use a non-mobile device for best experience.
+                        * please use a non-mobile device to interact.
                     </div>
                 ) : null
             }
