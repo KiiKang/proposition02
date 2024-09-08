@@ -219,7 +219,13 @@ const MapContainer = (props) => {
                             <Link to={'/images?coor=' + d.coor_str}
                             className={'w-full h-full'}>
                             <img ref={ img => imagesRef.current[i] = img }
-                                 src={"https://ara-images.s3.amazonaws.com/" + d.images[0].file_name}
+                                 src={
+                                     props.year ?
+                                         d.images.filter(img => img.year == props.year).length > 0 ?
+                                             "https://ara-images.s3.amazonaws.com/" + d.images.filter(img => img.year == props.year)[0].file_name :
+                                             "https://ara-images.s3.amazonaws.com/" + d.images[0].file_name :
+                                         "https://ara-images.s3.amazonaws.com/" + d.images[0].file_name
+                                 }
                                  key={"thumbnail-" + d.region}
                                  title={d.region}
                                  loading="lazy"
