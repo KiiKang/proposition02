@@ -19,7 +19,7 @@ import {Authenticator, useAuthenticator} from "@aws-amplify/ui-react";
 import {Hub} from "aws-amplify/utils";
 import Intro from "./components/Intro";
 import BlurryBackdrop from "./components/BlurryBackdrop";
-import {collection, getDocs} from "firebase/firestore";
+import {collection, getDocs, onSnapshot, doc} from "firebase/firestore";
 import {db} from "./utils/firebase";
 
 const isMobileDevice = () => {
@@ -27,12 +27,12 @@ const isMobileDevice = () => {
 };
 
 function App() {
-    const isLocked = true;
-    const annoCollection = collection(db, "anno")
+    const [adminProps, setAdminProps] = useState({locked: false});
+    // const annoCollection = collection(db, "anno");
     const [isMobile, setIsMobile] = useState(false);
 
     const [data, setData] = useState([]);
-    const [annoData, setAnnoData] = useState([]);
+    // const [annoData, setAnnoData] = useState([]);
     const [filteredYear, setFilteredYear] = useState(null);
     const [filteredCountry, setFilteredCountry] = useState(null);
     const [center, setCenter] = useState(null);
@@ -50,14 +50,8 @@ function App() {
     );
     useEffect(() => {
         setIsMobile(isMobileDevice());
-        console.log(isMobileDevice())
+        if (isMobileDevice()) console.log("mobile device detected.")
     }, []);
-
-    const getAnnos = async () => {
-        const data = await getDocs(annoCollection);
-        let docs = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-        setAnnoData(docs)
-    }
 
     const shout = (r) => {
         if (r.payload.event === "signedIn") {
@@ -76,15 +70,42 @@ function App() {
         else toSignIn()
     }, [isSignUp])
 
+    // useEffect(() => {
+    //     // const data = await getDocs(annoCollection);
+    //     // let docs = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+    //     // setAnnoData(docs)
+    //     const unsubscribe = onSnapshot(collection(db, "anno"), data => {
+    //         data.docs.forEach(doc => {
+    //             console.log(doc.type)
+    //         })
+    //         setAnnoData(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+    //     }, err => {
+    //         console.log('Error fetching annotations: ', err);
+    //     })
+    //     return () => unsubscribe();
+    // }, [])
+
     useEffect(() => {
-        if(isLocked) getAnnos()
+        const unsubscribe = onSnapshot(doc(db, "admin", "anno"), (doc) => {
+            console.log(doc.data())
+            setAdminProps(doc.data()); // Update state with entire snapshot at once
+        }, err => {
+            console.log('Error fetching admin props: ', err);
+        });
+        // Cleanup listener when component unmounts
+        return () => unsubscribe();
+
+        // const adminData = getDocs(adminCtrl);
+        // let locked = adminData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        // setIsLocked(locked[0].locked)
     }, [])
+
     // useEffect(() => {
     //     const interval = setInterval(() => {
     //         setTimer(prev => prev + 1);
     //     }, 1000);
     //     setFilteredYear(timer % 9 + 1946);
-    //     return () => clearInterval(interval);
+    //     return () => clearInzterval(interval);
     // }, [timer]);
 
     useEffect(() => {
@@ -143,7 +164,9 @@ function App() {
           />
           <Route
             path="/images"
-            element={<Image data={data} user={user} filteredYear={filteredYear} isLocked={isLocked} annoData={annoData}/>}
+            element={<Image data={data} user={user} filteredYear={filteredYear} isLocked={adminProps.locked}
+                            // annoData={annoData}
+            />}
           />
           {/*<Route*/}
           {/*  path="/p"*/}

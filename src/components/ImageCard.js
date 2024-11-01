@@ -1,20 +1,17 @@
 import {useState, useEffect} from 'react';
 import React from 'react';
 import './ImageCard.css';
-// import ContentEditable from "react-contenteditable";
-// import {DynamoDB} from 'aws-sdk'
-// import { post } from 'aws-amplify/api';
 import { db } from "../utils/firebase";
 // import {signInAnonymously} from "firebase/auth";
 import {
     addDoc,
     collection,
     getDocs,
-    updateDoc,
     doc,
-    deleteDoc
+    deleteDoc,
+    onSnapshot,
+    query, where
 } from "firebase/firestore";
-
 
 const ImageCard = (props) => {
     const annoCollection = collection(db, "anno")
@@ -31,27 +28,38 @@ const ImageCard = (props) => {
     const [showMenus, setShowMenus] = useState({});
     const [delayHandler, setDelayHandler] = useState(null)
 
-    const getAnnos = async () => {
-        if (props.isLocked) return
-        const data = await getDocs(annoCollection);
-        let docs = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-        setAnnos(docs.filter(d => d.img === props.file_name))
-    }
+    // const getAnnos = async () => {
+    //     if (props.isLocked) return
+    //     const data = await getDocs(annoCollection);
+    //     let docs = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+    //     setAnnos(docs.filter(d => d.img === props.file_name))
+    // }
 
     const deleteAnno = async (id) => {
         const annoDoc = doc(db,"anno", id);
         await deleteDoc(annoDoc);
         // setTimeout(getAnnos, 1000);
     }
+    // useEffect(() => {
+    //     if (props.isLocked) {
+    //         setAnnos(props.annoData.filter(d => d.img === props.file_name))
+    //     }
+    // }, [props.annoData])
     useEffect(() => {
-        if (props.isLocked) {
-            setAnnos(props.annoData.filter(d => d.img === props.file_name))
-        }
-    }, [props.annoData])
+        const colRef = collection(db, 'anno');
+        const q = query(colRef, where('img', '==', props.file_name));
+
+        onSnapshot(q, (snapshot) => {
+            setAnnos(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+
+        })
+
+    }, [])
+
 
     useEffect(() => {
         setAnno({content: "what do you see?"})
-        if(user) getAnnos();
+        // if(user) getAnnos();
     }, [props.indexNow])
 
     useEffect(() => {
@@ -114,8 +122,8 @@ const ImageCard = (props) => {
         setAnno({...anno, content: e.target.innerText})
         await postAnno({...anno, content: e.target.innerText})
         setAnno({content: "what do you see?"})
-        await getAnnos()
-        return
+        // await getAnnos()
+
         // console.log(e.target, id)
         // let anno_updated = []
         // anno.forEach(a => {
@@ -135,12 +143,7 @@ const ImageCard = (props) => {
     }
 
     const addAnno = (e) => {
-        if (props.isLocked) return
-        // to be unlocked
-        // if (props.file_name !== "vol-89_no-02_Feb-1946_09.jpg") return
-        if (!user) return
-        if (annoFocus) return
-        if (props.index !== 0) return
+        if (props.isLocked || !user || annoFocus || props.index !== 0) return
         if (!e.target.classList.contains("image-anno")) return
         setShowAnnoPreview(false)
         // if (e.target.className === "image-anno") {
@@ -148,6 +151,9 @@ const ImageCard = (props) => {
 
         let x = e.clientX - e.target.getBoundingClientRect().left;
         let y = e.clientY - e.target.getBoundingClientRect().top;
+
+        const now = new Date();
+
         setAnno({
             ...anno,
             img: props.file_name,
@@ -155,23 +161,8 @@ const ImageCard = (props) => {
             x: x,
             y: y,
             user: user,
-            timeStamp: e.timeStamp,
+            timeStamp: now.toISOString(),
         })
-
-        // setAnno(anno.concat(
-            //     <ContentEditable className='absolute text-sm image-anno-content border-[0.5px] border-neutral-800 w-fit max-w-full pr-1 pl-1'
-            //          ref={r => annoRefs.current.push(r)}
-            //          onFocus={() => setAnnoFocus(true)}
-            //          onKeyDown={(e) => {
-            //              if (e.code === "Enter") e.currentTarget.blur()
-            //          }}
-            //          onBlur={handleBlur}
-            //          style={{left: x + 'px', top: y + 'px'}}
-            //          html={"what do you see?"}
-            //     />
-            // ))
-            // navigate(window.location)
-        // }
     }
 
     const formatText = (text) => {
@@ -194,7 +185,6 @@ const ImageCard = (props) => {
                  zIndex: 999 - Math.abs(props.index),
                  opacity: 1 - Math.abs(props.index) * 0.2,
                  cursor: props.index === 0 ? 'default' : props.index > 0 ? 'e-resize' : 'w-resize',
-
              }}>
             {/* <div className='image-card-year'> */}
             {/*<h4>{props.region_local ? props.region_local : null}<br/>{props.region === props.country ? props.country : props.region + ", " + props.country}*/}
