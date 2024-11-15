@@ -185,17 +185,17 @@ function App() {
                 </Link>
                 : null
         }
-        {/*{*/}
-        {/*    !user ?*/}
-        {/*    <div className='absolute left-2 bottom-2 text-2xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference'*/}
-        {/*         onClick={() => {*/}
-        {/*             setShowAuth(true)*/}
-        {/*             setIsSignUp(true)*/}
-        {/*         }}*/}
-        {/*    >*/}
-        {/*        <p className='w-fit m-auto cursor-pointer'>sign up</p>*/}
-        {/*    </div> : null*/}
-        {/*}*/}
+        {
+            !user ?
+            <div className='absolute left-2 bottom-2 text-2xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference'
+                 onClick={() => {
+                     setShowAuth(true)
+                     setIsSignUp(true)
+                 }}
+            >
+                <p className='w-fit m-auto cursor-pointer'>sign up</p>
+            </div> : null
+        }
         {
             !isMobile ?
             user ?
