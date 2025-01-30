@@ -27,7 +27,11 @@ const isMobileDevice = () => {
 };
 
 function App() {
-    const [adminProps, setAdminProps] = useState({locked: false});
+    const [adminProps, setAdminProps] = useState(
+        {
+            locked: true,
+            signUpLocked: true
+        });
     // const annoCollection = collection(db, "anno");
     const [isMobile, setIsMobile] = useState(false);
 
@@ -55,7 +59,7 @@ function App() {
 
     const shout = (r) => {
         if (r.payload.event === "signedIn") {
-            setShowAuth(false);
+            setShowAuth(bool => !bool);
             window.location.reload();
         }
     }
@@ -129,103 +133,114 @@ function App() {
         getData()
     }, [])
 
-  return (
+return (
     <Router>
-        <MapContainer data={data}
-                      year={filteredYear}
-                      center={center}
-                      user={user}
-                      country={filteredCountry}
-                      onShowAuth={setShowAuth}
-                      onInOrUp={setIsSignUp}
-                      isMobile={isMobile}
-        />
-        {!isMobile ?
-            <Filters data={data}
-                     onYearChange={setFilteredYear}
-                     onCountryChange={setFilteredCountry}
-            /> : null
-        }
-        <Routes>
-          <Route
-              path="/"
-              element={<><BlurryBackdrop isMobile={isMobile}/>
-                  <Intro
-                    data={data}
-                    user={user}
-                    onShowAuth={setShowAuth}
-                    onInOrUp={setIsSignUp}
-                    isMobile={isMobile}
-                  /></>}
-          />
-          <Route
-              path="/map"
-              element={<div/>}
-          />
-          <Route
-            path="/images"
-            element={<Image data={data} user={user} filteredYear={filteredYear} isLocked={adminProps.locked}
-                            // annoData={annoData}
-            />}
-          />
-          {/*<Route*/}
-          {/*  path="/p"*/}
-          {/*  element={<><BlurryBackdrop bg="red"/><ImagePresentation  data={data} user={user}/></>}*/}
-          {/*/>*/}
-          <Route
-              path="/r/:textId"
-              // element={<Text onCenterChange={setCenter}/>}
-              element={<Text/>}
-          />
-        </Routes>
-        {
-            !isMobile ?
-                <Link className='absolute top-1 left-2 text-2xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference' to={"/"}>
-                    about
-                </Link>
-                : null
-        }
-        {
-            !user ?
-            <div className='absolute left-2 bottom-2 text-2xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference'
-                 onClick={() => {
-                     setShowAuth(true)
-                     setIsSignUp(true)
-                 }}
-            >
-                <p className='w-fit m-auto cursor-pointer'>sign up</p>
-            </div> : null
-        }
-        {
-            !isMobile ?
-            user ?
-                <div className='absolute right-2 bottom-2 text-2xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference'
-                     onClick={handleSignOut}>
-                    sign out
-                </div> :
-                <div className='absolute right-2 bottom-2 text-2xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference'
-                     onClick={() => {
-                         setShowAuth(true)
-                         setIsSignUp(false)
-                     }}>
-                    sign in
-                </div> : null
-        }
-
-        {   showAuth ?
-            <div className='auth-container bg-gray-50'>
-                <div className='close'
-                     onClick={() => setShowAuth(false)}
-                >
-                    <GrClose size={15}/>
-                </div>
-                <div className='auth'>
-                    <Authenticator loginMechanism="email" initialState= {isSignUp ? "signUp":"signIn"} />
-                </div>
-            </div> : <div/>
-        }
+            <MapContainer data={data}
+                                        year={filteredYear}
+                                        center={center}
+                                        user={user}
+                                        country={filteredCountry}
+                                        onShowAuth={setShowAuth}
+                                        onInOrUp={setIsSignUp}
+                                        isMobile={isMobile}
+            />
+            {!isMobile ?
+                    <Filters data={data}
+                                     onYearChange={setFilteredYear}
+                                     onCountryChange={setFilteredCountry}
+                    /> : null
+            }
+            <Routes>
+                <Route
+                        path="/"
+                        element={<><BlurryBackdrop isMobile={isMobile}/>
+                                <Intro
+                                    data={data}
+                                    user={user}
+                                    onShowAuth={setShowAuth}
+                                    onInOrUp={setIsSignUp}
+                                    isMobile={isMobile}
+                                /></>}
+                />
+                <Route
+                        path="/map"
+                        element={<div/>}
+                />
+                <Route
+                    path="/images"
+                    element={<Image data={data} user={user} filteredYear={filteredYear} isLocked={adminProps.locked}
+                                                    // annoData={annoData}
+                    />}
+                />
+                {/*<Route*/}
+                {/*  path="/p"*/}
+                {/*  element={<><BlurryBackdrop bg="red"/><ImagePresentation  data={data} user={user}/></>}*/}
+                {/*/>*/}
+                <Route
+                        path="/r/:textId"
+                        // element={<Text onCenterChange={setCenter}/>}
+                        element={<Text/>}
+                />
+            </Routes>
+            {
+                    !isMobile ?
+                            <Link className='absolute top-1 left-2 text-2xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference' to={"/"}>
+                                    about
+                            </Link>
+                            : null
+            }
+            {
+                    !user ?
+                    <div className='absolute left-2 bottom-2 text-2xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference'
+                             onClick={() => {
+                                            setShowAuth(bool => !bool);
+                                            setIsSignUp(true)
+                             }}
+                    >
+                            <p className='w-fit m-auto cursor-pointer'>sign up</p>
+                    </div> : null
+            }
+            {
+                    !isMobile ?
+                    user ?
+                            <div className='absolute right-2 bottom-2 text-2xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference'
+                                     onClick={handleSignOut}>
+                                    sign out
+                            </div> :
+                            <div className='absolute right-2 bottom-2 text-2xl text-gray-900 cursor-pointer font-sans hover:mix-blend-difference'
+                                     onClick={() => {
+                                            setShowAuth(bool => !bool);
+                                            setIsSignUp(false)
+                                     }}>
+                                    sign in
+                            </div> : null
+            }
+            {   showAuth ?
+            adminProps.signUpLocked && isSignUp ?
+            <div className='auth-container bg-[rgba(255,255,255,0.5)] p-[20px] pt-0'>
+                                                    <div className='close'
+                                     onClick={() => setShowAuth(false)}
+                            >
+                                    <GrClose size={15}/>
+                            </div>
+                    <p className="pt-5 text-sm">
+            Sign up is currently disabled. Check back for the next <i>Memex Room</i>. See previous workshops <a href="https://torontobiennial.org/programs/memex-room-reindexing-the-archive/" target="_blank">here</a>.
+            </p>
+            </div>
+            :
+                    <div className='auth-container bg-gray-50'>
+                            <div className='close'
+                                     onClick={() => setShowAuth(false)}
+                            >
+                                    <GrClose size={15}/>
+                            </div>
+                            <div className='auth'>
+                                    <Authenticator loginMechanism="email" initialState= {isSignUp ? "signUp":"signIn"} />
+                            </div>
+                    </div> : <div/>
+            }
     </Router>
-  );
+);
 }
 
 export default App;

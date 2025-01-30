@@ -11,6 +11,10 @@
     border-color: rgb(38 38 38);
 }
 
+.auth-container > p > a {
+    text-decoration: underline;
+}
+
 .auth {
     padding: 1.75rem;
 }
